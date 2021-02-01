@@ -228,7 +228,7 @@ int main(void)
 
 
 
-    window = glfwCreateWindow(1080, 720, "怖い！", NULL, NULL);
+    window = glfwCreateWindow(1024, 768, "怖い！", NULL, NULL);
     if (!window)
     {
         std::cout << "Error" << std::endl;
