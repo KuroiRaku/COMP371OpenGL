@@ -12,8 +12,7 @@
 #define GLCall(x) GLClearError();\
 	x;\
 	ASSERT(GLLogCall(#x,__FILE__,__LINE__))
-//#define openGLDebug() glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS)
-#define LOG(x) std::cout<<x<<std::endl
+
 
 void GLClearError();
 bool GLLogCall(const char* function, const char* file, int line);

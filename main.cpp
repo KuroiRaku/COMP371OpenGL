@@ -8,6 +8,7 @@
 #include "VertexBufferLayout.h"
 #include "Shader.h"
 #include "Font.h"
+#include "GLDebugMessageCallback.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -29,12 +30,13 @@ const unsigned int SCR_HEIGHT = 768;
 
 int main(void)
 {
-    //openGLDebug();
+
     GLFWwindow* window;
 
     if (!glfwInit()) {
         return -1;
     }
+    
 
     window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "怖い！", NULL, NULL);
     if (!window)
@@ -52,6 +54,11 @@ int main(void)
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
+
+    //Error messages. Please only call it after glad and glfw was initialized 
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback(GLDebugMessageCallback, nullptr);
 
     OpenGLFont font("resources/shaders/text.vs", "resources/shaders/text.fs", SCR_WIDTH, SCR_HEIGHT, "resources/fonts/Amaze_Normal.ttf", 25);
 

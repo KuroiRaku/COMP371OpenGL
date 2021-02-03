@@ -152,6 +152,7 @@
     <ClCompile Include="engine\Shader.cpp" />
     <ClCompile Include="engine\VertexArray.cpp" />
     <ClCompile Include="engine\VertexBuffer.cpp" />
+    <ClCompile Include="GLDebugMessageCallback.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +164,7 @@
     <ClInclude Include="engine\VertexArray.h" />
     <ClInclude Include="engine\VertexBuffer.h" />
     <ClInclude Include="engine\VertexBufferLayout.h" />
+    <ClInclude Include="GLDebugMessageCallback.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader" />
