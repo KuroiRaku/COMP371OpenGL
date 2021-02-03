@@ -4,7 +4,7 @@
 #include <sstream>
 #include <iostream>
 
-
+#include "Renderer.h"
 
 Shader::Shader(const std::string& filepath)
     :m_FilePath(filepath), m_RendererID(0)
@@ -25,8 +25,6 @@ Shader::~Shader()
 ShaderProgramSource Shader:: ParseShader(const std::string& filepath)
 {
     std::ifstream stream(filepath);
-
-
 
     enum class ShaderType
     {
@@ -112,6 +110,11 @@ void Shader::Bind() const
 void Shader::Unbind() const
 {
     GLCall(glUseProgram(0))
+}
+
+void Shader::SetUniform1f(const std::string& name, float v0)
+{
+    GLCall(glUniform1f(GetUniformLocation(name), v0));
 }
 
 void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)

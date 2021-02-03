@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include "Renderer.h"
 
 struct ShaderProgramSource
 {
@@ -12,12 +11,10 @@ struct ShaderProgramSource
 class Shader
 {
 
-	
-
 private:
 	std::string m_FilePath;
 	unsigned int m_RendererID;
-	std::unordered_map<std::string, unsigned int>m_UniformLocationCache;
+	std::unordered_map<std::string, int>m_UniformLocationCache;
 	//caching for uniforms
 
 public:
@@ -28,6 +25,7 @@ public:
 	void Unbind() const;
 
 	//Set uniforms
+	void SetUniform1f(const std::string& name, float v0);
 	void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
 
 private:

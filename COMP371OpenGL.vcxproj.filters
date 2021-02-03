@@ -40,6 +40,9 @@
     <ClCompile Include="dependencies\windows\glad\src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="engine\Font.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\IndexBuffer.h">
@@ -60,6 +63,12 @@
     <ClInclude Include="engine\VertexBufferLayout.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="engine\Font.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\TextShader.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">
@@ -75,6 +84,12 @@
       <Filter>Resources\Shader</Filter>
     </None>
     <None Include="resources\shaders\vertex.shader">
+      <Filter>Resources\Shader</Filter>
+    </None>
+    <None Include="resources\shaders\text.fs">
+      <Filter>Resources\Shader</Filter>
+    </None>
+    <None Include="resources\shaders\text.vs">
       <Filter>Resources\Shader</Filter>
     </None>
   </ItemGroup>
