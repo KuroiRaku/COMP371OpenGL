@@ -29,7 +29,7 @@ const unsigned int SCR_HEIGHT = 768;
 
 int main(void)
 {
-    openGLDebug();
+    //openGLDebug();
     GLFWwindow* window;
 
     if (!glfwInit()) {
@@ -150,9 +150,7 @@ int main(void)
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     //font.Clean();
-    std::cout << "Cleaning" << std::endl;
     glfwTerminate();
-    std::cout << "Couldn't exit glfwTerminate?" << std::endl;
 
     return 0;
 }
