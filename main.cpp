@@ -8,6 +8,7 @@
 #include "VertexBufferLayout.h"
 #include "Shader.h"
 #include "Font.h"
+#include "Texture.h"
 #include "GLDebugMessageCallback.h"
 
 #include <glm/glm.hpp>
@@ -100,6 +101,10 @@ int main(void)
     Shader shader("resources/shaders/Basic.shader");
     shader.Bind();
     shader.SetUniform4f("u_Color", 0.2f, 0.4f, 0.8f, 1.0f);
+
+    Texture texture("resources/textures/phone.png");
+    texture.Bind(0);
+    shader.SetUniform1i("u_Texture", 0);
 
     va.Unbind();
     shader.Unbind();
