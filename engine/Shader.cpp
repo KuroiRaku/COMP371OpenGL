@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Renderer.h"
+#include "GLDebugMessageCallback.h"
 
 Shader::Shader(const std::string& filepath)
     :m_FilePath(filepath), m_RendererID(0)
@@ -104,12 +105,12 @@ unsigned int Shader::CreateShader(const std::string& vertexShader, const std::st
 
 void Shader::Bind() const
 {
-    GLCall(glUseProgram(m_RendererID))
+    GLCall(glUseProgram(m_RendererID));
 }
 
 void Shader::Unbind() const
 {
-    GLCall(glUseProgram(0))
+    GLCall(glUseProgram(0));
 }
 
 void Shader::SetUniform1f(const std::string& name, float v0)

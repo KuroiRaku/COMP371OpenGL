@@ -1,6 +1,7 @@
 #include "VertexArray.h"
 
 #include "VertexBufferLayout.h"
+#include "GLDebugMessageCallback.h"
 
 VertexArray::VertexArray()
 {

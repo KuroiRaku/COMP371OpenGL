@@ -55,10 +55,6 @@ int main(void)
         return -1;
     }
 
-    //Error messages. Please only call it after glad and glfw was initialized 
-    glEnable(GL_DEBUG_OUTPUT);
-    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-    glDebugMessageCallback(GLDebugMessageCallback, nullptr);
 
     OpenGLFont font("resources/shaders/text.vs", "resources/shaders/text.fs", SCR_WIDTH, SCR_HEIGHT, "resources/fonts/Amaze_Normal.ttf", 25);
 

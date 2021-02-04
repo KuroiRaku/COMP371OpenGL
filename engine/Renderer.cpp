@@ -1,21 +1,5 @@
 #include "Renderer.h"
-
-
-void GLClearError()
-{
-	while (glGetError() != GL_NO_ERROR);
-}
-
-bool GLLogCall(const char* function, const char* file, int line)
-{
-	while (GLenum error = glGetError())
-	{
-		std::cout << "[OpenGL Error] (" << error << "): " << function <<
-			" " << file << ":" << line << std::endl;
-		return false;
-	}
-	return true;
-}
+#include "GLDebugMessageCallback.h"
 
 // drawMode 0 = Triangle, 1= lines, 2 = point
 void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader, const int& drawMode) const
