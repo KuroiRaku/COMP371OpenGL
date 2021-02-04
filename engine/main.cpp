@@ -1,4 +1,4 @@
-//example skeleton code 2019 winter comp371
+//example skeleton code 2021 winter comp371
 //modified from http://learnopengl.com/
 
 #include <glad/glad.h>	// include GL Extension Wrangler
