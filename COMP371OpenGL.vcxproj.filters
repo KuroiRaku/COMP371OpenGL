@@ -43,8 +43,8 @@
     <ClCompile Include="engine\Font.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="GLDebugMessageCallback.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="engine\Texture.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,7 +72,13 @@
     <ClInclude Include="engine\TextShader.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="GLDebugMessageCallback.h" />
+    <ClInclude Include="engine\GLDebugMessageCallback.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="engine\Texture.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">
