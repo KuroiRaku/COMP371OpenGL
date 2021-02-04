@@ -44,7 +44,7 @@ bool green = false;
 bool blue = false;
 bool colour = false;
 //glm::vec3 object_color = glm::vec3(0.5, 0.5, 0.5);
-
+void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeSize);
 // Is called whenever a key is pressed/released via GLFW
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod)
 {
@@ -281,7 +281,7 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	glDepthMask(GL_TRUE);
-	
+
 
 	// Set the required callback functions
 	glfwSetKeyCallback(window, key_callback);
@@ -333,7 +333,7 @@ int main()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(int), &indices.front(), GL_STATIC_DRAW);
 
 	// Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
-	glBindVertexArray(0); 
+	glBindVertexArray(0);
 
 	//glm is a math funtion
 	glm::mat4 modl_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 0, 0));
@@ -379,7 +379,7 @@ int main()
 		modl_matrix = translator * model;
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(modl_matrix));
 
-
+		DrawCube(WIDTH / 2, HEIGHT / 2, -500, 200);
 		//glUniform3fv(object_color_id, 1, glm::value_ptr(object_color));
 		glUniform1i(flag_id, flag);
 		glUniform1i(lights_id, lights);
@@ -409,4 +409,58 @@ int main()
 	// Terminate GLFW, clearing any resources allocated by GLFW.
 	glfwTerminate();
 	return 0;
+}
+
+void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength)
+{
+	GLfloat halfSide = edgeLength * 0.5f;
+
+	GLfloat vertices[] =
+	{
+		// front face
+		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left
+		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // top right
+		centerX + halfSide, centerY - halfSide, centerZ + halfSide, // bottom right
+		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // bottom left
+
+		// back face
+		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top left
+		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // top right
+		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
+		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // bottom left
+
+		// left face
+		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left
+		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top right
+		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
+		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // bottom left
+
+		// right face
+		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // top left
+		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // top right
+		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
+		centerX + halfSide, centerY - halfSide, centerZ + halfSide, // bottom left
+
+		// top face
+		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left
+		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top right
+		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // bottom right
+		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // bottom left
+
+		// top face
+		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // top left
+		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // top right
+		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
+		centerX + halfSide, centerY - halfSide, centerZ + halfSide  // bottom left
+	};
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glColor3f( colour[0], colour[1], colour[2] );
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+
+	glDrawArrays(GL_QUADS, 0, 24);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+
 }
