@@ -6,8 +6,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "TextShader.h"
-
 // Some STL Headers
 #include <vector>
 #include <string>
@@ -25,9 +23,7 @@
 // Catch Any Exceptions That We Throw.
 #include <stdexcept>
 
-// MSVC Will Spit Out All Sorts Of Useless Warnings If
-// You Create Vectors Of Strings, This Pragma Gets Rid Of Them.
-#pragma warning(disable: 4786)
+#include "Shader.h"
 
 
 // This Holds All Of The Information Related To Any
@@ -41,18 +37,14 @@ struct FontData {
 
 class OpenGLFont {
 
-    TextShader* shader;
-
 public:
-    OpenGLFont(const char* vertexPath, const char* fragmentPath, int screenHeight, int screenWidth, const char* fontPath, unsigned int fontSize);
-
-    ~OpenGLFont();
+    OpenGLFont(int screenHeight, int screenWidth, const char* fontPath, unsigned int fontSize, Shader& shadder);
 
     // Free All The Resources Associated With The Font.
     void Clean();
 
     // Print Text!
-    void PrintText(std::string text, float x, float y, float scale, glm::vec3 color);
+    void PrintText(Shader& shader, std::string text, float x, float y, float scale, glm::vec3 color);
 
 private:
     // The Init Function Will Create A Font With

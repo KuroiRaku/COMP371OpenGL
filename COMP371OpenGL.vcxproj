@@ -147,25 +147,16 @@
   <ItemGroup>
     <ClCompile Include="dependencies\windows\glad\src\glad.c" />
     <ClCompile Include="engine\Font.cpp" />
-    <ClCompile Include="engine\IndexBuffer.cpp" />
-    <ClCompile Include="engine\Renderer.cpp" />
+    <ClCompile Include="engine\main.cpp" />
     <ClCompile Include="engine\Shader.cpp" />
-    <ClCompile Include="engine\Texture.cpp" />
-    <ClCompile Include="engine\VertexArray.cpp" />
-    <ClCompile Include="engine\VertexBuffer.cpp" />
-    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Font.h" />
     <ClInclude Include="engine\GLDebugMessageCallback.h" />
-    <ClInclude Include="engine\IndexBuffer.h" />
+    <ClInclude Include="engine\ObjLoaderIndex.h" />
     <ClInclude Include="engine\Renderer.h" />
     <ClInclude Include="engine\Shader.h" />
-    <ClInclude Include="engine\TextShader.h" />
-    <ClInclude Include="engine\Texture.h" />
-    <ClInclude Include="engine\VertexArray.h" />
-    <ClInclude Include="engine\VertexBuffer.h" />
-    <ClInclude Include="engine\VertexBufferLayout.h" />
+    <ClInclude Include="engine\Shaderloader.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>

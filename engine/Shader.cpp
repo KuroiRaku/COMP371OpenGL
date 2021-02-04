@@ -4,16 +4,13 @@
 #include <sstream>
 #include <iostream>
 
-#include "Renderer.h"
 #include "GLDebugMessageCallback.h"
 
-Shader::Shader(const std::string& filepath)
-    :m_FilePath(filepath), m_RendererID(0)
+Shader::Shader(const std::string& vertexFilepath, const std::string& fragmentFilepath)
+    :m_RendererID(0)
 {
-    ShaderProgramSource source = ParseShader(filepath);
-    std::cout << "Vertex" << std::endl;
-    std::cout << source.VertexSource << std::endl;
-
+    ShaderProgramSource source = ParseShader(vertexFilepath, fragmentFilepath);
+    std::cout << source.FragmentSource << std::endl;
     m_RendererID = CreateShader(source.VertexSource, source.FragmentSource);
 
 }
@@ -23,43 +20,35 @@ Shader::~Shader()
     GLCall(glDeleteProgram(m_RendererID));
 }
 
-ShaderProgramSource Shader:: ParseShader(const std::string& filepath)
+ShaderProgramSource Shader:: ParseShader(const std::string& vertexFilepath, const std::string& fragmentFilepath)
 {
-    std::ifstream stream(filepath);
+    std::ifstream VertexShaderStream(vertexFilepath);
 
-    enum class ShaderType
-    {
-        NONE = -1, VERTEX = 0, FRAGMENT = 1
-    };
-
-    std::string line;
-    std::stringstream ss[2];
-    ShaderType type = ShaderType::NONE;
-
-    while (getline(stream, line))
-    {
-        if (line.find("#shader") != std::string::npos)
-        {
-
-            if (line.find("vertex") != std::string::npos)
-            {
-                //set mode to vertex
-                type = ShaderType::VERTEX;
-
-            }
-            else if (line.find("fragment") != std::string::npos)
-            {
-                type = ShaderType::FRAGMENT;
-            }
-
-        }
-        else
-        {
-            ss[(int)type] << line << '\n';
-        }
-
+    // Read the Vertex Shader code from the file
+    std::string VertexShaderCode;
+    if (VertexShaderStream.is_open()) {
+        std::stringstream sstr;
+        sstr << VertexShaderStream.rdbuf();
+        VertexShaderCode = sstr.str();
+        VertexShaderStream.close();
     }
-    return { ss[0].str(),ss[1].str() };
+    else {
+        std::cout << "Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n%s"+ vertexFilepath << std::endl;
+        std::cin.get();
+        
+    }
+
+    // Read the Fragment Shader code from the file
+    std::string FragmentShaderCode;
+    std::ifstream FragmentShaderStream(fragmentFilepath, std::ios::in);
+    if (FragmentShaderStream.is_open()) {
+        std::stringstream sstr;
+        sstr << FragmentShaderStream.rdbuf();
+        FragmentShaderCode = sstr.str();
+        FragmentShaderStream.close();
+    }
+
+    return { VertexShaderCode, FragmentShaderCode };
 }
 
  unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
@@ -86,6 +75,7 @@ ShaderProgramSource Shader:: ParseShader(const std::string& filepath)
 
 unsigned int Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
 {
+    std::cout << "Linking the program!" << std::endl;
     unsigned int program = glCreateProgram();
     unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
     unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);

@@ -12,22 +12,15 @@ using namespace std;
 std::map<GLchar, FontData> Characters;
 unsigned int VAO, VBO;
 
-OpenGLFont::OpenGLFont(const char* vertexPath, const char* fragmentPath, int screenWidth, int screenHeight, const char* fontPath, unsigned int size)
+OpenGLFont::OpenGLFont(int screenWidth, int screenHeight, const char* fontPath, unsigned int size, Shader& shader)
 {
     // compile and setup the shader
     // ----------------------------
-    shader = new TextShader("resources/shaders/text.vs", "resources/shaders/text.fs");
     glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(screenWidth), 0.0f, static_cast<float>(screenHeight));
-    shader->use();
-    glUniformMatrix4fv(glGetUniformLocation(shader->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(shader.GetUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
     Init(fontPath, size);
     ConfigureVAOAndVBO();
-}
-
-OpenGLFont::~OpenGLFont()
-{
-    delete shader;
 }
 
 void OpenGLFont::Init(const char* fontPath, unsigned int fontSize) {
@@ -85,10 +78,10 @@ void OpenGLFont::Init(const char* fontPath, unsigned int fontSize) {
             face->glyph->bitmap.buffer
         );
         // set texture options
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-        GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         // now store character for later use
         FontData character = {
             texture,
@@ -109,11 +102,11 @@ void OpenGLFont::Init(const char* fontPath, unsigned int fontSize) {
 
 // Much Like NeHe's glPrint Function, But Modified To Work
 // With FreeType Fonts.
-void OpenGLFont::PrintText(std::string text, float x, float y, float scale, glm::vec3 color) {
+void OpenGLFont::PrintText(Shader& shader, std::string text, float x, float y, float scale, glm::vec3 color) {
 
     // activate corresponding render state	
-    shader->use();
-    glUniform3f(glGetUniformLocation(shader->ID, "textColor"), color.x, color.y, color.z);
+    shader.Bind();
+    glUniform3f(shader.GetUniformLocation("textColor"), color.x, color.y, color.z);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
 

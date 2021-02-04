@@ -19,22 +19,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\IndexBuffer.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\Renderer.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="engine\Shader.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\VertexArray.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="engine\VertexBuffer.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="dependencies\windows\glad\src\glad.c">
@@ -43,40 +28,28 @@
     <ClCompile Include="engine\Font.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="engine\Texture.cpp">
-      <Filter>Engine</Filter>
+    <ClCompile Include="engine\main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="engine\IndexBuffer.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="engine\Renderer.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="engine\Shader.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="engine\VertexArray.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\VertexBuffer.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\VertexBufferLayout.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="engine\Font.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\TextShader.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="engine\GLDebugMessageCallback.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="engine\Texture.h">
+    <ClInclude Include="engine\ObjLoaderIndex.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Shaderloader.h">
       <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
