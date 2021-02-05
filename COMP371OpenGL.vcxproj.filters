@@ -33,9 +33,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="engine\Renderer.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="engine\Shader.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -45,7 +42,6 @@
     <ClInclude Include="engine\GLDebugMessageCallback.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h" />
     <ClInclude Include="engine\ObjLoaderIndex.h">
       <Filter>Engine</Filter>
     </ClInclude>
