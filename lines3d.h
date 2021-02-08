@@ -9,6 +9,7 @@ public:
 	Lines3d();
 	int getIndicesSize();
 	GLuint getVAO();
+	void drawLines();
 
 private:
 	GLuint vao;

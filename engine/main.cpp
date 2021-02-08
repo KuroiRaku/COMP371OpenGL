@@ -19,6 +19,7 @@
 #include "Font.h"
 #include "GLDebugMessageCallback.h"
 #include "../lines3d.h";
+#include "../grid.h";
 
 using namespace std;
 
@@ -338,9 +339,8 @@ int main()
 	// Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 	glBindVertexArray(0);
 	
-
 	Lines3d lines3dObject = Lines3d();
-
+	Grid grid = Grid();
 
 	//glm is a math funtion
 	glm::mat4 modl_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 0, 0));
@@ -406,8 +406,10 @@ int main()
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
 		// Draws line
-		glBindVertexArray(lines3dObject.getVAO());
-		glDrawArrays(GL_LINES, 0, lines3dObject.getIndicesSize());
+		lines3dObject.drawLines();
+
+		// Draws grid
+		grid.drawGrid();
 
 		// Unbinds VAO
 		glBindVertexArray(0);

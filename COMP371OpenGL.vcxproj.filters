@@ -34,6 +34,9 @@
     <ClCompile Include="lines3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Renderer.h">
@@ -56,6 +59,7 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="lines3d.h" />
+    <ClInclude Include="grid.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">

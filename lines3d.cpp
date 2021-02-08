@@ -43,6 +43,13 @@ GLuint Lines3d::getVAO()
 	return this->vao;
 }
 
-int Lines3d::getIndicesSize() {
+int Lines3d::getIndicesSize()
+{
 	return 6;
+}
+
+void Lines3d::drawLines()
+{
+	glBindVertexArray(this->vao);
+	glDrawArrays(GL_LINES, 0, 6);
 }
