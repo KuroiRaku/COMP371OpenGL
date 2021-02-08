@@ -18,6 +18,7 @@
 #include "Shader.h"
 #include "Font.h"
 #include "GLDebugMessageCallback.h"
+#include "../lines3d.h";
 
 using namespace std;
 
@@ -239,19 +240,6 @@ void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 }
 
 
-void DrawOriginLines()
-{
-	GLfloat vertices[] =
-	{
-		0.0f,0.0f,0.0f,
-		0.0f,1.0f,0.0f
-	};
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glDrawArrays(GL_LINES, 0, 6);
-	glDisableClientState(GL_VERTEX_ARRAY);
-};
-
 // The MAIN function, from here we start the application and run the game loop
 int main()
 {
@@ -350,44 +338,9 @@ int main()
 	// Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 	glBindVertexArray(0);
 	
-	/// Line Section
-	GLfloat vertices_lines[] =
-	{
-		0.0f,0.0f,0.0f,
-		0.0f,5.0f,0.0f,
-		0.0f,0.0f,0.0f,
-		5.0f,0.0f,0.0f,
-		0.0f,0.0f,0.0f,
-		0.0f,0.0f,5.0f,
-	};
 
-	int indicies_lines[] =
-	{
-		0,1,
-		2,3,
-		3,4
-	};
+	Lines3d lines3dObject = Lines3d();
 
-	GLuint VAOLines;
-	glGenVertexArrays(1, &VAOLines);
-	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-	glBindVertexArray(VAOLines);
-
-	GLuint vertices_VBO_lines;
-	glGenBuffers(1, &vertices_VBO_lines);
-	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO_lines);
-	glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(float), vertices_lines, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);  //3*sizeof(GLfloat) is the offset of 3 float numbers
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	GLuint EBO_lines;
-	glGenBuffers(1, &EBO_lines);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_lines);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2 * sizeof(int), indicies_lines, GL_STATIC_DRAW);
-	glBindVertexArray(0);
-	//TEST END
 
 	//glm is a math funtion
 	glm::mat4 modl_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 0, 0));
@@ -443,25 +396,21 @@ int main()
 		glUniform1i(blue_id, blue);
 		glUniform1i(colour_id, colour);
 
-		// Render
+		// --- Render ---
 		// Clear the colorbuffer
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		// Draws cube
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-		//glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
-		//unbind
+		// Draws line
+		glBindVertexArray(lines3dObject.getVAO());
+		glDrawArrays(GL_LINES, 0, lines3dObject.getIndicesSize());
+
+		// Unbinds VAO
 		glBindVertexArray(0);
-
-		/// DO LINE TEST HERE
-		glBindVertexArray(VAOLines);
-		glDrawArrays(GL_LINES, 0, 6);
-		glBindVertexArray(0);//unbinds it
-
-
-		//DrawOriginLines();
 
 		// Swap the screen buffers
 		glfwSwapBuffers(window);

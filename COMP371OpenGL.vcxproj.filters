@@ -31,6 +31,9 @@
     <ClCompile Include="engine\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lines3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Renderer.h">
@@ -52,6 +55,7 @@
     <ClInclude Include="engine\Shaderloader.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="lines3d.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">

@@ -149,6 +149,7 @@
     <ClCompile Include="engine\Font.cpp" />
     <ClCompile Include="engine\main.cpp" />
     <ClCompile Include="engine\Shader.cpp" />
+    <ClCompile Include="lines3d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Font.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="engine\Renderer.h" />
     <ClInclude Include="engine\Shader.h" />
     <ClInclude Include="engine\Shaderloader.h" />
+    <ClInclude Include="lines3d.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
