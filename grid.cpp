@@ -5,15 +5,15 @@ Grid::Grid() {
     std::vector<glm::vec3> vertices;
     std::vector<glm::uvec4> indices;
     int slices = 128;
-    float grid_size = 50.0f;
-    float offset = grid_size / 2.0; // centers the grid
+    float grid_unit_size = 0.4f;
+    float offset = grid_unit_size  * slices / 2.0; // centers the grid
 
 
     for (int j = 0; j <= slices; ++j) {
         for (int i = 0; i <= slices; ++i) {
-            float x = ((float)i * grid_size/ (float)slices) - offset;
+            float x = ((float)i * grid_unit_size) - offset;
             float y = 0;
-            float z = ((float)j * grid_size/ (float)slices) - offset;
+            float z = ((float)j * grid_unit_size) - offset;
             vertices.push_back(glm::vec3(x, y, z));
         }
     }

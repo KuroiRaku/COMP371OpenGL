@@ -342,7 +342,7 @@ int main()
 	glBindVertexArray(0);
 	
 	Lines3d lines3dObject = Lines3d();
-	//Grid grid = Grid();
+	Grid grid = Grid();
 
 	//glm is a math funtion
 	glm::mat4 modl_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 0, 0));
@@ -372,15 +372,14 @@ int main()
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 
+	// 3D Lines Shader camera projection setup
 	lines3dShader.Bind();
-	// 3d lines shader
 	GLuint vm_loc_lines_3d = lines3dShader.GetUniformLocation("vm");
 	GLuint pm_loc_lines_3d = lines3dShader.GetUniformLocation("pm");
 	GLuint mm_loc_lines_3d = lines3dShader.GetUniformLocation("mm");
 	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(modl_matrix));
-	//glUniform3fv(lines3dShader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 
 	// Game loop
 	while (!glfwWindowShouldClose(window))
@@ -419,13 +418,14 @@ int main()
 
 		// Draws line
 		lines3dShader.Bind();
+		glLineWidth(1.0f);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
-
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(modl_matrix));
 		lines3dObject.drawLines();
 
 		// Draws grid
-		//grid.drawGrid();
+		glLineWidth(0.5f);
+		grid.drawGrid();
 
 		// Unbinds VAO
 		glBindVertexArray(0);
