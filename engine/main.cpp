@@ -238,6 +238,20 @@ void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 	}
 }
 
+
+void DrawOriginLines()
+{
+	GLfloat vertices[] =
+	{
+		0.0f,0.0f,0.0f,
+		0.0f,1.0f,0.0f
+	};
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	glDrawArrays(GL_LINES, 0, 6);
+	glDisableClientState(GL_VERTEX_ARRAY);
+};
+
 // The MAIN function, from here we start the application and run the game loop
 int main()
 {
@@ -298,6 +312,7 @@ int main()
 	/*Shader textShader("resources/shaders/text.vs", "resources/shaders/text.fs");
 	textShader.Bind();*/
 
+	
 	std::vector<int> indices;
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
@@ -334,6 +349,45 @@ int main()
 
 	// Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 	glBindVertexArray(0);
+	
+	/// Line Section
+	GLfloat vertices_lines[] =
+	{
+		0.0f,0.0f,0.0f,
+		0.0f,5.0f,0.0f,
+		0.0f,0.0f,0.0f,
+		5.0f,0.0f,0.0f,
+		0.0f,0.0f,0.0f,
+		0.0f,0.0f,5.0f,
+	};
+
+	int indicies_lines[] =
+	{
+		0,1,
+		2,3,
+		3,4
+	};
+
+	GLuint VAOLines;
+	glGenVertexArrays(1, &VAOLines);
+	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
+	glBindVertexArray(VAOLines);
+
+	GLuint vertices_VBO_lines;
+	glGenBuffers(1, &vertices_VBO_lines);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO_lines);
+	glBufferData(GL_ARRAY_BUFFER, 18 * sizeof(float), vertices_lines, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);  //3*sizeof(GLfloat) is the offset of 3 float numbers
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	GLuint EBO_lines;
+	glGenBuffers(1, &EBO_lines);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_lines);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2 * sizeof(int), indicies_lines, GL_STATIC_DRAW);
+	glBindVertexArray(0);
+	//TEST END
 
 	//glm is a math funtion
 	glm::mat4 modl_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 0, 0));
@@ -364,7 +418,6 @@ int main()
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 
 	// Game loop
-
 	while (!glfwWindowShouldClose(window))
 	{
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
@@ -401,6 +454,14 @@ int main()
 
 		//unbind
 		glBindVertexArray(0);
+
+		/// DO LINE TEST HERE
+		glBindVertexArray(VAOLines);
+		glDrawArrays(GL_LINES, 0, 6);
+		glBindVertexArray(0);//unbinds it
+
+
+		//DrawOriginLines();
 
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
@@ -464,3 +525,4 @@ void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLen
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 }
+
