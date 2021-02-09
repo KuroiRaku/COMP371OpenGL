@@ -31,6 +31,12 @@
     <ClCompile Include="engine\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="lines3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Shader.h">
@@ -48,6 +54,8 @@
     <ClInclude Include="engine\Shaderloader.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="lines3d.h" />
+    <ClInclude Include="grid.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">
@@ -71,5 +79,13 @@
     <None Include="resources\shaders\text.vs">
       <Filter>Resources\Shader</Filter>
     </None>
+    <None Include="resources\shaders\lines3d_vertex.shader">
+      <Filter>Resources\Shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\shaders\lines3d_fragment.shader">
+      <Filter>Resources\Shader</Filter>
+    </Text>
   </ItemGroup>
 </Project>

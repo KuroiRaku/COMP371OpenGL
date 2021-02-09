@@ -18,6 +18,8 @@
 #include "Shader.h"
 #include "Font.h"
 #include "GLDebugMessageCallback.h"
+#include "../lines3d.h";
+#include "../grid.h";
 
 using namespace std;
 
@@ -238,6 +240,7 @@ void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 	}
 }
 
+
 // The MAIN function, from here we start the application and run the game loop
 int main()
 {
@@ -294,10 +297,13 @@ int main()
 	Shader shader("resources/shaders/vertex.shader", "resources/shaders/fragment.shader");
 	shader.Bind();
 
+	Shader lines3dShader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
+
 	//Font Shader
 	/*Shader textShader("resources/shaders/text.vs", "resources/shaders/text.fs");
 	textShader.Bind();*/
 
+	
 	std::vector<int> indices;
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
@@ -334,6 +340,9 @@ int main()
 
 	// Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 	glBindVertexArray(0);
+	
+	Lines3d lines3dObject = Lines3d();
+	Grid grid = Grid();
 
 	//glm is a math funtion
 	glm::mat4 modl_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 0, 0));
@@ -363,19 +372,27 @@ int main()
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 
-	// Game loop
+	// 3D Lines Shader camera projection setup
+	lines3dShader.Bind();
+	GLuint vm_loc_lines_3d = lines3dShader.GetUniformLocation("vm");
+	GLuint pm_loc_lines_3d = lines3dShader.GetUniformLocation("pm");
+	GLuint mm_loc_lines_3d = lines3dShader.GetUniformLocation("mm");
+	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
+	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
+	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(modl_matrix));
 
+	// Game loop
 	while (!glfwWindowShouldClose(window))
 	{
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwPollEvents();
 
+		shader.Bind();
+
 		view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 
-		//glm::mat4 rotator = glm::rotate(glm::mat4(1.0f), i / 200.f, glm::vec3(1, 0, 0));
 		glm::mat4 translator = glm::translate(glm::mat4(1.0f), modl_move);
-		//glm::mat4 scalor = glm::scale(glm::mat4(1.0f), glm::vec3(1, 1, 1));
 		modl_matrix = translator * model;
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(modl_matrix));
 
@@ -390,16 +407,27 @@ int main()
 		glUniform1i(blue_id, blue);
 		glUniform1i(colour_id, colour);
 
-		// Render
+		// --- Render ---
 		// Clear the colorbuffer
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		// Draws cube
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-		//glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
-		//unbind
+		// Draws line
+		lines3dShader.Bind();
+		glLineWidth(1.0f);
+		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(modl_matrix));
+		lines3dObject.drawLines();
+
+		// Draws grid
+		glLineWidth(0.5f);
+		grid.drawGrid();
+
+		// Unbinds VAO
 		glBindVertexArray(0);
 
 		// Swap the screen buffers
@@ -464,3 +492,4 @@ void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLen
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 }
+

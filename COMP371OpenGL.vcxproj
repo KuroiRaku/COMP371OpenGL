@@ -149,6 +149,8 @@
     <ClCompile Include="engine\Font.cpp" />
     <ClCompile Include="engine\main.cpp" />
     <ClCompile Include="engine\Shader.cpp" />
+    <ClCompile Include="grid.cpp" />
+    <ClCompile Include="lines3d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Font.h" />
@@ -160,11 +162,15 @@
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader" />
     <None Include="resources\shaders\fragment.shader" />
+    <None Include="resources\shaders\lines3d_vertex.shader" />
     <None Include="resources\shaders\shadow_fragment.shader" />
     <None Include="resources\shaders\shadow_vertex.shader" />
     <None Include="resources\shaders\text.fs" />
     <None Include="resources\shaders\text.vs" />
     <None Include="resources\shaders\vertex.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\shaders\lines3d_fragment.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
