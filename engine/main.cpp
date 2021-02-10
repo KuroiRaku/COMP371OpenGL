@@ -20,6 +20,7 @@
 #include "GLDebugMessageCallback.h"
 #include "../lines3d.h";
 #include "../grid.h";
+#include "../AlessandroModel.h";
 
 using namespace std;
 
@@ -343,6 +344,7 @@ int main()
 	
 	Lines3d lines3dObject = Lines3d();
 	Grid grid = Grid();
+	AlessandroModel alessandroModel = AlessandroModel();
 
 	//glm is a math funtion
 	glm::mat4 modl_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 0, 0));
@@ -396,7 +398,7 @@ int main()
 		modl_matrix = translator * model;
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(modl_matrix));
 
-		DrawCube(WIDTH / 2, HEIGHT / 2, -500, 200);
+		//DrawCube(WIDTH / 2, HEIGHT / 2, -500, 200);
 		//glUniform3fv(object_color_id, 1, glm::value_ptr(object_color));
 		glUniform1i(flag_id, flag);
 		glUniform1i(lights_id, lights);
@@ -413,8 +415,11 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Draws cube
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+		//glBindVertexArray(VAO);
+		//glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+
+		// Draws Models
+		alessandroModel.drawModel();
 
 		// Draws line
 		lines3dShader.Bind();
@@ -425,7 +430,7 @@ int main()
 
 		// Draws grid
 		glLineWidth(0.5f);
-		grid.drawGrid();
+		//grid.drawGrid();
 
 		// Unbinds VAO
 		glBindVertexArray(0);

@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AlessandroModel.cpp" />
     <ClCompile Include="dependencies\windows\glad\src\glad.c" />
     <ClCompile Include="engine\Font.cpp" />
     <ClCompile Include="engine\main.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="lines3d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AlessandroModel.h" />
     <ClInclude Include="engine\Font.h" />
     <ClInclude Include="engine\GLDebugMessageCallback.h" />
     <ClInclude Include="engine\ObjLoaderIndex.h" />
