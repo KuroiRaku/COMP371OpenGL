@@ -415,8 +415,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Draws cube
-		//glBindVertexArray(VAO);
-		//glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
 		// Draws Models
 		alessandroModel.drawModel();
@@ -430,7 +430,7 @@ int main()
 
 		// Draws grid
 		glLineWidth(0.5f);
-		//grid.drawGrid();
+		grid.drawGrid();
 
 		// Unbinds VAO
 		glBindVertexArray(0);

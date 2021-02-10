@@ -20,5 +20,6 @@ private:
 	GLuint vao_A;
 	GLuint vao_4;
 	GLuint vao_1;
+	GLfloat lineSize;
 };
 

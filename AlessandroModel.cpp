@@ -3,46 +3,127 @@
 
 AlessandroModel::AlessandroModel() {
 	GLfloat xOrigin = 0.0f;
-	GLfloat yOrigin = 0.0f;
-	GLfloat zOrigin = 1.0f;
+	GLfloat yOrigin = 2.0f;
+	GLfloat zOrigin = -5.0f;
 
-	//setLetterO(xOrigin + 7.0f, yOrigin, zOrigin);
-	//setNumber1(xOrigin - 2.0f, yOrigin, zOrigin);
-	//setNumber4(xOrigin, yOrigin, zOrigin);
-	setNumber4(xOrigin, yOrigin, zOrigin);
+	lineSize = 0.4f * 2;
+
+	GLfloat distance = 2.0f;
+
+	setLetterA(xOrigin - (3 * distance), yOrigin, zOrigin);
+	setLetterO(xOrigin - (1 * distance), yOrigin, zOrigin);
+	setNumber1(xOrigin + (1 * distance), yOrigin, zOrigin);
+	setNumber4(xOrigin + (3 * distance), yOrigin, zOrigin);
+	
 }
 
 void AlessandroModel::drawModel()
 {
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // this will show the wireframe
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // this will show the wireframe
 
 	//O Model
-	//glBindVertexArray(this->vao_O);
-	//glDrawElements(GL_TRIANGLES, 96, GL_UNSIGNED_INT, NULL);
+	glBindVertexArray(this->vao_O);
+	glDrawElements(GL_TRIANGLES, 96, GL_UNSIGNED_INT, NULL);
 
 	//1 Model
-	//glBindVertexArray(this->vao_1);
-	//glDrawElements(GL_TRIANGLES, 60, GL_UNSIGNED_INT, NULL);
+	glBindVertexArray(this->vao_1);
+	glDrawElements(GL_TRIANGLES, 60, GL_UNSIGNED_INT, NULL);
 
 	//4 Model
-	//glBindVertexArray(this->vao_4);
-	//glDrawElements(GL_TRIANGLES, 96, GL_UNSIGNED_INT, NULL);
+	glBindVertexArray(this->vao_4);
+	glDrawElements(GL_TRIANGLES, 96, GL_UNSIGNED_INT, NULL);
 
 	//A Model
+	glBindVertexArray(this->vao_A);
+	glDrawElements(GL_TRIANGLES, 144, GL_UNSIGNED_INT, NULL);
 }
 
 void AlessandroModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 {
-	GLfloat lineSize = 0.4f * 7; // 7 times the size of 1 grid unit
 	GLfloat vertices[] =
 	{
-
-	}
+		// FRONT POSITION
+		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (left)
+		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (right)
+		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right 
+		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left
+		-1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left (left)
+		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left (right)
+		0.5 * lineSize + xOrigin, yOrigin, zOrigin, //hole [bottom right]
+		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //hole [top right]
+		-0.5 * lineSize + xOrigin, yOrigin, zOrigin, //hole [bottom left]
+		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //hole [top left]
+		-0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //U LEFT
+		0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //U RIGHT
+		//BACK POSITION
+		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (left)
+		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (right)
+		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right 
+		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left
+		-1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (left)
+		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (right)
+		0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //hole [bottom right]
+		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //hole [top right]
+		-0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //hole [bottom left]
+		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //hole [top left]
+		-0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //U LEFT
+		0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //U RIGHT
+	};
 
 	int indicies[] =
 	{
-
-	}
+		0,1,11,
+		1,6,11,
+		1,2,6,
+		6,2,7,
+		7,2,3,
+		7,3,9,
+		9,3,8,
+		8,3,4,
+		8,4,10,
+		10,4,5,
+		10,11,8, //middle
+		11,6,8,
+		// back indicies
+		20, 18, 23, 
+		20, 23, 22, 
+		17, 16, 22, 
+		22, 16, 20, 
+		16, 15, 20, 
+		20, 15, 21, 
+		21, 15, 19, 
+		15, 14, 19, 
+		19, 14, 18, 
+		18, 14, 13, 
+		23, 18, 13, 
+		23, 13, 12,
+		// Sides
+		1,13,2,
+		13,14,2,
+		2,14,3,
+		14,15,3,
+		3,15,16,
+		3,16,4,
+		4,16,5,
+		16,17,5,
+		5,17,22,
+		5,22,10,
+		11,10,22,
+		11,22,23,
+		0,11,12,
+		11,23,12,
+		0,12,1,
+		1,12,13,
+		//middle sides
+		8,6,18,
+		18,20,8,
+		6,7,18,
+		18,7,19,
+		7,9,21,
+		7,21,19,
+		8,20,21,
+		8,21,9
+	};// 48 () = 144
 
 	glGenVertexArrays(1, &this->vao_A);
 	glBindVertexArray(this->vao_A);
@@ -50,14 +131,14 @@ void AlessandroModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 	GLuint vertices_VBO;
 	glGenBuffers(1, &vertices_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO);
-	glBufferData(GL_ARRAY_BUFFER, 60 * sizeof(float), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 72 * sizeof(float), vertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
 
 	GLuint EBO;
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 96 * sizeof(int), indicies, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 144 * sizeof(int), indicies, GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -66,8 +147,6 @@ void AlessandroModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 
 void AlessandroModel::setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 {
-	GLfloat lineSize = 0.4f * 7; // 7 times the size of 1 grid unit
-
 	GLfloat vertices[] =
 	{
 		// FRONT POSITIONS
@@ -155,8 +234,6 @@ void AlessandroModel::setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 
 void AlessandroModel::setNumber1(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 {
-	GLfloat lineSize = 0.4f * 7; // 7 times the size of 1 grid unit
-
 	GLfloat vertices[] =
 	{
 		//FRONT POSITION
@@ -224,9 +301,6 @@ void AlessandroModel::setNumber1(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 
 void AlessandroModel::setLetterO(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 {
-	GLfloat lineSize = 0.4f * 7; // 7 times the size of 1 grid unit
-
-	// O model
 	GLfloat vertices_lines[] =
 	{
 		// FRONT POSITION	
