@@ -21,6 +21,7 @@
 #include "../lines3d.h";
 #include "../grid.h";
 #include "../AlessandroModel.h";
+#include "../LeCherngModel.h";
 
 using namespace std;
 
@@ -46,8 +47,14 @@ bool red = false;
 bool green = false;
 bool blue = false;
 bool colour = false;
+
+//0 for points, 1 for lines, 2 for triangle
+int drawingMode = 0;
+
 //glm::vec3 object_color = glm::vec3(0.5, 0.5, 0.5);
 void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeSize);
+
+#pragma region KeyCallback
 // Is called whenever a key is pressed/released via GLFW
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod)
 {
@@ -131,11 +138,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	//toggle the red channel on/off
 	if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-		/*if (object_color.x != 0.5) {
-			object_color.x = 0.5;
-		}
-		else
-			object_color.x = 0;*/
 		if (red != true)
 			red = true;
 		else
@@ -144,11 +146,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	//toggle the green channel on/off
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-		/*if (object_color.y != 0.5) {
-			object_color.y = 0.5;
-		}
-		else
-			object_color.y = 0;*/
 		if (green != true)
 			green = true;
 		else
@@ -157,11 +154,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	//toggle the blue channel on/off
 	if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
-		/*if (object_color.z != 0.5) {
-			object_color.z = 0.5;
-		}
-		else
-			object_color.z = 0;*/
 		if (blue != true)
 			blue = true;
 		else
@@ -170,10 +162,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	//turn on all channels
 	if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
-		/*if (object_color != glm::vec3(0.5, 0.5, 0.5))
-			object_color = glm::vec3(0.5, 0.5, 0.5);
-		else
-			object_color = glm::vec3(0, 0, 0);*/
 		if (colour != true) {
 			colour = true;
 
@@ -241,6 +229,7 @@ void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 	}
 }
 
+#pragma endregion KeyCallback
 
 // The MAIN function, from here we start the application and run the game loop
 int main()
@@ -296,7 +285,9 @@ int main()
 
 	// Build and compile our shader program
 	Shader shader("resources/shaders/vertex.shader", "resources/shaders/fragment.shader");
-	shader.Bind();
+
+	Shader model_L_shader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
+	
 
 	Shader lines3dShader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
 
@@ -345,12 +336,34 @@ int main()
 	Lines3d lines3dObject = Lines3d();
 	Grid grid = Grid();
 	AlessandroModel alessandroModel = AlessandroModel();
+	LeCherngModel leCherngModel = LeCherngModel();
 
+	shader.Bind();
 	//glm is a math funtion
 	glm::mat4 modl_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 0, 0));
 	glm::mat4 view_matrix = glm::lookAt(cam_pos, cam_dir, cam_up);
 	glm::mat4 proj_matrix = glm::perspective(glm::radians(45.f), 1.f, 0.1f, 200.f); //perspective view. Third parameter should be > 0, or else errors
 	glEnable(GL_DEPTH_TEST); //remove surfaces beyond the cameras render distance
+
+	//other model matrix
+	glm::mat4 line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+
+	//Alessandro
+	glm::mat4 modl_A_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+	
+	//Le Cherng
+	glm::mat4 modl_L_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+
+	//Dan
+	glm::mat4 modl_D_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+
+	//Dre
+	glm::mat4 modl_Dre_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+
+	//LaginHo
+	glm::mat4 modl_LG_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+
+
 
 	GLuint vm_loc = shader.GetUniformLocation("vm");
 	GLuint pm_loc = shader.GetUniformLocation("pm");
@@ -373,6 +386,14 @@ int main()
 	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(glm::vec3(0.0, 20.0, 5.0)));
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
+
+	model_L_shader.Bind();
+	GLuint vm_loc_L = model_L_shader.GetUniformLocation("vm");
+	GLuint pm_loc_L = model_L_shader.GetUniformLocation("pm");
+	GLuint mm_loc_L = model_L_shader.GetUniformLocation("mm");
+	glUniformMatrix4fv(vm_loc_L, 1, GL_FALSE, glm::value_ptr(view_matrix));
+	glUniformMatrix4fv(pm_loc_L, 1, GL_FALSE, glm::value_ptr(proj_matrix));
+	glUniformMatrix4fv(mm_loc_L, 1, GL_FALSE, glm::value_ptr(modl_L_matrix));
 
 	// 3D Lines Shader camera projection setup
 	lines3dShader.Bind();
@@ -419,13 +440,19 @@ int main()
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
 		// Draws Models
+
 		alessandroModel.drawModel();
+
+		model_L_shader.Bind();
+		glUniformMatrix4fv(vm_loc_L, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(mm_loc_L, 1, 0, glm::value_ptr(modl_L_matrix));
+		leCherngModel.drawModel();
 
 		// Draws line
 		lines3dShader.Bind();
 		glLineWidth(1.0f);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(modl_matrix));
+		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
 		lines3dObject.drawLines();
 
 		// Draws grid

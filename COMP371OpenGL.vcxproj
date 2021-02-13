@@ -151,6 +151,7 @@
     <ClCompile Include="engine\main.cpp" />
     <ClCompile Include="engine\Shader.cpp" />
     <ClCompile Include="grid.cpp" />
+    <ClCompile Include="LeCherngModel.cpp" />
     <ClCompile Include="lines3d.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +161,8 @@
     <ClInclude Include="engine\ObjLoaderIndex.h" />
     <ClInclude Include="engine\Shader.h" />
     <ClInclude Include="engine\Shaderloader.h" />
+    <ClInclude Include="LeCherngModel.h" />
+    <ClInclude Include="lines3d.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader" />

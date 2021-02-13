@@ -40,6 +40,9 @@
     <ClCompile Include="AlessandroModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LeCherngModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Shader.h">
@@ -57,7 +60,15 @@
     <ClInclude Include="engine\Shaderloader.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="AlessandroModel.h" />
+    <ClInclude Include="LeCherngModel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lines3d.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AlessandroModel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">
