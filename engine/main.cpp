@@ -25,6 +25,21 @@
 #include "../Laginho.h"
 #include "../DannModel.h"
 
+glm::mat4 line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+/*
+model=modl_A;
+model= glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
+model=modl_L;
+model_L= glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
+model=modl_D;
+modl_D= glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
+model=modl_La;
+model= glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
+model=line_matrix;
+model= glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
+Move Grid?????
+*/
+
 using namespace std;
 
 // Window dimensions
@@ -37,7 +52,7 @@ glm::vec3 temp_cam_dir = glm::vec3(0, 0, 1); //use this for the cross product or
 glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera is directing towards
 
 //model settings
-glm::mat4 model= glm::mat4(1.0f); //active model
+glm::mat4 model = glm::mat4(1.0f); //active model
 glm::vec3 modl_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 //Alessandro
@@ -67,7 +82,7 @@ bool colour = false;
 int renderingMode = 2;
 //0 for alessandro, 1 for laginho, 2 for Dann, 3 for Le Cherng
 int activeModel = 0;
-
+int initModel = activeModel;
 //glm::vec3 object_color = glm::vec3(0.5, 0.5, 0.5);
 void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeSize);
 
@@ -82,21 +97,33 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		glfwSetWindowShouldClose(window, GL_TRUE);
 
 	//WASD buttons to move the camera
-	if (key == GLFW_KEY_W) //W moves forward
-		cam_pos += cam_dir;
-
-	if (key == GLFW_KEY_S) //S moves backwards
-		cam_pos -= cam_dir;
-
-	if (key == GLFW_KEY_D) //D moves right
-		cam_pos -= glm::cross(cam_up, cam_dir);
-
-	if (key == GLFW_KEY_A) //A moves left
-		cam_pos += glm::cross(cam_up, cam_dir);
+	
 
 	//Left and Right key rotate camera
-	if (key == GLFW_KEY_RIGHT) //left arrow rotates the camera left about the up vector
-		cam_dir = glm::mat3(glm::rotate(glm::radians(0.8f), -cam_up)) * cam_dir;
+	if (key == GLFW_KEY_RIGHT) { //left arrow rotates the camera left about the up vector
+		initModel = activeModel;
+		activeModel = 4;
+	   model = glm::rotate(model, glm::radians(5.f), glm::vec3(0, -1, 0));
+	}
+	if (key == GLFW_KEY_DOWN) { //left arrow rotates the camera left about the up vector
+		initModel = activeModel;
+		activeModel = 4;
+		model = glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
+	}
+	if (key == GLFW_KEY_UP) { //left arrow rotates the camera left about the up vector
+		initModel = activeModel;
+		activeModel = 4;
+		model = glm::rotate(model, glm::radians(5.f), glm::vec3(-1, 0, 0));
+	}
+	if (key == GLFW_KEY_LEFT) { //left arrow rotates the camera left about the up vector
+		initModel = activeModel;
+		activeModel = 4;
+		model = glm::rotate(model, glm::radians(5.f), glm::vec3(0, 1, 0));
+	}
+
+	
+
+	
 
 	if (key == GLFW_KEY_LEFT) //right arrow rotates the camera right about the up vector
 		cam_dir = glm::mat3(glm::rotate(glm::radians(0.8f), cam_up)) * cam_dir;
@@ -118,19 +145,19 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 
 	//IJKL buttons to move the model
-	if (key == GLFW_KEY_I) { //I moves the object along the +Y axis
+	if (key == GLFW_KEY_W) { //I moves the object along the +Y axis
 		modl_move.y += 1;
 	}
 
-	if (key == GLFW_KEY_K) { //K moves the object along the -Y
+	if (key == GLFW_KEY_S) { //K moves the object along the -Y
 		modl_move.y -= 1;
 	}
 
-	if (key == GLFW_KEY_J) { //J moves the object along the +X axis
+	if (key == GLFW_KEY_A) { //J moves the object along the +X axis
 		modl_move.x -= 1;
 	}
 
-	if (key == GLFW_KEY_L) { //L moves the object along the -X axis
+	if (key == GLFW_KEY_D) { //L moves the object along the -X axis
 		modl_move.x += 1;
 	}
 
@@ -161,14 +188,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	//toggle the red channel on/off
 	if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-		if (red != true){
+		if (red != true) {
 			red = true;
 		}
-		else 
+		else
 		{
 			red = false;
 		}
 		activeModel = 0;
+		initModel = activeModel;
 		model = modl_A;
 		modl_move = modl_A_move;
 	}
@@ -179,11 +207,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			green = true;
 		}
-		else 
+		else
 		{
 			green = false;
 		}
 		activeModel = 1;
+		initModel = activeModel;
 		model = modl_La;
 		modl_move = modl_La_move;
 	}
@@ -196,6 +225,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			blue = false;
 
 		activeModel = 2;
+		initModel = activeModel;
 		model = modl_D;
 		modl_move = modl_D_move;
 	}
@@ -214,6 +244,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			colour = false;
 
 		activeModel = 3;
+		initModel = activeModel;
 		model = modl_L;
 		modl_move = modl_L_move;
 	}
@@ -247,25 +278,28 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			greyscale = false;
 	}
 
-	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
-		if (renderingMode == 2) {
+	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
 			renderingMode = 0;
-		}
-		else
-		{
-			renderingMode++;
-		}
-
+		cout << "Rendering Mode: " << renderingMode << endl;
+	}
+	if (key == GLFW_KEY_L && action == GLFW_PRESS) {
+		renderingMode = 1;
+		cout << "Rendering Mode: " << renderingMode << endl;
+	}
+	if (key == GLFW_KEY_T && action == GLFW_PRESS) {
+		renderingMode = 2;
 		cout << "Rendering Mode: " << renderingMode << endl;
 	}
 }
 
 double last_y_pos = 0;
+double last_x_pos = 0;
 
 //LEFT mouse button + drag up and down, moves the camera further and closer to the object
 void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 	bool lbutton_pressed = true;
-
+	bool r_button_pressed = true;
+	bool m_button_pressed = true;
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 		lbutton_pressed = true;
 	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
@@ -280,6 +314,46 @@ void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 
 		if (last_y_pos - ypos < 0) { //mouse going down, camera moves forward
 			cam_pos += cam_dir;
+			last_y_pos = ypos;
+		}
+	}
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+		r_button_pressed = true;
+	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
+		r_button_pressed = false;
+
+	if (r_button_pressed) {
+		if (last_x_pos - xpos > 0) { //mouse going up, camera moves backward
+			cam_dir = glm::mat3(glm::rotate(glm::radians(0.5f), cam_up)) * cam_dir;
+			last_x_pos = xpos;
+		}
+
+		if (last_x_pos - xpos < 0) { //mouse going down, camera moves forward
+			cam_dir = glm::mat3(glm::rotate(glm::radians(0.5f), -cam_up)) * cam_dir;
+			last_x_pos = xpos;
+		}
+	}
+
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS)
+		m_button_pressed = true;
+	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_RELEASE)
+		m_button_pressed = false;
+
+	if (m_button_pressed) {
+		glm::mat4 rotation_matrix(1);
+		glm::vec3 rotate_around_x = glm::cross(cam_up, cam_dir); //cross product
+		if (last_y_pos - ypos > 0) { //mouse going up, camera moves backward	
+				rotation_matrix = glm::rotate(rotation_matrix, -(0.01f), rotate_around_x);
+				cam_dir = glm::mat3(rotation_matrix) * cam_dir;
+				cam_up = glm::mat3(rotation_matrix) * cam_up;
+			last_y_pos = ypos;
+		}
+
+		if (last_y_pos - ypos < 0) { //mouse going down, camera moves forward
+			glm::mat4 rotation_matrix(1);
+			rotation_matrix = glm::rotate(rotation_matrix, (0.01f), rotate_around_x);
+			cam_dir = glm::mat3(rotation_matrix) * cam_dir;
+			cam_up = glm::mat3(rotation_matrix) * cam_up;
 			last_y_pos = ypos;
 		}
 	}
@@ -348,7 +422,7 @@ int main()
 
 	//laginho
 	Shader model_La_shader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
-	
+
 	//dan
 	Shader model_D_shader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
 
@@ -357,7 +431,7 @@ int main()
 
 	//lines
 	Shader lines3dShader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
-	
+
 	std::vector<int> indices;
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
@@ -394,7 +468,7 @@ int main()
 
 	// Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 	glBindVertexArray(0);
-	
+
 	//model loading sort of
 	Lines3d lines3dObject = Lines3d();
 	Grid grid = Grid();
@@ -408,9 +482,9 @@ int main()
 	glm::mat4 modl_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 0, 0));
 	glm::mat4 view_matrix = glm::lookAt(cam_pos, cam_dir, cam_up);
 	glm::mat4 proj_matrix = glm::perspective(glm::radians(45.f), 1.f, 0.1f, 200.f); //perspective view. Third parameter should be > 0, or else errors
-	
+
 	//other model matrix
-	glm::mat4 line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+	
 	//Alessandro
 	glm::mat4 modl_A_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 	//Le Cherng
@@ -419,6 +493,8 @@ int main()
 	glm::mat4 modl_D_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 	//LaginHo
 	glm::mat4 modl_La_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+
+	glm::mat4 grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 
 	GLuint vm_loc = shader.GetUniformLocation("vm");
 	GLuint pm_loc = shader.GetUniformLocation("pm");
@@ -487,7 +563,6 @@ int main()
 	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
-
 	// Game loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -500,7 +575,7 @@ int main()
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 
 		glm::mat4 translator = glm::translate(glm::mat4(1.0f), modl_move);
-
+		
 		switch (activeModel) {
 		case 0:
 			modl_matrix = translator * model;
@@ -518,6 +593,18 @@ int main()
 		case 3:
 			modl_L_matrix = translator * model;
 			modl_L = model;
+			break;
+		case 4:
+			modl_La_matrix = translator * model;
+			modl_A_matrix = translator * model;
+			modl_D_matrix = translator * model;
+			modl_L_matrix = translator * model;
+			grid_matrix = translator * model;
+			line_matrix = translator * model;
+			modl_L = model;
+			modl_D = model;
+			modl_La = model;
+			modl_A = model;
 			break;
 		}
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(modl_matrix));
@@ -565,18 +652,20 @@ int main()
 
 		// Draws line
 		lines3dShader.Bind();
-		glLineWidth(1.0f);
+		//glLineWidth(1.0f);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
 		lines3dObject.drawLines();
 
 		// Draws grid
 		glLineWidth(0.5f);
+		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(grid_matrix));
 		grid.drawGrid();
 
 		// Unbinds VAO
 		glBindVertexArray(0);
-
+		activeModel = initModel;
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
 	}
