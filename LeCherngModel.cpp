@@ -62,7 +62,7 @@ void LeCherngModel::setLetterL(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin
 		-1 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left (right)
 		-1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //bottom left (right top)
 		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left (left corner)
-		1,5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (bottom)
+		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (bottom)
 		1.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //bottom right (above)
 
 		//BACK POSITION
@@ -70,7 +70,7 @@ void LeCherngModel::setLetterL(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin
 		-1 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left (right)
 		-1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (right top)
 		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (left corner)
-		1,5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (bottom)
+		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (bottom)
 		1.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (above)
 	}; //12 * 3 = 36
 
