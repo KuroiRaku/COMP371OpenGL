@@ -8,7 +8,7 @@ class DannModel
 
 public:
 	DannModel();
-	void drawModel();
+	void drawModel(int drawMode);
 
 private:
 	void setLetterD(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
@@ -21,6 +21,7 @@ private:
 	GLuint vao_4;
 	GLuint vao_7;
 	GLfloat lineSize;
+	GLenum mode;
 	int indiciesD;
 	int indiciesN;
 	int indicies4;

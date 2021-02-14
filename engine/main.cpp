@@ -18,10 +18,12 @@
 #include "Shader.h"
 #include "Font.h"
 #include "GLDebugMessageCallback.h"
-#include "../lines3d.h";
-#include "../grid.h";
-#include "../AlessandroModel.h";
-#include "../LeCherngModel.h";
+#include "../lines3d.h"
+#include "../grid.h"
+#include "../AlessandroModel.h"
+#include "../LeCherngModel.h"
+#include "../Laginho.h"
+#include "../DannModel.h"
 
 using namespace std;
 
@@ -35,8 +37,21 @@ glm::vec3 temp_cam_dir = glm::vec3(0, 0, 1); //use this for the cross product or
 glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera is directing towards
 
 //model settings
-glm::mat4 model = glm::mat4(1.0f); //to apply scalor and rotational transformations
+glm::mat4 model= glm::mat4(1.0f); //active model
 glm::vec3 modl_move = glm::vec3(0, 0, 0); //to apply translational transformations
+
+//Alessandro
+glm::mat4 modl_A = glm::mat4(1.0f);
+glm::vec3 modl_A_move = glm::vec3(0, 0, 0); //to apply translational transformations
+//Le Cherng
+glm::mat4 modl_L = glm::mat4(1.0f);
+glm::vec3 modl_L_move = glm::vec3(0, 0, 0); //to apply translational transformations
+//Dan
+glm::mat4 modl_D = glm::mat4(1.0f);
+glm::vec3 modl_D_move = glm::vec3(0, 0, 0); //to apply translational transformations
+//LaginHo
+glm::mat4 modl_La = glm::mat4(1.0f);
+glm::vec3 modl_La_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 //color settings
 bool flag = false;
@@ -49,7 +64,9 @@ bool blue = false;
 bool colour = false;
 
 //0 for points, 1 for lines, 2 for triangle
-int drawingMode = 0;
+int renderingMode = 2;
+//0 for alessandro, 1 for laginho, 2 for Dann, 3 for Le Cherng
+int activeModel = 0;
 
 //glm::vec3 object_color = glm::vec3(0.5, 0.5, 0.5);
 void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeSize);
@@ -101,55 +118,74 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 
 	//IJKL buttons to move the model
-	if (key == GLFW_KEY_I) //I moves the object along the +Y axis
+	if (key == GLFW_KEY_I) { //I moves the object along the +Y axis
 		modl_move.y += 1;
+	}
 
-	if (key == GLFW_KEY_K) //K moves the object along the -Y
+	if (key == GLFW_KEY_K) { //K moves the object along the -Y
 		modl_move.y -= 1;
+	}
 
-	if (key == GLFW_KEY_J) //J moves the object along the +X axis
+	if (key == GLFW_KEY_J) { //J moves the object along the +X axis
 		modl_move.x -= 1;
+	}
 
-	if (key == GLFW_KEY_L) //L moves the object along the -X axis
+	if (key == GLFW_KEY_L) { //L moves the object along the -X axis
 		modl_move.x += 1;
+	}
 
-	if (key == GLFW_KEY_PAGE_UP) //PgUp moves the object along the +Z axis
+	if (key == GLFW_KEY_PAGE_UP) { //PgUp moves the object along the +Z axis
 		modl_move.z += 1;
+	}
 
-	if (key == GLFW_KEY_PAGE_DOWN) //PgDown moves the object along the -Z axis
+	if (key == GLFW_KEY_PAGE_DOWN) { //PgDown moves the object along the -Z axis
 		modl_move.z -= 1;
+	}
 
 	//BNE buttons to rotate the model
-	if (key == GLFW_KEY_B) //B rotates the object about the X axis
+	if (key == GLFW_KEY_B) { //B rotates the object about the X axis
 		model = glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
-
-	if (key == GLFW_KEY_N) //N rotates the object about the Y axis,
+	}
+	if (key == GLFW_KEY_N) { //N rotates the object about the Y axis,
 		model = glm::rotate(model, glm::radians(5.f), glm::vec3(0, 1, 0));
-
-	if (key == GLFW_KEY_E) //rotates the object about the Z axis
+	}
+	if (key == GLFW_KEY_E) { //rotates the object about the Z axis
 		model = glm::rotate(model, glm::radians(5.f), glm::vec3(0, 0, 1));
-
+	}
 	//OP buttons to scale up and down
-	if (key == GLFW_KEY_O) //O scales up the object by a factor of 10%
+	if (key == GLFW_KEY_O) { //O scales up the object by a factor of 10%
 		model = glm::scale(model, glm::vec3(1.1f));
-
-	if (key == GLFW_KEY_P) //P scales up the object by a factor of -10%
+	}
+	if (key == GLFW_KEY_P) { //P scales up the object by a factor of -10%
 		model = glm::scale(model, glm::vec3(0.9f));
-
+	}
 	//toggle the red channel on/off
 	if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-		if (red != true)
+		if (red != true){
 			red = true;
-		else
+		}
+		else 
+		{
 			red = false;
+		}
+		activeModel = 0;
+		model = modl_A;
+		modl_move = modl_A_move;
 	}
 
 	//toggle the green channel on/off
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
 		if (green != true)
+		{
 			green = true;
-		else
+		}
+		else 
+		{
 			green = false;
+		}
+		activeModel = 1;
+		model = modl_La;
+		modl_move = modl_La_move;
 	}
 
 	//toggle the blue channel on/off
@@ -158,6 +194,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			blue = true;
 		else
 			blue = false;
+
+		activeModel = 2;
+		model = modl_D;
+		modl_move = modl_D_move;
 	}
 
 	//turn on all channels
@@ -172,6 +212,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 		else
 			colour = false;
+
+		activeModel = 3;
+		model = modl_L;
+		modl_move = modl_L_move;
 	}
 
 	//toggle between Gouraud and Phong shading
@@ -201,6 +245,18 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			greyscale = true;
 		else
 			greyscale = false;
+	}
+
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+		if (renderingMode == 2) {
+			renderingMode = 0;
+		}
+		else
+		{
+			renderingMode++;
+		}
+
+		cout << "Rendering Mode: " << renderingMode << endl;
 	}
 }
 
@@ -234,8 +290,6 @@ void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 // The MAIN function, from here we start the application and run the game loop
 int main()
 {
-
-
 	std::cout << "Starting GLFW context" << std::endl;
 	glfwInit();
 
@@ -269,6 +323,9 @@ int main()
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_PROGRAM_POINT_SIZE);
+	glPointSize(10.0);
+
 
 	//Hidden surface removal
 	glEnable(GL_DEPTH_TEST);
@@ -286,15 +343,20 @@ int main()
 	// Build and compile our shader program
 	Shader shader("resources/shaders/vertex.shader", "resources/shaders/fragment.shader");
 
+	//Lee
 	Shader model_L_shader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
+
+	//laginho
+	Shader model_La_shader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
 	
+	//dan
+	Shader model_D_shader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
 
+	//Alessandro
+	Shader model_A_shader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
+
+	//lines
 	Shader lines3dShader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
-
-	//Font Shader
-	/*Shader textShader("resources/shaders/text.vs", "resources/shaders/text.fs");
-	textShader.Bind();*/
-
 	
 	std::vector<int> indices;
 	std::vector<glm::vec3> vertices;
@@ -333,37 +395,30 @@ int main()
 	// Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 	glBindVertexArray(0);
 	
+	//model loading sort of
 	Lines3d lines3dObject = Lines3d();
 	Grid grid = Grid();
 	AlessandroModel alessandroModel = AlessandroModel();
 	LeCherngModel leCherngModel = LeCherngModel();
+	DannModel danModel = DannModel();
+	LaginhoModel laginModel = LaginhoModel();
 
 	shader.Bind();
 	//glm is a math funtion
 	glm::mat4 modl_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 0, 0));
 	glm::mat4 view_matrix = glm::lookAt(cam_pos, cam_dir, cam_up);
 	glm::mat4 proj_matrix = glm::perspective(glm::radians(45.f), 1.f, 0.1f, 200.f); //perspective view. Third parameter should be > 0, or else errors
-	glEnable(GL_DEPTH_TEST); //remove surfaces beyond the cameras render distance
-
+	
 	//other model matrix
 	glm::mat4 line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-
 	//Alessandro
 	glm::mat4 modl_A_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-	
 	//Le Cherng
 	glm::mat4 modl_L_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-
 	//Dan
 	glm::mat4 modl_D_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-
-	//Dre
-	glm::mat4 modl_Dre_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-
 	//LaginHo
-	glm::mat4 modl_LG_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-
-
+	glm::mat4 modl_La_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 
 	GLuint vm_loc = shader.GetUniformLocation("vm");
 	GLuint pm_loc = shader.GetUniformLocation("pm");
@@ -387,6 +442,8 @@ int main()
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 
+
+	//Le Cherng Model Binding
 	model_L_shader.Bind();
 	GLuint vm_loc_L = model_L_shader.GetUniformLocation("vm");
 	GLuint pm_loc_L = model_L_shader.GetUniformLocation("pm");
@@ -395,6 +452,33 @@ int main()
 	glUniformMatrix4fv(pm_loc_L, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_L, 1, GL_FALSE, glm::value_ptr(modl_L_matrix));
 
+	//Allesandro model binding
+	model_A_shader.Bind();
+	GLuint vm_loc_A = model_A_shader.GetUniformLocation("vm");
+	GLuint pm_loc_A = model_A_shader.GetUniformLocation("pm");
+	GLuint mm_loc_A = model_A_shader.GetUniformLocation("mm");
+	glUniformMatrix4fv(vm_loc_A, 1, GL_FALSE, glm::value_ptr(view_matrix));
+	glUniformMatrix4fv(pm_loc_A, 1, GL_FALSE, glm::value_ptr(proj_matrix));
+	glUniformMatrix4fv(mm_loc_A, 1, GL_FALSE, glm::value_ptr(modl_A_matrix));
+
+	//Laginho model binding
+	model_La_shader.Bind();
+	GLuint vm_loc_La = model_La_shader.GetUniformLocation("vm");
+	GLuint pm_loc_La = model_La_shader.GetUniformLocation("pm");
+	GLuint mm_loc_La = model_La_shader.GetUniformLocation("mm");
+	glUniformMatrix4fv(vm_loc_La, 1, GL_FALSE, glm::value_ptr(view_matrix));
+	glUniformMatrix4fv(pm_loc_La, 1, GL_FALSE, glm::value_ptr(proj_matrix));
+	glUniformMatrix4fv(mm_loc_La, 1, GL_FALSE, glm::value_ptr(modl_La_matrix));
+
+	//Dan model binding
+	model_D_shader.Bind();
+	GLuint vm_loc_D = model_D_shader.GetUniformLocation("vm");
+	GLuint pm_loc_D = model_D_shader.GetUniformLocation("pm");
+	GLuint mm_loc_D = model_D_shader.GetUniformLocation("mm");
+	glUniformMatrix4fv(vm_loc_La, 1, GL_FALSE, glm::value_ptr(view_matrix));
+	glUniformMatrix4fv(pm_loc_La, 1, GL_FALSE, glm::value_ptr(proj_matrix));
+	glUniformMatrix4fv(mm_loc_La, 1, GL_FALSE, glm::value_ptr(modl_D_matrix));
+
 	// 3D Lines Shader camera projection setup
 	lines3dShader.Bind();
 	GLuint vm_loc_lines_3d = lines3dShader.GetUniformLocation("vm");
@@ -402,7 +486,7 @@ int main()
 	GLuint mm_loc_lines_3d = lines3dShader.GetUniformLocation("mm");
 	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
-	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(modl_matrix));
+	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
 
 	// Game loop
 	while (!glfwWindowShouldClose(window))
@@ -416,7 +500,26 @@ int main()
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 
 		glm::mat4 translator = glm::translate(glm::mat4(1.0f), modl_move);
-		modl_matrix = translator * model;
+
+		switch (activeModel) {
+		case 0:
+			modl_matrix = translator * model;
+			modl_A_matrix = translator * model;
+			modl_A = model;
+			break;
+		case 1:
+			modl_La_matrix = translator * model;
+			modl_La = model;
+			break;
+		case 2:
+			modl_D_matrix = translator * model;
+			modl_D = model;
+			break;
+		case 3:
+			modl_L_matrix = translator * model;
+			modl_L = model;
+			break;
+		}
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(modl_matrix));
 
 		//DrawCube(WIDTH / 2, HEIGHT / 2, -500, 200);
@@ -440,13 +543,25 @@ int main()
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
 		// Draws Models
-
-		alessandroModel.drawModel();
+		model_A_shader.Bind();
+		glUniformMatrix4fv(vm_loc_A, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(mm_loc_A, 1, 0, glm::value_ptr(modl_A_matrix));
+		alessandroModel.drawModel(renderingMode);
 
 		model_L_shader.Bind();
 		glUniformMatrix4fv(vm_loc_L, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_L, 1, 0, glm::value_ptr(modl_L_matrix));
-		leCherngModel.drawModel();
+		leCherngModel.drawModel(renderingMode);
+
+		model_La_shader.Bind();
+		glUniformMatrix4fv(vm_loc_La, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(mm_loc_La, 1, 0, glm::value_ptr(modl_La_matrix));
+		laginModel.drawModel(renderingMode);
+
+		model_D_shader.Bind();
+		glUniformMatrix4fv(vm_loc_D, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(mm_loc_D, 1, 0, glm::value_ptr(modl_D_matrix));
+		danModel.drawModel(renderingMode);
 
 		// Draws line
 		lines3dShader.Bind();

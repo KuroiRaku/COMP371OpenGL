@@ -3,9 +3,9 @@ using namespace std;
 
 
 DannModel::DannModel() {
-	GLfloat xOrigin = 0.0f;
+	GLfloat xOrigin = 10.0f;
 	GLfloat yOrigin = 2.0f;
-	GLfloat zOrigin = -5.0f;
+	GLfloat zOrigin = 0.0f;
 
 	lineSize = 0.4f * 2;
 
@@ -17,28 +17,43 @@ DannModel::DannModel() {
 	setLetterN(xOrigin - (1 * distance), yOrigin, zOrigin);
 	setNumber4(xOrigin + (3 * distance), yOrigin, zOrigin);
 
-
+	mode = GL_TRIANGLES;
 }
 
-void DannModel::drawModel()
+void DannModel::drawModel(int drawMode)
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINES); // this will show the wireframe
+
+	if (drawMode == 0) {
+		mode = GL_POINTS;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	}
+	else if (drawMode == 1)
+	{
+		mode = GL_TRIANGLES;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else
+	{
+		mode = GL_TRIANGLES;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
 	
 	//D Model
 	glBindVertexArray(this->vao_D);
-	glDrawElements(GL_TRIANGLES, indiciesD, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, indiciesD, GL_UNSIGNED_INT, NULL);
 
 	//7 Model
 	glBindVertexArray(this->vao_7);
-	glDrawElements(GL_TRIANGLES, indicies7, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, indicies7, GL_UNSIGNED_INT, NULL);
 
 	//4 Model
 	glBindVertexArray(this->vao_4);
-	glDrawElements(GL_TRIANGLES, indicies4, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, indicies4, GL_UNSIGNED_INT, NULL);
 
 	//N Model
 	glBindVertexArray(this->vao_N);
-	glDrawElements(GL_TRIANGLES, indiciesN, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, indiciesN, GL_UNSIGNED_INT, NULL);
 }
 
 void DannModel::setLetterN(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)

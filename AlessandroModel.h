@@ -8,7 +8,7 @@ class AlessandroModel
 
 public:
 	AlessandroModel();
-	void drawModel();
+	void drawModel(int drawMode);
 
 private:
 	void setLetterO(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
@@ -21,5 +21,6 @@ private:
 	GLuint vao_4;
 	GLuint vao_1;
 	GLfloat lineSize;
+	GLenum mode;
 };
 

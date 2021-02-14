@@ -43,6 +43,12 @@
     <ClCompile Include="LeCherngModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Laginho.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DannModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Shader.h">
@@ -67,6 +73,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="AlessandroModel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Laginho.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DannModel.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,7 +9,7 @@ class LeCherngModel
 
 public:
 	LeCherngModel();
-	void drawModel();
+	void drawModel(int drawMode);
 
 private:
 	void setLetterL(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
@@ -22,4 +22,7 @@ private:
 	GLuint vao_4;
 	GLuint vao_4_2;
 	GLfloat lineSize;
+	GLenum mode;
+	int indiciesL;
+	int indiciesG;
 };

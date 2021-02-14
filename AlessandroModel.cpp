@@ -4,7 +4,7 @@
 AlessandroModel::AlessandroModel() {
 	GLfloat xOrigin = 0.0f;
 	GLfloat yOrigin = 2.0f;
-	GLfloat zOrigin = -5.0f;
+	GLfloat zOrigin = -10.0f;
 
 	lineSize = 0.4f * 2;
 
@@ -15,27 +15,42 @@ AlessandroModel::AlessandroModel() {
 	setNumber1(xOrigin + (1 * distance), yOrigin, zOrigin);
 	setNumber4(xOrigin + (3 * distance), yOrigin, zOrigin);
 	
+	mode = GL_TRIANGLES;
 }
 
-void AlessandroModel::drawModel()
+void AlessandroModel::drawModel(int drawMode)
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // this will show the wireframe
+
+	if (drawMode == 0) {
+		mode = GL_POINTS;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	}
+	else if (drawMode == 1)
+	{
+		mode = GL_TRIANGLES;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else
+	{
+		mode = GL_TRIANGLES;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 
 	//O Model
 	glBindVertexArray(this->vao_O);
-	glDrawElements(GL_TRIANGLES, 96, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
 	//1 Model
 	glBindVertexArray(this->vao_1);
-	glDrawElements(GL_TRIANGLES, 60, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, 60, GL_UNSIGNED_INT, NULL);
 
 	//4 Model
 	glBindVertexArray(this->vao_4);
-	glDrawElements(GL_TRIANGLES, 96, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
 	//A Model
 	glBindVertexArray(this->vao_A);
-	glDrawElements(GL_TRIANGLES, 144, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, 144, GL_UNSIGNED_INT, NULL);
 }
 
 void AlessandroModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)

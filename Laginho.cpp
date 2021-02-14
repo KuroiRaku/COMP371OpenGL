@@ -2,9 +2,9 @@
 
 
 LaginhoModel::LaginhoModel() {
-	GLfloat xOrigin = 0.0f;
+	GLfloat xOrigin = -10.0f;
 	GLfloat yOrigin = 2.0f;
-	GLfloat zOrigin = -5.0f;
+	GLfloat zOrigin = 0.0f;
 
 	lineSize = 0.4f * 2;
 
@@ -14,28 +14,42 @@ LaginhoModel::LaginhoModel() {
 	setLetterH(xOrigin - (1 * distance), yOrigin, zOrigin);
     setNumber4(xOrigin + (1 * distance), yOrigin, zOrigin);
 	setNumber0(xOrigin + (3 * distance), yOrigin, zOrigin);
-
+	mode = GL_TRIANGLES;
 }
 
-void LaginhoModel::drawModel()
+void LaginhoModel::drawModel(int drawMode)
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
+
+	if (drawMode == 0) {
+		mode = GL_POINTS;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	}
+	else if (drawMode == 1)
+	{
+		mode = GL_TRIANGLES;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else
+	{
+		mode = GL_TRIANGLES;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 
 	//O Model
 	glBindVertexArray(this->vao_0);
-	glDrawElements(GL_TRIANGLES, 96, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
 	//1 Model
 	glBindVertexArray(this->vao_H);
-	glDrawElements(GL_TRIANGLES, 60, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, 60, GL_UNSIGNED_INT, NULL);
 
 	//4 Model
 	glBindVertexArray(this->vao_4);
-	glDrawElements(GL_TRIANGLES, 96, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
 	//A Model
 	glBindVertexArray(this->vao_A);
-	glDrawElements(GL_TRIANGLES, 144, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, 144, GL_UNSIGNED_INT, NULL);
 
 }
 

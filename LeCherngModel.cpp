@@ -3,7 +3,7 @@
 LeCherngModel::LeCherngModel() {
 	GLfloat xOrigin = 0.0f;
 	GLfloat yOrigin = 2.0f;
-	GLfloat zOrigin = -5.0f;
+	GLfloat zOrigin = -10.0f;
 
 	lineSize = 0.4f * 2;
 
@@ -14,27 +14,43 @@ LeCherngModel::LeCherngModel() {
 	setNumber4(xOrigin + (1 * distance), yOrigin, (zOrigin *-2));
 	setNumber4_2(xOrigin + (3 * distance), yOrigin, zOrigin *-2);
 
+	mode = GL_TRIANGLES;
 }
 
-void LeCherngModel::drawModel()
+void LeCherngModel::drawModel(int drawMode)
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // this will show the wireframe
+	
+	if (drawMode == 0) {
+		mode = GL_POINTS;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	}
+	else if (drawMode == 1)
+	{
+		mode = GL_TRIANGLES;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else
+	{
+		mode = GL_TRIANGLES;
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
 
 	//G Model
 	glBindVertexArray(this->vao_G);
-	glDrawElements(GL_TRIANGLES, 132, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, indiciesG, GL_UNSIGNED_INT, NULL);
 
 	//4 Model
 	glBindVertexArray(this->vao_4);
-	glDrawElements(GL_TRIANGLES, 96, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
 	//the second 4 Model
 	glBindVertexArray(this->vao_4_2);
-	glDrawElements(GL_TRIANGLES, 96, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
 	//L Model
 	glBindVertexArray(this->vao_L);
-	glDrawElements(GL_TRIANGLES, 60, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, indiciesL, GL_UNSIGNED_INT, NULL);
 }
 
 void LeCherngModel::setLetterL(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
@@ -84,7 +100,7 @@ void LeCherngModel::setLetterL(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin
 		2,8,1, //bottom left (right) + top left (right)
 		1,8,7
 		
-	};// 20 * 3 () =  60 original 144
+	};// 20 * 3 () =  60 
 
 	glGenVertexArrays(1, &this->vao_L);
 	glBindVertexArray(this->vao_L);
@@ -92,14 +108,15 @@ void LeCherngModel::setLetterL(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin
 	GLuint vertices_VBO;
 	glGenBuffers(1, &vertices_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO);
-	glBufferData(GL_ARRAY_BUFFER, 36 * sizeof(float), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, (sizeof(vertices) / sizeof(vertices[0])) * sizeof(float), vertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
 
+	indiciesL = (sizeof(indicies) / sizeof(indicies[0]));
 	GLuint EBO;
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 60 * sizeof(int), indicies, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indiciesL * sizeof(int), indicies, GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -375,14 +392,15 @@ void LeCherngModel::setLetterG(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin
 	GLuint vertices_VBO;
 	glGenBuffers(1, &vertices_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO);
-	glBufferData(GL_ARRAY_BUFFER, 90 * sizeof(float), vertices_lines, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, (sizeof(vertices_lines) / sizeof(vertices_lines[0])) * sizeof(float), vertices_lines, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);  //3*sizeof(GLfloat) is the offset of 3 float numbers
 
+	indiciesG = (sizeof(indicies_lines) / sizeof(indicies_lines[0]));
 	GLuint EBO;
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 132 * sizeof(int), indicies_lines, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indiciesG * sizeof(int), indicies_lines, GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
