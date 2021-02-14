@@ -123,8 +123,8 @@ void DannModel::setLetterN(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 		13,9,11,
 		11,15,13,
 
-		8,12,13,
-		13,9,8,
+		12,8,9,
+		9,13,12,
 
 		10,14,15,
 		15,11,10,
