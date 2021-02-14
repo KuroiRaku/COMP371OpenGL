@@ -77,30 +77,32 @@ void LeCherngModel::setLetterL(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin
 	int indicies[] =
 	{
 		//front
-		0,1,2,
-		0,2,3,
-		2,3,5,
+		0,2,1,
+		0,3,2,
+		2,3,4,
 		2,4,5,
 		// back indicies
 		6, 7, 8,
 		6, 8, 9,
-		8, 9, 10,
-		8, 10, 11,
+		8, 10, 9,
+		8, 11, 10,
 		// Sides
 		0,1,7, //top
-		0,6,7,
+		0,7,6,
 		2,1,8, //top left (right)
 		1,7,8,
-		0,3,9, //top left +bottom left
+		0,9,3, //top left +bottom left
 		6,9,0,
-		3,4,9, //bottom left + bottom right
-		4,10,9,
+		3,9,4, //bottom left + bottom right
+		4,9,10,
 		5,4,10, //bottom right bottom + bottom right above
-		5,11,10,
+		5,10,11,
 		2,8,1, //bottom left (right) + top left (right)
-		1,8,7
+		1,8,7,
+		2,5,11,
+		2,11,8
 		
-	};// 20 * 3 () =  60 
+	};// 22 * 3 () =  66 
 
 	glGenVertexArrays(1, &this->vao_L);
 	glBindVertexArray(this->vao_L);
@@ -338,52 +340,52 @@ void LeCherngModel::setLetterG(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin
 	int indicies_lines[] =
 	{
 		// FRONT INDICIES
-		0,1,2,
+		0,2,1,
 		2,3,1,
 		2,4,5,
 		2,5,6,
-		5,6,7,
-		8,7,6,
+		5,7,6,
+		8,6,7,
 		9,8,10,
 		11,9,10,
 		14,12,10,
-		14,12,13,
+		14,13,12,
 		// BACK INDICIES
 		15,16,17,
-		17,18,16,
-		17,19,20,
-		17,20,21,
+		17,16,18,
+		17,20,19,
+		17,21,20,
 		20,21,22,
 		23,22,21,
-		24,23,25,
-		26,24,25,
-		29,18,25,
-		29,27,26,
+		24,25,23,
+		26,25,24,
+		29,25,27,
+		29,27,28,
 		// SIDES
 		0,1,16, //top right side 
 		16,15,0,
-		4,19,15, //top
+		4,15,19, //top
 		15,4,0,
 		1,3,16, // inner top
-		16,18,3, 
+		16,3,18, 
 		3,6,21, //inner left
 		21,18,3,
-		6,9,24,
-		24,6,21,
+		6,8,23,
+		6,23,21,
 		9,11,26, //bottom
 		26,24,9,
-		12,10,25,
-		25,27,12,
-		13,12,27,
-		27,28,13,
+		12,25,10,
+		25,12,27,
+		13,27,12,
+		27,13,28,
 		13,14,29,
 		29,28,13,
 		14,7,22, //bottom right
 		22,29,14,
-		5,7,22, //bottom
-		22,20,5,
-		4,5,20, //left
-		20,19,4
+		5,22,7, //bottom
+		22,5,20,
+		4,20,5, //left side
+		20,4,19
 	}; //(24 + 20) *3  = 132
 
 	glGenVertexArrays(1, &this->vao_G);
