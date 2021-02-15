@@ -100,15 +100,13 @@ bool leftShiftPressed = false;
 
 
 
-void rotateAround(glm::vec3& moveVec, glm::mat4& matrix, glm::vec3 rotation) {
-	float x, y, z;
+void rotateAround(glm::vec3& moveVec, glm::mat4& matrix, glm::vec3 rotation, float x,float y,float z) {
+	
 	activeModel = 4;
-	x = moveVec.x;
-	y = moveVec.y;
-	z = moveVec.z;
-	moveVec = glm::vec3(0, 0, 0);
-     matrix = glm::rotate(matrix, glm::radians(5.f), rotation);
-	 moveVec = glm::vec3(x, y, z);
+
+	matrix = glm::translate(matrix, glm::vec3(-x, -y, -z));
+	matrix = glm::rotate(matrix, 0.05f, rotation);
+	matrix = glm::translate(matrix, glm::vec3(x, y, z));
 }
 
 
@@ -177,34 +175,35 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	//Left and Right key rotate camera
 	if (key == GLFW_KEY_RIGHT) { //left arrow rotates the camera left about the up vector
+	
+		rotateAround(model_A_move, model_A, glm::vec3(0, 1, 0),0, 2, -10);
+		rotateAround(model_D_move, model_D, glm::vec3(0, 1, 0), 10, 2, 0);
+		rotateAround(model_La_move, model_La, glm::vec3(0, 1, 0), -10, 2, 0);
+		rotateAround(model_L_move, model_L, glm::vec3(0, 1, 0), 0, 2, 10);
+		rotateAround(model_grid_move, model_grid, glm::vec3(0, 1, 0),0,0,0);
 		
-		rotateAround(model_A_move, model_A, glm::vec3(0, 1, 0));
-		rotateAround(model_D_move, model_D, glm::vec3(0, 1, 0));
-		rotateAround(model_La_move, model_La, glm::vec3(0, 1, 0));
-		rotateAround(model_L_move, model_L, glm::vec3(0, 1, 0));
-		rotateAround(model_grid_move, model_grid, glm::vec3(0, 1, 0));
 	}
 	if (key == GLFW_KEY_DOWN) { //left arrow rotates the camera left about the up vector
 
-		rotateAround(model_A_move, model_A, glm::vec3(1, 0, 0));
-		rotateAround(model_D_move, model_D, glm::vec3(1, 0, 0));
-		rotateAround(model_La_move, model_La, glm::vec3(1, 0, 0));
-		rotateAround(model_L_move, model_L, glm::vec3(1, 0, 0));
-		rotateAround(model_grid_move, model_grid, glm::vec3(1, 0, 0));
+		rotateAround(model_A_move, model_A, glm::vec3(1, 0, 0), 0, 2, -10);
+		rotateAround(model_D_move, model_D, glm::vec3(1, 0, 0), 10, 2, 0);
+		rotateAround(model_La_move, model_La, glm::vec3(1, 0, 0), -10, 2, 0);
+		rotateAround(model_L_move, model_L, glm::vec3(1, 0, 0), 0, 2, 10);
+		rotateAround(model_grid_move, model_grid, glm::vec3(1, 0, 0), 0, 0, 0);
 	}
 	if (key == GLFW_KEY_UP) { //left arrow rotates the camera left about the up vector
-		rotateAround(model_A_move, model_A, glm::vec3(-1, 0, 0));
-		rotateAround(model_D_move, model_D, glm::vec3(-1, 0, 0));
-		rotateAround(model_La_move, model_La, glm::vec3(-1, 0, 0));
-		rotateAround(model_L_move, model_L, glm::vec3(-1, 0, 0));
-		rotateAround(model_grid_move, model_grid, glm::vec3(-1, 0, 0));
+		rotateAround(model_A_move, model_A, glm::vec3(-1, 0, 0), 0, 2, -10);
+		rotateAround(model_D_move, model_D, glm::vec3(-1, 0, 0), 10, 2, 0);
+		rotateAround(model_La_move, model_La, glm::vec3(-1, 0, 0), -10, 2, 0);
+		rotateAround(model_L_move, model_L, glm::vec3(-1, 0, 0), 0, 2, 10);
+		rotateAround(model_grid_move, model_grid, glm::vec3(-1, 0, 0), 0, 0, 0);
 	}
 	if (key == GLFW_KEY_LEFT) { //left arrow rotates the camera left about the up vector
-		rotateAround(model_A_move, model_A, glm::vec3(0, -1, 0));
-		rotateAround(model_D_move, model_D, glm::vec3(0, -1, 0));
-		rotateAround(model_La_move, model_La, glm::vec3(0, -1, 0));
-		rotateAround(model_L_move, model_L, glm::vec3(0, -1, 0));
-		rotateAround(model_grid_move, model_grid, glm::vec3(0, -1, 0));
+		rotateAround(model_A_move, model_A, glm::vec3(0, -1, 0), 0, 2, -10);
+		rotateAround(model_D_move, model_D, glm::vec3(0, -1, 0), 10, 2, 0);
+		rotateAround(model_La_move, model_La, glm::vec3(0, -1, 0), -10, 2, 0);
+		rotateAround(model_L_move, model_L, glm::vec3(0, -1, 0), 0, 2, 10);
+		rotateAround(model_grid_move, model_grid, glm::vec3(0, -1, 0), 0, 0, 0);
 	}
 
 	
