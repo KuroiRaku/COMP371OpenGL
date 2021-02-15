@@ -532,18 +532,6 @@ int main()
 	// Build and compile our shader program
 	Shader shader("resources/shaders/vertex.shader", "resources/shaders/fragment.shader");
 
-	//Lee
-	Shader model_L_shader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
-
-	//laginho
-	Shader model_La_shader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
-
-	//dan
-	Shader model_D_shader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
-
-	//Alessandro
-	Shader model_A_shader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
-
 	//lines
 	Shader lines3dShader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
 
@@ -593,20 +581,20 @@ int main()
 
 	//shader set up
 	shader.Bind();
-	glm::mat4 model_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 0, 0));
+	glm::mat4 model_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 2, 0));
 	glm::mat4 view_matrix = glm::lookAt(cam_pos, cam_dir, cam_up);
 	glm::mat4 proj_matrix = glm::perspective(glm::radians(45.f), 1.f, 0.1f, 200.f); //perspective view. Third parameter should be > 0, or else errors
 
 	//other model matrix
 	
 	//Alessandro
-	glm::mat4 model_A_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+	glm::mat4 model_A_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 2, -10));
 	//Le Cherng
-	glm::mat4 model_L_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+	glm::mat4 model_L_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 2, 10));
 	//Dan
-	glm::mat4 model_D_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+	glm::mat4 model_D_matrix = glm::translate(glm::mat4(1.f), glm::vec3(10, 2, 0));
 	//LaginHo
-	glm::mat4 model_La_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+	glm::mat4 model_La_matrix = glm::translate(glm::mat4(1.f), glm::vec3(-10, 2, 0));
 
 	glm::mat4 grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 
@@ -740,14 +728,14 @@ int main()
 		// Draws line
 		lines3dShader.Bind();
 		glLineWidth(1.0f);
-		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
+		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
 		lines3dObject.drawLines();
 
 		// Draws grid
 		glLineWidth(0.5f);
-		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(grid_matrix));
+		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(grid_matrix));
 		grid.drawGrid();
 		// Unbinds VAO
 		glBindVertexArray(0);

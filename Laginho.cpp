@@ -2,8 +2,8 @@
 
 
 LaginhoModel::LaginhoModel() {
-	GLfloat xOrigin = -10.0f;
-	GLfloat yOrigin = 2.0f;
+	GLfloat xOrigin = 0.0f;
+	GLfloat yOrigin = 0.0f;
 	GLfloat zOrigin = 0.0f;
 
 	lineSize = 0.4f * 2;
