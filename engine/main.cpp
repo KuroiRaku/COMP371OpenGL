@@ -99,6 +99,22 @@ bool leftShiftPressed = false;
 
 #pragma region KeyCallback
 
+
+
+void rotateAround(glm::vec3& moveVec, glm::mat4& matrix, glm::vec3 rotation) {
+	float x, y, z;
+	activeModel = 4;
+	x = moveVec.x;
+	y = moveVec.y;
+	z = moveVec.z;
+	moveVec = glm::vec3(0, 0, 0);
+     matrix = glm::rotate(matrix, glm::radians(5.f), rotation);
+	 moveVec = glm::vec3(x, y, z);
+}
+
+
+
+
 void resetToPreviousModel(int previousActiveModel) {
     switch (previousActiveModel)
     {
@@ -162,37 +178,39 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	//Left and Right key rotate camera
 	if (key == GLFW_KEY_RIGHT) { //left arrow rotates the camera left about the up vector
-		activeModel = 4;
-	    model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(0, -1, 0));
-		model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(0, -1, 0));
-		model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(0, -1, 0));
-		model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(0, -1, 0));
-		model_grid = glm::rotate(model_grid, glm::radians(5.f), glm::vec3(0, -1, 0));
+		
+		rotateAround(model_A_move, model_A, glm::vec3(0, 1, 0));
+		rotateAround(model_D_move, model_D, glm::vec3(0, 1, 0));
+		rotateAround(model_La_move, model_La, glm::vec3(0, 1, 0));
+		rotateAround(model_L_move, model_L, glm::vec3(0, 1, 0));
+		rotateAround(model_grid_move, model_grid, glm::vec3(0, 1, 0));
 	}
 	if (key == GLFW_KEY_DOWN) { //left arrow rotates the camera left about the up vector
-		activeModel = 4;
-		model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(1, 0, 0));
-		model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(1, 0, 0));
-		model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(1, 0, 0));
-		model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(1, 0, 0));
-		model_grid = glm::rotate(model_grid, glm::radians(5.f), glm::vec3(1, 0, 0));
+
+		rotateAround(model_A_move, model_A, glm::vec3(1, 0, 0));
+		rotateAround(model_D_move, model_D, glm::vec3(1, 0, 0));
+		rotateAround(model_La_move, model_La, glm::vec3(1, 0, 0));
+		rotateAround(model_L_move, model_L, glm::vec3(1, 0, 0));
+		rotateAround(model_grid_move, model_grid, glm::vec3(1, 0, 0));
 	}
 	if (key == GLFW_KEY_UP) { //left arrow rotates the camera left about the up vector
-		activeModel = 4;
-		model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(-1, 0, 0));
-		model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(-1, 0, 0));
-		model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(-1, 0, 0));
-		model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(-1, 0, 0));
-		model_grid = glm::rotate(model_grid, glm::radians(5.f), glm::vec3(-1, 0, 0));
+		rotateAround(model_A_move, model_A, glm::vec3(-1, 0, 0));
+		rotateAround(model_D_move, model_D, glm::vec3(-1, 0, 0));
+		rotateAround(model_La_move, model_La, glm::vec3(-1, 0, 0));
+		rotateAround(model_L_move, model_L, glm::vec3(-1, 0, 0));
+		rotateAround(model_grid_move, model_grid, glm::vec3(-1, 0, 0));
 	}
 	if (key == GLFW_KEY_LEFT) { //left arrow rotates the camera left about the up vector
-		activeModel = 4;
-		model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(0, 1, 0));
-		model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(0, 1, 0));
-		model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(0, 1, 0));
-		model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(0, 1, 0));
-		model_grid = glm::rotate(model_grid, glm::radians(5.f), glm::vec3(0, 1, 0));
+		rotateAround(model_A_move, model_A, glm::vec3(0, -1, 0));
+		rotateAround(model_D_move, model_D, glm::vec3(0, -1, 0));
+		rotateAround(model_La_move, model_La, glm::vec3(0, -1, 0));
+		rotateAround(model_L_move, model_L, glm::vec3(0, -1, 0));
+		rotateAround(model_grid_move, model_grid, glm::vec3(0, -1, 0));
 	}
+
+	
+	
+
 
 	//reset to initial position
 	if (key == GLFW_KEY_HOME)
@@ -615,7 +633,6 @@ int main()
 	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(glm::vec3(0.0, 20.0, 5.0)));
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
-
 	// 3D Lines Shader camera projection setup
 	lines3dShader.Bind();
 	GLuint vm_loc_lines_3d = lines3dShader.GetUniformLocation("vm");
@@ -624,7 +641,6 @@ int main()
 	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
-
 	// Game loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -733,7 +749,6 @@ int main()
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(grid_matrix));
 		grid.drawGrid();
-
 		// Unbinds VAO
 		glBindVertexArray(0);
 		//activeModel = initModel;
