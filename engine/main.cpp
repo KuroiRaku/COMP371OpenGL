@@ -25,7 +25,7 @@
 #include "../Laginho.h"
 #include "../DannModel.h"
 
-glm::mat4 line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+
 /*
 model=model_A;
 model= glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
@@ -71,6 +71,11 @@ glm::vec3 model_La_move = glm::vec3(0, 0, 0); //to apply translational transform
 glm::mat4 model_grid = glm::mat4(1.0f);
 glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
+//World Matrix
+glm::mat4 model_world = glm::mat4(1.0f);
+glm::vec3 model_world_move = glm::vec3(0, 0, 0); //to apply translational transformations
+
+
 //color settings
 bool flag = false;
 bool lights = false;
@@ -85,7 +90,7 @@ bool colour = false;
 int renderingMode = 2;
 //0 for alessandro, 1 for laginho, 2 for Dann, 3 for Le Cherng
 int activeModel = 0;
-int previousModel = 0;
+int previousActiveModel = 0;
 int initModel = activeModel;
 //glm::vec3 object_color = glm::vec3(0.5, 0.5, 0.5);
 void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeSize);
@@ -95,28 +100,29 @@ bool leftShiftPressed = false;
 #pragma region KeyCallback
 
 void resetToPreviousModel(int previousActiveModel) {
-	switch (previousActiveModel)
-			{
-			case 0:
-				model = model_A;
-				model_move = model_A_move;
-				break;
-			case 1:
-				model = model_La;
-				model_move = model_La_move;
-				break;
-			case 2:
-				model = model_D;
-				model_move = model_D_move;
-				break;
-			case 3:
-				model = model_L;
-				model_move = model_L_move;
-				break;
-			case 4:
-				cout << "Error Occured" << endl;
-				break;
-			}
+    switch (previousActiveModel)
+    {
+    case 0:
+        model = model_A;
+        model_move = model_A_move;
+        break;
+    case 1:
+        model = model_La;
+        model_move = model_La_move;
+        break;
+    case 2:
+        model = model_D;
+        model_move = model_D_move;
+        break;
+    case 3:
+        model = model_L;
+        model_move = model_L_move;
+        break;
+    case 4:
+        cout << "Error Occured" << endl;
+        break;
+    }
+	activeModel = previousActiveModel;
 }
 
 
@@ -157,11 +163,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	//Left and Right key rotate camera
 	if (key == GLFW_KEY_RIGHT) { //left arrow rotates the camera left about the up vector
 		activeModel = 4;
-	    model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(0, -1, 0));
-		model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(0, -1, 0));
-		model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(0, -1, 0));
-		model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(0, -1, 0));
-		model_grid = glm::rotate(model_grid, glm::radians(5.f), glm::vec3(0, -1, 0));
+	    model_A = glm::rotate(glm::mat4(1.0f), glm::radians(5.f), glm::vec3(0, -1, 0));
+		model_La = glm::rotate(glm::mat4(1.0f), glm::radians(5.f), glm::vec3(0, -1, 0));
+		model_D = glm::rotate(glm::mat4(1.0f), glm::radians(5.f), glm::vec3(0, -1, 0));
+		model_L = glm::rotate(glm::mat4(1.0f), glm::radians(5.f), glm::vec3(0, -1, 0));
+		model_grid = glm::rotate(glm::mat4(1.0f), glm::radians(5.f), glm::vec3(0, -1, 0));
 	}
 	if (key == GLFW_KEY_DOWN) { //left arrow rotates the camera left about the up vector
 		activeModel = 4;
@@ -186,6 +192,28 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(0, 1, 0));
 		model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(0, 1, 0));
 		model_grid = glm::rotate(model_grid, glm::radians(5.f), glm::vec3(0, 1, 0));
+	}
+
+	//reset to initial position
+	if (key == GLFW_KEY_HOME)
+	{
+		//Alessandro
+		model_A = glm::mat4(1.0f);
+		model_A_move = glm::vec3(0, 0, 0); //to apply translational transformations
+		//Le Cherng
+		model_L = glm::mat4(1.0f);
+		model_L_move = glm::vec3(0, 0, 0); //to apply translational transformations
+		//Dan
+		model_D = glm::mat4(1.0f);
+		model_D_move = glm::vec3(0, 0, 0); //to apply translational transformations
+		//LaginHo
+		model_La = glm::mat4(1.0f);
+		model_La_move = glm::vec3(0, 0, 0); //to apply translational transformations
+		//LaginHo
+		model_grid = glm::mat4(1.0f);
+		model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
+
+		resetToPreviousModel(previousActiveModel);
 	}
 
 	//WASD buttons to move the model
@@ -338,7 +366,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			greyscale = false;
 	}*/
 
-
 	//rendering mode
 	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
 			renderingMode = 0;
@@ -363,20 +390,26 @@ void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 	bool r_button_pressed = true;
 	bool m_button_pressed = true;
 
-	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 		lbutton_pressed = true;
-	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
+	}
+	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
 		lbutton_pressed = false;
+	}
 
-	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
 		r_button_pressed = true;
-	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
+	}
+	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE) {
 		r_button_pressed = false;
+	}
 
-	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS)
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS) {
 		m_button_pressed = true;
-	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_RELEASE)
+	}
+	else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_RELEASE) {
 		m_button_pressed = false;
+	}
 
 	//moving forward / backward while left button is pressed
 	if (lbutton_pressed) {
@@ -502,7 +535,6 @@ int main()
 	std::vector<glm::vec2> UVs;
 	loadOBJ("resources/objects/cube.obj", indices, vertices, normals, UVs);
 
-
 	GLuint VAO;
 	glGenVertexArrays(1, &VAO);
 	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
@@ -560,6 +592,8 @@ int main()
 
 	glm::mat4 grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 
+	glm::mat4 line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+
 	GLuint vm_loc = shader.GetUniformLocation("vm");
 	GLuint pm_loc = shader.GetUniformLocation("pm");
 	GLuint mm_loc = shader.GetUniformLocation("mm");
@@ -582,7 +616,14 @@ int main()
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 
-	int previousActiveModel = 0;
+	// 3D Lines Shader camera projection setup
+	lines3dShader.Bind();
+	GLuint vm_loc_lines_3d = lines3dShader.GetUniformLocation("vm");
+	GLuint pm_loc_lines_3d = lines3dShader.GetUniformLocation("pm");
+	GLuint mm_loc_lines_3d = lines3dShader.GetUniformLocation("mm");
+	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
+	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
+	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
 
 	// Game loop
 	while (!glfwWindowShouldClose(window))
@@ -637,29 +678,8 @@ int main()
 			model_D_matrix = translator_D * model_D;
 			model_L_matrix = translator_L * model_L;
 
-			switch (previousActiveModel)
-			{
-			case 0:
-				model = model_A;
-				model_move = model_A_move;
-				break;
-			case 1:
-				model = model_La;
-				model_move = model_La_move;
-				break;
-			case 2:
-				model = model_D;
-				model_move = model_D_move;
-				break;
-			case 3:
-				model = model_L;
-				model_move = model_L_move;
-				break;
-			case 4:
-				cout << "Error Occured" << endl;
-				break;
-			}
-			activeModel = previousActiveModel;
+			resetToPreviousModel(previousActiveModel);
+			
 			break;
 		}
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
@@ -702,13 +722,15 @@ int main()
 		danModel.drawModel(renderingMode);
 
 		// Draws line
-		//lines3dShader.Bind();
-		//glLineWidth(1.0f);
+		lines3dShader.Bind();
+		glLineWidth(1.0f);
+		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 		lines3dObject.drawLines();
 
 		// Draws grid
 		glLineWidth(0.5f);
+		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(grid_matrix));
 		grid.drawGrid();
 
