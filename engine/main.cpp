@@ -57,16 +57,16 @@ glm::vec3 model_move = glm::vec3(0, 0, 0); //to apply translational transformati
 
 //Alessandro
 glm::mat4 model_A = glm::mat4(1.0f);
-glm::vec3 model_A_move = glm::vec3(0, 0, 0); //to apply translational transformations
+glm::vec3 model_A_move = glm::vec3(0, 2, -10); //to apply translational transformations
 //Le Cherng
 glm::mat4 model_L = glm::mat4(1.0f);
-glm::vec3 model_L_move = glm::vec3(0, 0, 0); //to apply translational transformations
+glm::vec3 model_L_move = glm::vec3(0, 2, 10); //to apply translational transformations
 //Dan
 glm::mat4 model_D = glm::mat4(1.0f);
-glm::vec3 model_D_move = glm::vec3(0, 0, 0); //to apply translational transformations
+glm::vec3 model_D_move = glm::vec3(10, 2, 0); //to apply translational transformations
 //LaginHo
 glm::mat4 model_La = glm::mat4(1.0f);
-glm::vec3 model_La_move = glm::vec3(0, 0, 0); //to apply translational transformations
+glm::vec3 model_La_move = glm::vec3(-10, 2, 0); //to apply translational transformations
 //LaginHo
 glm::mat4 model_grid = glm::mat4(1.0f);
 glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
@@ -74,7 +74,6 @@ glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transfo
 //World Matrix
 glm::mat4 model_world = glm::mat4(1.0f);
 glm::vec3 model_world_move = glm::vec3(0, 0, 0); //to apply translational transformations
-
 
 //color settings
 bool flag = false;
