@@ -163,11 +163,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	//Left and Right key rotate camera
 	if (key == GLFW_KEY_RIGHT) { //left arrow rotates the camera left about the up vector
 		activeModel = 4;
-	    model_A = glm::rotate(glm::mat4(1.0f), glm::radians(5.f), glm::vec3(0, -1, 0));
-		model_La = glm::rotate(glm::mat4(1.0f), glm::radians(5.f), glm::vec3(0, -1, 0));
-		model_D = glm::rotate(glm::mat4(1.0f), glm::radians(5.f), glm::vec3(0, -1, 0));
-		model_L = glm::rotate(glm::mat4(1.0f), glm::radians(5.f), glm::vec3(0, -1, 0));
-		model_grid = glm::rotate(glm::mat4(1.0f), glm::radians(5.f), glm::vec3(0, -1, 0));
+	    model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(0, -1, 0));
+		model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(0, -1, 0));
+		model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(0, -1, 0));
+		model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(0, -1, 0));
+		model_grid = glm::rotate(model_grid, glm::radians(5.f), glm::vec3(0, -1, 0));
 	}
 	if (key == GLFW_KEY_DOWN) { //left arrow rotates the camera left about the up vector
 		activeModel = 4;
