@@ -1,5 +1,6 @@
 Team Members:
 Alessandro Kreslin (40025121)
+Dann Kaoussarani (40133457)
 
 Our project started with 5 members, but one of the members dropped the class, that’s why there are only 4 models
 
