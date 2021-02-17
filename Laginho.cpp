@@ -41,7 +41,7 @@ void LaginhoModel::drawModel(int drawMode)
 
 	//1 Model
 	glBindVertexArray(this->vao_H);
-	glDrawElements(mode, 60, GL_UNSIGNED_INT, NULL);
+	glDrawElements(mode, 200, GL_UNSIGNED_INT, NULL);
 
 	//4 Model
 	glBindVertexArray(this->vao_4);
@@ -58,31 +58,31 @@ void LaginhoModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 	GLfloat vertices[] =
 	{
 		// FRONT POSITION
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (left)
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (right)
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right 
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left
-		-1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left (left)
-		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left (right)
-		0.5 * lineSize + xOrigin, yOrigin, zOrigin, //hole [bottom right]
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //hole [top right]
-		-0.5 * lineSize + xOrigin, yOrigin, zOrigin, //hole [bottom left]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //hole [top left]
-		-0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //U LEFT
-		0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //U RIGHT
+		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, // 0 bottom right (left)
+		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //1 bottom right (right)
+		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //2 top right 
+		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //3top left
+		-1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, // 4 bottom left (left)
+		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //5bottom left (right)
+		0.5 * lineSize + xOrigin, yOrigin, zOrigin, //6hole [bottom right]
+		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //7hole [top right]
+		-0.5 * lineSize + xOrigin, yOrigin, zOrigin, //8hole [bottom left]
+		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //9hole [top left]
+		-0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //10U LEFT
+		0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //11U RIGHT
 		//BACK POSITION
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (left)
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (right)
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right 
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left
-		-1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (left)
-		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (right)
-		0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //hole [bottom right]
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //hole [top right]
-		-0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //hole [bottom left]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //hole [top left]
-		-0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //U LEFT
-		0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //U RIGHT
+		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //12bottom right (left)
+		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //13bottom right (right)
+		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //14top right 
+		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //15top left
+		-1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //16bottom left (left)
+		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //17bottom left (right)
+		0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //18hole [bottom right]
+		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //19hole [top right]
+		-0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //20hole [bottom left]
+		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //21hole [top left]
+		-0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //22U LEFT
+		0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //23U RIGHT
 	};
 
 	int indicies[] =
@@ -99,6 +99,7 @@ void LaginhoModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 		10,4,5,
 		10,11,8, //middle
 		11,6,8,
+
 		// back indicies
 		20, 18, 23,
 		20, 23, 22,
@@ -252,38 +253,39 @@ void LaginhoModel::setLetterH(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 	GLfloat vertices[] =
 	{
 		//FRONT POSITION
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, 
-		-1.0 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin,
-		-1.0 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, 
-		-2.0 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, 
+		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //0
+		-1.0 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin,//1
+		-1.0 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //2
+		-2.0 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //3
 		
 		//BACK POSITION
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin,  zOrigin - lineSize,
-		-1.0 * lineSize + xOrigin, -2 * lineSize + yOrigin,  zOrigin - lineSize,
-		-1.0 * lineSize + xOrigin, 2 * lineSize + yOrigin,  zOrigin - lineSize,
-		-2.0 * lineSize + xOrigin, 2 * lineSize + yOrigin,  zOrigin - lineSize,
+		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin,  zOrigin - lineSize,//4
+		-1.0 * lineSize + xOrigin, -2 * lineSize + yOrigin,  zOrigin - lineSize,//5
+		-1.0 * lineSize + xOrigin, 2 * lineSize + yOrigin,  zOrigin - lineSize,//6
+		-2.0 * lineSize + xOrigin, 2 * lineSize + yOrigin,  zOrigin - lineSize,//7
 
+		//Middle
+		0.0 * lineSize + xOrigin, yOrigin, zOrigin, //8 hole [bottom right]
+		0.0 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //9 hole [top right]
+		-1.0 * lineSize + xOrigin, yOrigin, zOrigin, //10 hole [bottom left]
+		-1.0 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //11 hole [top left]
+		//Back
+		0.0 * lineSize + xOrigin, yOrigin, zOrigin - lineSize,//12
+		0.0 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize,//13
+		-1.0 * lineSize + xOrigin, yOrigin, zOrigin - lineSize,//14
+		-1.0 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize,//15
 
-		0.0 * lineSize + xOrigin, yOrigin, zOrigin, //hole [bottom right]
-		0.0 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //hole [top right]
-		-1.0 * lineSize + xOrigin, yOrigin, zOrigin, //hole [bottom left]
-		-1.0 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //hole [top left]
-
-		0.0 * lineSize + xOrigin, yOrigin, zOrigin - lineSize,
-		0.0 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize,
-		-1.0 * lineSize + xOrigin, yOrigin, zOrigin - lineSize,
-		-1.0 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize,
-
-		0 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin,
-		1.0 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin,
-		1.0 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin,
-		0.0 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin,
+		//Right Leg 
+		0 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin,//16
+		1.0 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin,//17
+		1.0 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin,//18
+		0.0 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin,//19
 
 		//BACK POSITION
-		0 * lineSize + xOrigin, -2 * lineSize + yOrigin,  zOrigin - lineSize,
-		1.0 * lineSize + xOrigin, -2 * lineSize + yOrigin,  zOrigin - lineSize,
-		1.0 * lineSize + xOrigin, 2 * lineSize + yOrigin,  zOrigin - lineSize,
-		0.0 * lineSize + xOrigin, 2 * lineSize + yOrigin,  zOrigin - lineSize,
+		0 * lineSize + xOrigin, -2 * lineSize + yOrigin,  zOrigin - lineSize,//20
+		1.0 * lineSize + xOrigin, -2 * lineSize + yOrigin,  zOrigin - lineSize,//21
+		1.0 * lineSize + xOrigin, 2 * lineSize + yOrigin,  zOrigin - lineSize,//22
+		0.0 * lineSize + xOrigin, 2 * lineSize + yOrigin,  zOrigin - lineSize,//23
 
 	};
 
@@ -293,34 +295,62 @@ void LaginhoModel::setLetterH(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 		0,1,2,
 		2,3,0,
 
-		2,3,7,
-		7,6,2,
+		//Left Top 
+		2,7,3,
+		6,7,2,
 		// BACK INDICIES
-		4,5,6,
-		6,7,4,
+		4,6,5,
+		4,7,6,
 
 		//Left Side
-		0,4,3,
-		2,0,4,
+		0,3,7,
+		7,4,0,
+
+		//Right Side 
+		1,6,2,
+		6,1,5,
+
+		//Bottom
+		0,4,1,
+		4,5,1,
 
 		//Middle 
 		9,8,10,
 		10,11,9,
 
-		12,13,15,
-		14,15,13,
+		12,15,14,
+		15,12,13,
 
+		//Top
+		8,14,10,
+		14,8,12,
+
+		//Bottom 
+		15,9,11,
+		13,9,15,
+
+
+		//Right Side 
 		16,17,18,
 		18,19,16,
 
-		20,21,22,
-		22,23,20,
+		22,20,23,
+		20,22,21,
 
-		18,19,22,
-		23,22,19,
+		//Left
+		23,16,19,
+		16,23,20,
 
-		//Right Side 
-		17,21,18
+		//
+		17,22,18,
+		17,21,22,
+
+		//TOP 
+		18,23,19,
+		23,18,22,
+		//Bottom 
+		16,21,17,
+		21,16,20
 	};
 
 	glGenVertexArrays(1, &this->vao_H);
@@ -336,7 +366,7 @@ void LaginhoModel::setLetterH(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 	GLuint EBO;
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 60 * sizeof(int), indicies, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 200 * sizeof(int), indicies, GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
