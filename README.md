@@ -7,7 +7,7 @@ Arshia Hamidi (40068250)<br />
 Our project started with 5 members, but one of the members dropped the class, that’s why there are only 4 models
 
 ## Project Overview
-This project shows each member character model that consist of their first letter and last letter of their name as well as first number and last number of their student ID.\ This project allow user to rotate the models, moving the camera like in fps as well as rotating the world.\ There are some basic shaders code that changes models' colour as well as a little bit of lighting code and is just an extra work that we done. There's also an objectLoader and we loaded a cube with it. 
+This project shows each member character model that consist of their first letter and last letter of their name as well as first number and last number of their student ID.<br /> This project allow user to rotate the models, moving the camera like in fps as well as rotating the world.<br /> There are some basic shaders code that changes models' colour as well as a little bit of lighting code and is just an extra work that we done.<br /> There's also an objectLoader and we loaded a cube with it as well as a font code which we did not use in the project as of right now. 
 
 ## Grid and Lines
 The grid is made up of a series of lines 128 x 128 with equal length spreading across the x,z plane\
