@@ -7,7 +7,14 @@ Arshia Hamidi (40068250)<br />
 Our project started with 5 members, but one of the members dropped the class, that’s why there are only 4 models
 
 ## Project Overview
-This project shows each member character model that consist of their first letter and last letter of their name as well as first number and last number of their student ID.<br /> This project allow user to rotate the models, moving the camera like in fps as well as rotating the world.<br /> There are some basic shaders code that changes models' colour as well as a little bit of lighting code and is just an extra work that we done.<br /> There's also an objectLoader and we loaded a cube with it as well as a font code which we did not use in the project as of right now. 
+This project shows each member character model that consist of their first letter and last letter of their name as well as first number and last number of their student ID.<br /> This project allow user to rotate the models, moving the camera like in fps as well as rotating the world.<br /> There are some basic shaders code that changes models' colour as well as a little bit of lighting code and is just an extra work that we done.<br /> There's also an objectLoader and we loaded a cube with it as well as a font code which we did not use in the project as of right now. <br />
+
+## Project Dependencies
+This project uses GLAD and GLFW libraries to run the OpenGL version 4.6 application.<br />
+Other libraries that this project uses are GLM, however the dependencies include other libraries which aren't being used as of right now which is freetype, SOIL, IMGUI, stb. <br />
+We have also set up linux cmake files but some of the libraries listed are not yet included since not all of the libraries are being used at the moment. <br /> 
+**To load and start the application in correct way, please open .sln file. The .sln file contains includes and dependcies configurations** <br />
+For Mac users, sorry that we didn't configure settings (.cmake files) on your platform, this application will only run on windows and maybe linux as of right now unless you implemented your own files.
 
 ## Grid and Lines
 The grid is made up of a series of lines 128 x 128 with equal length spreading across the x,z plane\
