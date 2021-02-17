@@ -1,9 +1,9 @@
-Team Members:
-Alessandro Kreslin (40025121)
-Dann Kaoussarani (40133457)
-Le Cherng Lee (40122814)
-Arshia Hamidi (40068250)
-
+Team Members:\
+Alessandro Kreslin (40025121)<br />
+Dann Kaoussarani (40133457)<br />
+Le Cherng Lee (40122814)<br />
+Arshia Hamidi (40068250)<br />
+<br />
 Our project started with 5 members, but one of the members dropped the class, that’s why there are only 4 models
 
 ## Project Overview
