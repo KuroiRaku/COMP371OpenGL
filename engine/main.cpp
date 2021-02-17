@@ -25,21 +25,6 @@
 #include "../Laginho.h"
 #include "../DannModel.h"
 
-
-/*
-model=model_A;
-model= glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
-model=model_L;
-model_L= glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
-model=model_D;
-model_D= glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
-model=model_La;
-model= glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
-model=line_matrix;
-model= glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
-Move Grid?????
-*/
-
 using namespace std;
 
 // Window dimensions
@@ -96,9 +81,32 @@ void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeSiz
 
 bool leftShiftPressed = false;
 
-#pragma region KeyCallback
 
-
+void resetToPreviousModel(int previousActiveModel) {
+	switch (previousActiveModel)
+	{
+	case 0:
+		model = model_A;
+		model_move = model_A_move;
+		break;
+	case 1:
+		model = model_La;
+		model_move = model_La_move;
+		break;
+	case 2:
+		model = model_D;
+		model_move = model_D_move;
+		break;
+	case 3:
+		model = model_L;
+		model_move = model_L_move;
+		break;
+	case 4:
+		cout << "Error Occured" << endl;
+		break;
+	}
+	activeModel = previousActiveModel;
+}
 
 void rotateAround(glm::vec3& moveVec, glm::mat4& matrix, glm::vec3 rotation) {
 	
@@ -113,36 +121,7 @@ void rotateAround(glm::vec3& moveVec, glm::mat4& matrix, glm::vec3 rotation) {
 	
 }
 
-
-
-
-void resetToPreviousModel(int previousActiveModel) {
-    switch (previousActiveModel)
-    {
-    case 0:
-        model = model_A;
-        model_move = model_A_move;
-        break;
-    case 1:
-        model = model_La;
-        model_move = model_La_move;
-        break;
-    case 2:
-        model = model_D;
-        model_move = model_D_move;
-        break;
-    case 3:
-        model = model_L;
-        model_move = model_L_move;
-        break;
-    case 4:
-        cout << "Error Occured" << endl;
-        break;
-    }
-	activeModel = previousActiveModel;
-}
-
-
+#pragma region KeyCallback
 // Is called whenever a key is pressed/released via GLFW
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod)
 {
@@ -690,8 +669,6 @@ int main()
 		}
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
 
-		//DrawCube(WIDTH / 2, HEIGHT / 2, -500, 200);
-		//glUniform3fv(object_color_id, 1, glm::value_ptr(object_color));
 		glUniform1i(flag_id, flag);
 		glUniform1i(lights_id, lights);
 		glUniform1i(normalcol_id, normalcol);
