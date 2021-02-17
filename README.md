@@ -1,8 +1,13 @@
 Team Members:
 Alessandro Kreslin (40025121)
 Dann Kaoussarani (40133457)
+Le Cherng Lee (40122814)
+Arshia Hamidi (40068250)
 
-Our project started with 5 members, but one of the members dropped the class, that’s why there are only 4 models
+Our project started with 5 members, but one of the members dropped the class, thatâ€™s why there are only 4 models
+
+## Project Overview
+This project shows each member character model that consist of their first letter and last letter of their name as well as first number and last number of their student ID. This project allow user to rotate the models, moving the camera like in fps as well as rotating the world. There are some basic shaders code that changes models' colour as well as a little bit of lighting code and is just an extra work that we done. There's also an objectLoader and we loaded a cube with it. 
 
 ## Grid and Lines
 The grid is made up of a series of lines 128 x 128 with equal length spreading across the x,z plane
@@ -19,10 +24,10 @@ While left mouse button click: zoom in or out
 
 ## Model Control
 You can select each of the model through the keys 1,2,3,4. From there here are the controls
-‘U’: to increase the scale
-‘J’: to decrease the scale
-‘WASD’: to move the model up, left, down, right respectively
-‘SHIFT + WASD’: to rotate the model up, left, down, right respectively by 5 degrees respectively
-‘P’: to render model with points
-‘L’: to render model with lines
-’T’: to render model with triangles
+â€˜Uâ€™: to increase the scale
+â€˜Jâ€™: to decrease the scale
+â€˜WASDâ€™: to move the model up, left, down, right respectively
+â€˜SHIFT + WASDâ€™: to rotate the model up, left, down, right respectively by 5 degrees respectively
+â€˜Pâ€™: to render model with points
+â€˜Lâ€™: to render model with lines
+â€™Tâ€™: to render model with triangles
