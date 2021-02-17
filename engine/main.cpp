@@ -196,23 +196,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	//reset to initial position
 	if (key == GLFW_KEY_HOME)
 	{
+		activeModel = 4;
 		//Alessandro
 		model_A = glm::mat4(1.0f);
-		model_A_move = glm::vec3(0, 0, 0); //to apply translational transformations
+		model_A_move = glm::vec3(0, 2, -10); //to apply translational transformations
 		//Le Cherng
-		model_L = glm::mat4(1.0f);
-		model_L_move = glm::vec3(0, 0, 0); //to apply translational transformations
+	 model_L = glm::mat4(1.0f);
+	 model_L_move = glm::vec3(0, 2, 10); //to apply translational transformations
 		//Dan
-		model_D = glm::mat4(1.0f);
-		model_D_move = glm::vec3(0, 0, 0); //to apply translational transformations
+	 model_D = glm::mat4(1.0f);
+         model_D_move = glm::vec3(10, 2, 0); //to apply translational transformations
 		//LaginHo
-		model_La = glm::mat4(1.0f);
-		model_La_move = glm::vec3(0, 0, 0); //to apply translational transformations
+     model_La = glm::mat4(1.0f);
+      model_La_move = glm::vec3(-10, 2, 0); //to apply translational transformations
 		//LaginHo
-		model_grid = glm::mat4(1.0f);
+	model_grid = glm::mat4(1.0f);
 		model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
-
-		resetToPreviousModel(previousActiveModel);
+		
 	}
 
 	//WASD buttons to move the model
@@ -662,7 +662,6 @@ int main()
 			model_La_matrix = translator_La * model_La;
 			model_D_matrix = translator_D * model_D;
 			model_L_matrix = translator_L * model_L;
-
 			resetToPreviousModel(previousActiveModel);
 			
 			break;
