@@ -11,13 +11,13 @@ This project shows each member character model that consist of their first lette
 
 ## Grid and Lines
 The grid is made up of a series of lines 128 x 128 with equal length spreading across the x,z plane\
-The lines are made in the length of 7 grid units apart going in the x,y,z axis. We binded a separate shader to achieve the different colors of each line.
+The lines are made in the length of 7 grid units apart going in the x,y,z axis\ We binded a separate shader to achieve the different colors of each line.
 
 ## The Models
-We only have 4 team members now so we made 4 models. We used the Vertex Array method of creating the models and modelled them using triangle primitives. Each team members model was placed in a separate class for ease of separation.\
+We only have 4 team members now so we made 4 models. We used the Vertex Array method of creating the models and modelled them using triangle primitives. Each team members model was placed in a separate class for ease of separation.
 
 ## The Camera
-We used the Model View Projection approach to modelling the 3d world with the camera position changing the values. These are the camera controls:\
+We used the Model View Projection approach to modelling the 3d world with the camera position changing the values\ These are the camera controls:\
 While right mouse button click and move the mouse in x direction: pan camera in X direction\
 While middle button is pressed and move the mouse in y direction: tilt camera in Y direction\
 While left mouse button click: zoom in or out
