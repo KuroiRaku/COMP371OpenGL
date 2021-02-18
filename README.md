@@ -42,7 +42,8 @@ You can select each of the model through the keys 1,2,3,4. From there here are t
 'left arrow button': To rotate the world model to -y axis\
 'up arrow button': To rotate the world to +x axis\
 'down arrow button': To rotate the world to -x axis\
-'home button': Reset all the model to its original position
+'home button': Reset all the world matrix to its original position
+'0': Reset every model to its original position
 
 ## Code Reference
 We have refer to code in [learnopengl.com](learnopengl.com)
