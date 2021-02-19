@@ -1,8 +1,8 @@
 #include <glad/glad.h>	// include GL Extension Wrangler
 #include <glfw/glfw3.h>	// include GLFW helper library
 #include <iostream>
-#include "Cube.h"
-#include "sphere.h"
+#include "../Cube.h"
+#include "../sphere.h"
 #include "Shader.h"
 
 #include <glm/glm.hpp>
@@ -11,14 +11,14 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #pragma once
-class LModel
+class EModel
 {
 
 public:
-	LModel();
+	EModel();
 	void drawModel(int drawMode, Shader* shader, glm::mat4 objectMatrix);
 	void drawLetter(float x, float y, float z, Shader* shader, glm::mat4 objectMatrix);
-	
+
 	//for the side
 	glm::mat4 sphereMatrix = glm::mat4(1.f);
 	//for the bottom
@@ -26,4 +26,6 @@ public:
 
 	Sphere leftSide;
 	Cube bottomSide;
+	Cube middleSide;
+	Cube topSide;
 };

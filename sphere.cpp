@@ -49,7 +49,7 @@ void Sphere::init(float xOrigin, float yOrigin, float zOrigin, float radius, flo
             z = sin(b);
             sphere_pos[ix + 0] = (x+xOrigin) * radius;
             sphere_pos[ix + 1] = (y + yOrigin)* elongatedLength;
-            sphere_pos[ix + 2] = (z+zOrigin) * radius;
+            sphere_pos[ix + 2] = (z+zOrigin) * r;
             sphere_nor[ix + 0] = (x + xOrigin);
             sphere_nor[ix + 1] = (y + yOrigin);
             sphere_nor[ix + 2] = (z + zOrigin);

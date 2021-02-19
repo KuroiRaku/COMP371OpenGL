@@ -1,11 +1,12 @@
 #include "lines3d.h"
+#include "Cube.h"
 
 Lines3d::Lines3d() 
 {
 
-	cylinderX = Cylinder(2.5f,1.f, 0.5);
-	cylinderY = Cylinder(2.5f,1.f, 0.5);
-	cylinderZ = Cylinder(2.5f,1.f, 0.5);
+	cylinderX = Cylinder(2.5f,1.f, 0.125);
+	cylinderY = Cylinder(2.5f,1.f, 0.125);
+	cylinderZ = Cylinder(2.5f,1.f, 0.125);
 
 	matrix_X = glm::mat4(1.f);
 	matrix_Y = glm::mat4(1.f);

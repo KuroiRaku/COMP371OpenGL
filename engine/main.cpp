@@ -21,6 +21,8 @@
 #include "../lines3d.h"
 #include "../grid.h"
 #include "../LModel.h"
+#include "../EModel.h"
+#include "../CModel.h"
 
 using namespace std;
 
@@ -38,23 +40,23 @@ glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera 
 // I'm using last name and first three characters of my first name
 //model settings
 glm::mat4 model = glm::mat4(1.0f); //active model
-glm::vec3 model_move = glm::vec3(0, 2, 0); //to apply translational transformations
+glm::vec3 model_move = glm::vec3(0, 15, 0); //to apply translational transformations
 
 //model cube that we loaded in for no reason :p
 glm::mat4 model_cube = glm::mat4(1.0f); //active model
-glm::vec3 model_cube_move = glm::vec3(0, 2, 0); //to apply translational transformations
+glm::vec3 model_cube_move = glm::vec3(0, 2, -10); //to apply translational transformations
 
 //Character L
 glm::mat4 model_L = glm::mat4(1.0f);
-glm::vec3 model_L_move = glm::vec3(0, 0, 0); //to apply translational transformations
+glm::vec3 model_L_move = glm::vec3(0, 15, 0); //to apply translational transformations
 
 //Character E
 glm::mat4 model_E = glm::mat4(1.0f);
-glm::vec3 model_E_move = glm::vec3(0, 2, 0); //to apply translational transformations
+glm::vec3 model_E_move = glm::vec3(0, 12, 0); //to apply translational transformations
 
 //Second Character E
 glm::mat4 model_E2 = glm::mat4(1.0f);
-glm::vec3 model_E2_move = glm::vec3(0, 4, 0); //to apply translational 
+glm::vec3 model_E2_move = glm::vec3(0, 9, 0); //to apply translational 
 
 //Second Character L
 glm::mat4 model_L2 = glm::mat4(1.0f);
@@ -62,11 +64,11 @@ glm::vec3 model_L2_move = glm::vec3(0, 6, 0); //to apply translational transform
 
 //Third Character E
 glm::mat4 model_E3 = glm::mat4(1.0f);
-glm::vec3 model_E3_move = glm::vec3(0, 8, 0); //to apply translational transformations
+glm::vec3 model_E3_move = glm::vec3(0, 3, 0); //to apply translational transformations
 
 //Third Character C
 glm::mat4 model_C = glm::mat4(1.0f);
-glm::vec3 model_C_move = glm::vec3(0, 10, 0); //to apply translational transformations
+glm::vec3 model_C_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 //Grid
 glm::mat4 model_grid = glm::mat4(1.0f);
@@ -91,9 +93,8 @@ int renderingMode = 2;
 //0 for alessandro, 1 for laginho, 2 for Dann, 3 for Le Cherng
 int activeModel = 0;
 int previousActiveModel = 0;
-int initModel = activeModel;
 //glm::vec3 object_color = glm::vec3(0.5, 0.5, 0.5);
-void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeSize);
+
 
 void resetToPreviousModel(int previousActiveModel) {
 	switch (previousActiveModel)
@@ -222,19 +223,19 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 		//Character L
 		glm::mat4 model_L = glm::mat4(1.0f);
-		glm::vec3 model_L_move = glm::vec3(0, 0, 0); //to apply translational transformations
+		glm::vec3 model_L_move = glm::vec3(0, 20, 0); //to apply translational transformations
 
 		//Character E
 		glm::mat4 model_E = glm::mat4(1.0f);
-		glm::vec3 model_E_move = glm::vec3(0, 2, 0); //to apply translational transformations
+		glm::vec3 model_E_move = glm::vec3(0, 15, 0); //to apply translational transformations
 
 		//Second Character E
 		glm::mat4 model_E2 = glm::mat4(1.0f);
-		glm::vec3 model_E2_move = glm::vec3(0, 2, 0); //to apply translational 
+		glm::vec3 model_E2_move = glm::vec3(0, 13, 0); //to apply translational 
 
 		//Second Character L
 		glm::mat4 model_L2 = glm::mat4(1.0f);
-		glm::vec3 model_L2_move = glm::vec3(0, 2, 0); //to apply translational transformations
+		glm::vec3 model_L2_move = glm::vec3(0, 8, 0); //to apply translational transformations
 
 		//Third Character E
 		glm::mat4 model_E3 = glm::mat4(1.0f);
@@ -242,7 +243,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 		//Third Character C
 		glm::mat4 model_C = glm::mat4(1.0f);
-		glm::vec3 model_C_move = glm::vec3(0, 2, 0); //to apply translational transformations
+		glm::vec3 model_C_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 		//Grid
 		glm::mat4 model_grid = glm::mat4(1.0f);
@@ -323,7 +324,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				red = false;
 			}
 			activeModel = 0;
-			previousActiveModel = 1;
+			previousActiveModel = 0;
 			model = model_L;
 			model_move = model_L_move;
 
@@ -390,6 +391,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			else
 				flag = false;
 
+			activeModel = 4;
+			previousActiveModel = 4;
 			model = model_E3;
 			model_move = model_E3_move;
 		}
@@ -400,6 +403,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			else
 				lights = false;
 
+			activeModel = 5;
+			previousActiveModel = 5;
 			model = model_C;
 			model_move = model_C_move;
 		}
@@ -614,7 +619,11 @@ int main()
 	
 	//ascending Order
 	LModel lModel = LModel();
+	EModel eModel = EModel();
+	EModel e2Model = EModel();
 	LModel l2Model = LModel();
+	EModel e3Model = EModel();
+	CModel cModel = CModel();
 	
 	//shader set up
 	shader.Bind();
@@ -752,24 +761,7 @@ int main()
 			model_C_matrix = model_world * translator_C * model_C;
 
 			break;
-
 		case 4:
-			model_L2_matrix = model_world * translator * model;
-			model_L2 = model;
-			model_L2_move = model_move;
-
-			model_cube_matrix = model_world * translator_cube * model_cube;
-			grid_matrix = model_world * translator_grid * model_grid;
-
-			model_L_matrix = model_world * translator_L * model_L;
-			model_E_matrix = model_world * translator_E * model_E;
-			model_E2_matrix = model_world * translator_E2 * model_E2;
-			model_E3_matrix = model_world * translator_E3 * model_E3;
-			model_C_matrix = model_world * translator_C * model_C;
-
-
-			break;
-		case 5:
 			model_E3_matrix = model_world * translator * model;
 			model_E3 = model;
 			model_E3_move = model_move;
@@ -784,7 +776,7 @@ int main()
 			model_C_matrix = model_world * translator_C * model_C;
 
 			break;
-		case 6:
+		case 5:
 			model_C_matrix = model_world * translator* model;
 			
 			model_C = model;
@@ -837,33 +829,35 @@ int main()
 		// Draws Models
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
 		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.3)));
-		lModel.drawModel(renderingMode, &shader, model_L_matrix);
+		lModel.drawModel(renderingMode, &shader, model_L);
 		
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_E_matrix));
 		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(1, 0, 0)));
-		//leCherngModel.drawModel(renderingMode);
-
+		eModel.drawModel(renderingMode,&shader,model_E);
 		
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_E2_matrix));
 		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0, 0)));
-		//laginModel.drawModel(renderingMode);
+		e2Model.drawModel(renderingMode, &shader, model_E2);
 
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L2_matrix));
 		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0, 1)));
-		l2Model.drawModel(renderingMode, &shader, model_L2_matrix);
+		l2Model.drawModel(renderingMode, &shader, model_L2);
 
-		//3rd L
+		//3rd e
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_E3_matrix));
 		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 1, 1)));
+		e3Model.drawModel(renderingMode, &shader, model_E3);
 
 		//C
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_C_matrix));
-		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 1, 1)));
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 1, 0.3)));
+		cModel.drawModel(renderingMode, &shader, model_C);
 
 		// Draws line
 		glLineWidth(1.0f);
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
-		//lines3dObject.drawLines(mm_loc, &shader, line_matrix);
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
+		lines3dObject.drawLines(mm_loc, &shader, line_matrix);
 
 		// Draws grid
 		lines3dShader.Bind();
@@ -884,57 +878,4 @@ int main()
 	return 0;
 }
 
-void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength)
-{
-	GLfloat halfSide = edgeLength * 0.5f;
-
-	GLfloat vertices[] =
-	{
-		// front face
-		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left
-		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // top right
-		centerX + halfSide, centerY - halfSide, centerZ + halfSide, // bottom right
-		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // bottom left
-
-		// back face
-		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top left
-		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // top right
-		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
-		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // bottom left
-
-		// left face
-		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left
-		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top right
-		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
-		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // bottom left
-
-		// right face
-		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // top left
-		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // top right
-		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
-		centerX + halfSide, centerY - halfSide, centerZ + halfSide, // bottom left
-
-		// top face
-		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left
-		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top right
-		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // bottom right
-		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // bottom left
-
-		// top face
-		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // top left
-		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // top right
-		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
-		centerX + halfSide, centerY - halfSide, centerZ + halfSide  // bottom left
-	};
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//glColor3f( colour[0], colour[1], colour[2] );
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-
-	glDrawArrays(GL_QUADS, 0, 24);
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-}
 

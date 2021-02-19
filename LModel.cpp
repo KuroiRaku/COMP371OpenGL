@@ -12,26 +12,28 @@ LModel::LModel() {
 	leftSide = Sphere(0, 0, 0, 0.25f, 1.0f);
 	bottomSide = Cube(0, 0, 0, 0.5f, 1.f, 0.25f);
 
-	sphereMatrix = glm::rotate(sphereMatrix, glm::radians(90.f), glm::vec3(1, 0, 0));
+	sphereMatrix = glm::rotate(sphereMatrix, glm::radians(90.f), glm::vec3(-1, 0, 0));
 
 	
 }
 
 void LModel::drawModel(int drawMode, Shader* shader, glm::mat4 objectMatrix)
 {
-
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	drawLetter(0, 0, 0, shader, objectMatrix);
 }
 
 void LModel::drawLetter(float x, float y, float z, Shader* shader, glm::mat4 objectMatrix)
 {
-	GLuint mm = shader->GetUniformLocation("mm");
-	//Rotation of sphere is done like so
-	sphereMatrix = objectMatrix * sphereMatrix;
-	glUniformMatrix4fv(mm, 1, 0, glm::value_ptr(sphereMatrix));
-	leftSide.draw();
-	//Cancelling rotation for next 
-	cubeMatrix = objectMatrix * cubeMatrix;
-	glUniformMatrix4fv(mm, 1, 0, glm::value_ptr(cubeMatrix));
-	bottomSide.drawModel();
+	
+	Cube bottom = Cube(0, 0, 0, 0.5f, 1.f, 0.25f);
+	bottom.drawModel();
+	bottom = Cube(1, 0, 0, 0.5f, 1.f, 0.25f);
+	bottom.drawModel();
+
+	Sphere side = Sphere(-1, 1, 0, 0.25, 1);
+	side.draw();
+	Sphere side2 = Sphere(-1, 2, 0, 0.25, 1);
+	side.draw();
+
 }

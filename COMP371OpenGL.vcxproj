@@ -145,8 +145,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CModel.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Cylinder.cpp" />
+    <ClCompile Include="EModel.cpp" />
     <ClCompile Include="LModel.cpp" />
     <ClCompile Include="dependencies\windows\glad\src\glad.c" />
     <ClCompile Include="engine\Font.cpp" />
@@ -157,8 +159,10 @@
     <ClCompile Include="sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CModel.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Cylinder.h" />
+    <ClInclude Include="EModel.h" />
     <ClInclude Include="LModel.h" />
     <ClInclude Include="engine\Font.h" />
     <ClInclude Include="engine\GLDebugMessageCallback.h" />

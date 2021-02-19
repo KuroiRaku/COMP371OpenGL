@@ -17,9 +17,6 @@
     <Filter Include="Resources\Object">
       <UniqueIdentifier>{55a0af03-2d71-409f-bf79-a75356854a4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Quiz1LettersModels">
-      <UniqueIdentifier>{498180f9-ad93-49d6-a98c-6b6987b42d31}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\Shader.cpp">
@@ -49,8 +46,14 @@
     <ClCompile Include="Cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="LModel.cpp">
-      <Filter>Source Files\Quiz1LettersModels</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -81,8 +84,14 @@
     <ClInclude Include="Cube.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="CModel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EModel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="LModel.h">
-      <Filter>Source Files\Quiz1LettersModels</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@ class Sphere
 {
 public:
     Sphere(float x, float y, float z, float radius, float elongatedLength);
+    Sphere() {};
     ~Sphere();
     void init(float x, float y, float z, float radius, float elongatedLength);
     void draw();
