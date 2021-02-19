@@ -49,6 +49,15 @@
     <ClCompile Include="DannModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QuizModelsAlessandro.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Shader.h">
@@ -79,6 +88,15 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="DannModel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuizModelsAlessandro.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -24,6 +24,7 @@
 #include "../LeCherngModel.h"
 #include "../Laginho.h"
 #include "../DannModel.h"
+#include "../QuizModelsAlessandro.h"
 
 using namespace std;
 
@@ -38,20 +39,38 @@ glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera 
 
 //model settings
 glm::mat4 model = glm::mat4(1.0f); //active model
-glm::vec3 model_move = glm::vec3(0, 2, -10); //to apply translational transformations
+glm::vec3 model_move = glm::vec3(0, 0, 0); //to apply translational transformations
+
+// QUIZ MODEL SETTINGS (NOT INITIAL POSITION WILL CHANGE
+glm::mat4 letter_I = glm::mat4(1.0f);
+glm::vec3 letter_I_move = glm::vec3(0, 0, 0); //to apply translational transformations
+glm::mat4 letter_L = glm::mat4(1.0f);
+glm::vec3 letter_L_move = glm::vec3(0, 0, 0); //to apply translational transformations
+glm::mat4 letter_K = glm::mat4(1.0f);
+glm::vec3 letter_K_move = glm::vec3(0, 0, 0); //to apply translational transformations
+glm::mat4 letter_R = glm::mat4(1.0f);
+glm::vec3 letter_R_move = glm::vec3(0, 0, 0); //to apply translational transformations
+glm::mat4 letter_E = glm::mat4(1.0f);
+glm::vec3 letter_E_move = glm::vec3(0, 0, 0); //to apply translational transformations
+glm::mat4 letter_S = glm::mat4(1.0f);
+glm::vec3 letter_S_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 //Alessandro
 glm::mat4 model_A = glm::mat4(1.0f);
 glm::vec3 model_A_move = glm::vec3(0, 2, -10); //to apply translational transformations
+
 //Le Cherng
 glm::mat4 model_L = glm::mat4(1.0f);
 glm::vec3 model_L_move = glm::vec3(0, 2, 10); //to apply translational transformations
+
 //Dan
 glm::mat4 model_D = glm::mat4(1.0f);
 glm::vec3 model_D_move = glm::vec3(10, 2, 0); //to apply translational transformations
+
 //LaginHo
 glm::mat4 model_La = glm::mat4(1.0f);
 glm::vec3 model_La_move = glm::vec3(-10, 2, 0); //to apply translational transformations
+
 //LaginHo
 glm::mat4 model_grid = glm::mat4(1.0f);
 glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
@@ -82,24 +101,29 @@ void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeSiz
 void resetToPreviousModel(int previousActiveModel) {
 	switch (previousActiveModel)
 	{
-	case 0:
-		model = model_A;
-		model_move = model_A_move;
+	case 0: // K
+		model = letter_K;
+		model_move = letter_K_move;
 		break;
-	case 1:
-		model = model_La;
-		model_move = model_La_move;
+	case 1: // R
+		model = letter_R;
+		model_move = letter_R_move;
 		break;
-	case 2:
-		model = model_D;
-		model_move = model_D_move;
+	case 2: // E
+		model = letter_E;
+		model_move = letter_E_move;
 		break;
-	case 3:
-		model = model_L;
-		model_move = model_L_move;
+	case 3: // S
+		model = letter_S;
+		model_move = letter_S_move;
 		break;
-	case 4:
-		cout << "Error Occured" << endl;
+	case 4: // L
+		model = letter_L;
+		model_move = letter_L_move;
+		break;
+	case 5: // I
+		model = letter_I;
+		model_move = letter_I_move;
 		break;
 	}
 	activeModel = previousActiveModel;
@@ -116,6 +140,12 @@ void rotateAround(glm::vec3& moveVec, glm::mat4& matrix, glm::vec3 rotation) {
 	identityMatrix = glm::translate(identityMatrix, glm::vec3(moveVec.x, moveVec.y, moveVec.z));
 	identityMatrix *= matrix;
 	matrix = identityMatrix;
+}
+
+void SetColor(bool r, bool g, bool b, GLint red_id, GLint green_id, GLint blue_id) {
+	glUniform1i(red_id, r);
+	glUniform1i(green_id, g);
+	glUniform1i(blue_id, b);
 }
 
 #pragma region KeyCallback
@@ -190,31 +220,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		model_world = glm::mat4(1.f);
 	}
 
-	//full reset
-	if (key == GLFW_KEY_0)
-	{
-		model = glm::mat4(1.0f);
-		model_move = glm::vec3(0, 2, -10); //to apply translational transformations
-
-		//Alessandro
-		model_A = glm::mat4(1.0f);
-		model_A_move = glm::vec3(0, 2, -10); //to apply translational transformations
-		//Le Cherng
-		model_L = glm::mat4(1.0f);
-		model_L_move = glm::vec3(0, 2, 10); //to apply translational transformations
-		   //Dan
-		model_D = glm::mat4(1.0f);
-		model_D_move = glm::vec3(10, 2, 0); //to apply translational transformations
-	   //LaginHo
-		model_La = glm::mat4(1.0f);
-		model_La_move = glm::vec3(-10, 2, 0); //to apply translational transformations
-		  //LaginHo
-		model_grid = glm::mat4(1.0f);
-		model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
-
-		model_world = glm::mat4(1.f);
-	}
-	
 	if (!worldOrientationKeyPressed) {
 		//WASD buttons to move the model
 		if (!leftShiftPressed) {
@@ -273,83 +278,64 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			model = glm::scale(model, glm::vec3(0.9f));
 		}
 
+
+		if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
+			activeModel = 0;
+			previousActiveModel = 0;
+			model = letter_K;
+			model_move = letter_K_move;
+		}
+
 		//toggle the red channel on/off
 		if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-			if (red != true) {
-				red = true;
-			}
-			else
-			{
-				red = false;
-			}
-			activeModel = 0;
+			activeModel = 1;
 			previousActiveModel = 1;
-			model = model_A;
-			model_move = model_A_move;
+			model = letter_R;
+			model_move = letter_R_move;
 		}
 
 		//toggle the green channel on/off
 		if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-			if (green != true)
-			{
-				green = true;
-			}
-			else
-			{
-				green = false;
-			}
-			activeModel = 1;
-			previousActiveModel = 1;
-			model = model_La;
-			model_move = model_La_move;
+			activeModel = 2;
+			previousActiveModel = 2;
+			model = letter_E;
+			model_move = letter_E_move;
 		}
 
 		//toggle the blue channel on/off
 		if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
-			if (blue != true) {
-				blue = true;
-			}
-			else {
-				blue = false;
-			}
-			activeModel = 2;
-			previousActiveModel = 2;
-			model = model_D;
-			model_move = model_D_move;
+			activeModel = 3;
+			previousActiveModel = 3;
+			model = letter_S;
+			model_move = letter_S_move;
 		}
 
 		//turn on all channels
 		if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
-			if (colour != true) {
-				colour = true;
 
-				red = false;
-				green = false;
-				blue = false;
-				colour = false;
-			}
-			else
-				colour = false;
-
-			activeModel = 3;
-			previousActiveModel = 3;
-			model = model_L;
-			model_move = model_L_move;
+			// activate the letter L
+			activeModel = 4;
+			previousActiveModel = 4;
+			model = letter_L;
+			model_move = letter_L_move;
 		}
 
 		//toggle between Gouraud and Phong shading
 		if (key == GLFW_KEY_5 && action == GLFW_PRESS) {
-			if (flag == false)
-				flag = true;
-			else
-				flag = false;
+			flag = !flag;
+			// activate the letter I
+			activeModel = 5;
+			previousActiveModel = 5;
+			model = letter_I;
+			model_move = letter_I_move;
 		}
 
 		if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
-			if (lights == false)
-				lights = true;
-			else
-				lights = false;
+			cout << "6666666";
+			activeModel = 6;
+			previousActiveModel = 6;
+			model = model_world;
+			model_move = model_world_move;
 		}
 
 		/*if (key == GLFW_KEY_M && action == GLFW_PRESS) {
@@ -571,18 +557,17 @@ int main()
 	glm::mat4 proj_matrix = glm::perspective(glm::radians(45.f), 1.f, 0.1f, 200.f); //perspective view. Third parameter should be > 0, or else errors
 
 	//other model matrix
-	
-	//Alessandro
-	glm::mat4 model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
-	//Le Cherng
-	glm::mat4 model_L_matrix = glm::translate(glm::mat4(1.f), model_L_move);
-	//Dan
-	glm::mat4 model_D_matrix = glm::translate(glm::mat4(1.f), model_D_move);
-	//LaginHo
-	glm::mat4 model_La_matrix = glm::translate(glm::mat4(1.f), model_La_move);
+
+	// QUIZ SETTINGS
+	glm::mat4 letter_I_matrix = glm::translate(glm::mat4(1.f), letter_I_move);
+	glm::mat4 letter_L_matrix = glm::translate(glm::mat4(1.f), letter_L_move);
+	glm::mat4 letter_K_matrix = glm::translate(glm::mat4(1.f), letter_K_move);
+	glm::mat4 letter_R_matrix = glm::translate(glm::mat4(1.f), letter_R_move);
+	glm::mat4 letter_E_matrix = glm::translate(glm::mat4(1.f), letter_E_move);
+	glm::mat4 letter_S_matrix = glm::translate(glm::mat4(1.f), letter_S_move);
+
 
 	glm::mat4 grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-
 	glm::mat4 line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 
 	GLuint vm_loc = shader.GetUniformLocation("vm");
@@ -625,6 +610,13 @@ int main()
 		view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 
+		// QUIZ SETTINGS
+		glm::mat4 translator_letter_I = glm::translate(glm::mat4(1.0f), letter_I_move);
+		glm::mat4 translator_letter_L = glm::translate(glm::mat4(1.0f), letter_L_move);
+		glm::mat4 translator_letter_K = glm::translate(glm::mat4(1.0f), letter_K_move);
+		glm::mat4 translator_letter_R = glm::translate(glm::mat4(1.0f), letter_R_move);
+		glm::mat4 translator_letter_E = glm::translate(glm::mat4(1.0f), letter_E_move);
+		glm::mat4 translator_letter_S = glm::translate(glm::mat4(1.0f), letter_S_move);
 		
 		glm::mat4 translator_A = glm::translate(glm::mat4(1.0f), model_A_move);
 		glm::mat4 translator_La = glm::translate(glm::mat4(1.0f), model_La_move);
@@ -633,8 +625,14 @@ int main()
 		glm::mat4 translator_grid = glm::translate(glm::mat4(1.0f), model_grid_move);
 		glm::mat4 translator = glm::translate(glm::mat4(1.0f), model_move);
 
+
+
+
+		// Here I will switch between characters [0-5]
+		model_matrix = model_world * translator * model;
 		switch (activeModel) {
-		case 0:
+		case 0: // K letter
+			/*
 			model_matrix = model_world * translator * model;
 			model_A_matrix = model_world * translator * model;
 			model_A = model;
@@ -644,50 +642,35 @@ int main()
 			model_La_matrix = model_world * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
-
+			*/
+			letter_K_matrix = model_world * translator * model;
+			letter_K = model;
+			letter_K_move = model_move;
 			break;
-		case 1:
-			model_La_matrix = model_world * translator * model;
-			model_La = model;
-			model_La_move = model_move;
-			
-			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world * translator_grid * model_grid;
-			model_A_matrix = model_world * translator_A * model_A;
-			model_D_matrix = model_world * translator_D * model_D;
-			model_L_matrix = model_world * translator_L * model_L;
-
+		case 1: // R letter
+			letter_R_matrix = model_world * translator * model;
+			letter_R = model;
+			letter_R_move = model_move;
 			break;
-		case 2:
-			model_D_matrix = model_world * translator * model;
-			model_D = model;
-			model_D_move = model_move;
-			
-			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world * translator_grid * model_grid;
-			model_A_matrix = model_world * translator_A * model_A;
-			model_La_matrix = model_world * translator_La * model_La;
-			model_L_matrix = model_world * translator_L * model_L;
-
+		case 2: // E letter
+			letter_E_matrix = model_world * translator * model;
+			letter_E = model;
+			letter_E_move = model_move;
 			break;
-		case 3:
-			model_L_matrix = model_world * translator * model;
-			model_L = model;
-			model_L_move = model_move;
-			
-			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world * translator_grid * model_grid;
-			model_A_matrix = model_world * translator_A * model_A;
-			model_La_matrix = model_world * translator_La * model_La;
-			model_D_matrix = model_world * translator_D * model_D;
+		case 3: // S letter
+			letter_S_matrix = model_world * translator * model;
+			letter_S = model;
+			letter_S_move = model_move;
 			break;
-		case 4:
-			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world * translator_grid * model_grid;
-			model_A_matrix = model_world * translator_A * model_A;
-			model_La_matrix = model_world * translator_La * model_La;
-			model_D_matrix = model_world * translator_D * model_D;
-			model_L_matrix = model_world * translator_L * model_L;
+		case 4: // L letter
+			letter_L_matrix = model_world * translator * model;
+			letter_L = model;
+			letter_L_move = model_move;
+			break;
+		case 5: // I letter
+			letter_I_matrix = model_world * translator * model;
+			letter_I = model;
+			letter_I_move = model_move;
 
 			break;
 		}
@@ -704,29 +687,40 @@ int main()
 
 		// --- Render ---
 		// Clear the colorbuffer
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Draws cube
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+		QuizModelsAlessandro quizModels = QuizModelsAlessandro();
+		//K
+		SetColor(true, false, false, red_id, green_id, blue_id);
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_K_matrix));
+		quizModels.setLetterK(0, 0, 0);
 
-		// Draws Models
-		//model_A_shader.Bind();
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
-		alessandroModel.drawModel(renderingMode);
+		//R
+		SetColor(false, true, false, red_id, green_id, blue_id);
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_R_matrix));
+		quizModels.setLetterR(0, 3.0f, 0);
 
-		//model_L_shader.Bind();
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
-		leCherngModel.drawModel(renderingMode);
+		//E
+		SetColor(false, false, true, red_id, green_id, blue_id);
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_E_matrix));
+		quizModels.setLetterE(0, 9.0f, 0);
 
-		//model_La_shader.Bind();
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
-		laginModel.drawModel(renderingMode);
+		//S
+		SetColor(true, false, true, red_id, green_id, blue_id);
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_S_matrix));
+		quizModels.setLetterS(0, 12.0f, 0);
 
-		//model_D_shader.Bind();
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
-		danModel.drawModel(renderingMode);
+		//L
+		SetColor(true, true, false, red_id, green_id, blue_id);
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_L_matrix));
+		quizModels.setLetterL(0,15.0f,0);
+
+		//I
+		SetColor(true, true, true, red_id, green_id, blue_id);
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_I_matrix));
+		quizModels.setLetterI(0, 18.5f, 0);
+
 
 		// Draws line
 		lines3dShader.Bind();
@@ -751,6 +745,7 @@ int main()
 	glfwTerminate();
 	return 0;
 }
+
 
 void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength)
 {
