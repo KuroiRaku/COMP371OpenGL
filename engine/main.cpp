@@ -171,7 +171,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 
 	if ((key == GLFW_KEY_LEFT|| key == GLFW_KEY_RIGHT || key == GLFW_KEY_UP || key == GLFW_KEY_DOWN) && action == GLFW_PRESS) {
-		activeModel = 4;
+		activeModel = 6;
 		worldOrientationKeyPressed = true;
 	}
 
@@ -625,9 +625,6 @@ int main()
 		glm::mat4 translator_grid = glm::translate(glm::mat4(1.0f), model_grid_move);
 		glm::mat4 translator = glm::translate(glm::mat4(1.0f), model_move);
 
-
-
-
 		// Here I will switch between characters [0-5]
 		model_matrix = model_world * translator * model;
 		switch (activeModel) {
@@ -673,6 +670,15 @@ int main()
 			letter_I_move = model_move;
 
 			break;
+		case 6:
+			model_matrix = model_world * translator_A * model_A;
+			grid_matrix = model_world * translator_grid * model_grid;
+			letter_K_matrix = model_world * translator_letter_K * letter_K;
+			letter_R_matrix = model_world * translator_letter_R * letter_R;
+			letter_E_matrix = model_world * translator_letter_E * letter_E;
+			letter_S_matrix = model_world * translator_letter_S * letter_S;
+			letter_L_matrix = model_world * translator_letter_L * letter_L;
+			letter_I_matrix = model_world * translator_letter_I * letter_I;
 		}
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
 
