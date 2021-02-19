@@ -24,8 +24,6 @@
 #include "../LeCherngModel.h"
 #include "../Laginho.h"
 #include "../DannModel.h"
-#include "../DrawModel.h"
-#include "../Cube.h"
 
 using namespace std;
 
@@ -463,7 +461,7 @@ void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 
 #pragma endregion KeyCallback
 
-// The MAIN function, from here we start the application and run the game loop
+ //The MAIN function, from here we start the application and run the game loop
 int main()
 {
 	std::cout << "Starting GLFW context" << std::endl;
@@ -561,10 +559,10 @@ int main()
 	//model loading sort of
 	Lines3d lines3dObject = Lines3d();
 	Grid grid = Grid();
+	AlessandroModel alessandroModel = AlessandroModel();
 	LeCherngModel leCherngModel = LeCherngModel();
 	DannModel danModel = DannModel();
 	LaginhoModel laginModel = LaginhoModel();
-	DrawModel test = DrawModel();
 
 	//shader set up
 	shader.Bind();
@@ -733,17 +731,16 @@ int main()
 		danModel.drawModel(renderingMode, &shader, model_D_matrix);
 
 		// Draws line
-		lines3dShader.Bind();
 		glLineWidth(1.0f);
-		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
-		lines3dObject.drawLines();
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
+		lines3dObject.drawLines(mm_loc, &shader, line_matrix);
 
 		// Draws grid
+		lines3dShader.Bind();
 		glLineWidth(0.5f);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(grid_matrix));
-		grid.drawGrid();
+		//grid.drawGrid();
 		// Unbinds VAO
 		glBindVertexArray(0);
 		//activeModel = initModel;

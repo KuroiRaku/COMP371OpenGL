@@ -1,6 +1,11 @@
 #include <glad/glad.h>	// include GL Extension Wrangler
 #include <glfw/glfw3.h>	// include GLFW helper library
 #include <iostream>
+#include "Shader.h"
+#include "Cylinder.h"
+#include <glm/gtc/matrix_inverse.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 #pragma once
 class Lines3d
@@ -8,13 +13,16 @@ class Lines3d
 
 public:
 	Lines3d();
-	int getIndicesSize();
-	GLuint getVAO();
-	void drawLines();
-	GLuint shaderProgram;
 
-private:
-	GLuint vao;
-	void compileShader();
+	void drawLines(GLint mm, Shader* shader, glm::mat4 objectMatrix);
+
+	Cylinder cylinderX;
+	Cylinder cylinderY;
+	Cylinder cylinderZ;
+
+	glm::mat4 matrix_X;
+	glm::mat4 matrix_Y;
+	glm::mat4 matrix_Z;
+
 };
 

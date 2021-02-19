@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -146,6 +146,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AlessandroModel.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="DannModel.cpp" />
     <ClCompile Include="dependencies\windows\glad\src\glad.c" />
     <ClCompile Include="engine\Font.cpp" />
@@ -155,9 +157,12 @@
     <ClCompile Include="Laginho.cpp" />
     <ClCompile Include="LeCherngModel.cpp" />
     <ClCompile Include="lines3d.cpp" />
+    <ClCompile Include="sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlessandroModel.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="Cylinder.h" />
     <ClInclude Include="DannModel.h" />
     <ClInclude Include="engine\Font.h" />
     <ClInclude Include="engine\GLDebugMessageCallback.h" />
@@ -167,6 +172,7 @@
     <ClInclude Include="Laginho.h" />
     <ClInclude Include="LeCherngModel.h" />
     <ClInclude Include="lines3d.h" />
+    <ClInclude Include="sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader" />

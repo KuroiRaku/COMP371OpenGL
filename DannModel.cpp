@@ -190,12 +190,15 @@ void DannModel::setLetterN(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 	};
 	glGenVertexArrays(1, &this->vao_N);
 	glBindVertexArray(this->vao_N);
+	
 	GLuint vertices_VBO;
 	glGenBuffers(1, &vertices_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO);
 	glBufferData(GL_ARRAY_BUFFER, (sizeof(vertices) / sizeof(vertices[0])) * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+
+
 	indiciesN = (sizeof(indicies) / sizeof(indicies[0]));
 	GLuint EBO;
 	glGenBuffers(1, &EBO);
