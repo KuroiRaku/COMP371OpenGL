@@ -175,6 +175,7 @@
     <ClInclude Include="Sphere.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="QUIZ_README.MD" />
     <None Include="resources\shaders\Basic.shader" />
     <None Include="resources\shaders\fragment.shader" />
     <None Include="resources\shaders\lines3d_vertex.shader" />

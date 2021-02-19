@@ -629,17 +629,6 @@ int main()
 		model_matrix = model_world * translator * model;
 		switch (activeModel) {
 		case 0: // K letter
-			/*
-			model_matrix = model_world * translator * model;
-			model_A_matrix = model_world * translator * model;
-			model_A = model;
-			model_A_move = model_move;
-			
-			grid_matrix = model_world * translator_grid * model_grid;
-			model_La_matrix = model_world * translator_La * model_La;
-			model_D_matrix = model_world * translator_D * model_D;
-			model_L_matrix = model_world * translator_L * model_L;
-			*/
 			letter_K_matrix = model_world * translator * model;
 			letter_K = model;
 			letter_K_move = model_move;

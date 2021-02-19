@@ -125,6 +125,9 @@
     <None Include="resources\shaders\lines3d_vertex.shader">
       <Filter>Resources\Shader</Filter>
     </None>
+    <None Include="QUIZ_README.MD">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\shaders\lines3d_fragment.shader">
