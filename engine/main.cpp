@@ -24,6 +24,8 @@
 #include "../LeCherngModel.h"
 #include "../Laginho.h"
 #include "../DannModel.h"
+#include "../DrawModel.h"
+#include "../Cube.h"
 
 using namespace std;
 
@@ -559,10 +561,10 @@ int main()
 	//model loading sort of
 	Lines3d lines3dObject = Lines3d();
 	Grid grid = Grid();
-	AlessandroModel alessandroModel = AlessandroModel();
 	LeCherngModel leCherngModel = LeCherngModel();
 	DannModel danModel = DannModel();
 	LaginhoModel laginModel = LaginhoModel();
+	DrawModel test = DrawModel();
 
 	//shader set up
 	shader.Bind();
@@ -603,7 +605,7 @@ int main()
 	glUniformMatrix4fv(mm_loc, 1, GL_FALSE, glm::value_ptr(model_matrix));
 
 	glUniform3fv(shader.GetUniformLocation("light_color"), 1, glm::value_ptr(glm::vec3(0.8, 0.8, 0.8)));
-	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(glm::vec3(0.0, 20.0, 5.0)));
+	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(glm::vec3(5.0, 20.0, 5.0)));
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 	// 3D Lines Shader camera projection setup
@@ -704,7 +706,7 @@ int main()
 
 		// --- Render ---
 		// Clear the colorbuffer
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.5019f, 0.5019f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Draws cube
@@ -714,7 +716,7 @@ int main()
 		// Draws Models
 		//model_A_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
-		alessandroModel.drawModel(renderingMode);
+		test.setLetterK(0,0,0);
 
 		//model_L_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
@@ -726,7 +728,7 @@ int main()
 
 		//model_D_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
-		danModel.drawModel(renderingMode);
+		danModel.drawModel(renderingMode, &shader, model_D_matrix);
 
 		// Draws line
 		lines3dShader.Bind();
