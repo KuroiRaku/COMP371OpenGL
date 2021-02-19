@@ -145,32 +145,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AlessandroModel.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Cylinder.cpp" />
-    <ClCompile Include="DannModel.cpp" />
+    <ClCompile Include="LModel.cpp" />
     <ClCompile Include="dependencies\windows\glad\src\glad.c" />
     <ClCompile Include="engine\Font.cpp" />
     <ClCompile Include="engine\main.cpp" />
     <ClCompile Include="engine\Shader.cpp" />
     <ClCompile Include="grid.cpp" />
-    <ClCompile Include="Laginho.cpp" />
-    <ClCompile Include="LeCherngModel.cpp" />
     <ClCompile Include="lines3d.cpp" />
     <ClCompile Include="sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AlessandroModel.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Cylinder.h" />
-    <ClInclude Include="DannModel.h" />
+    <ClInclude Include="LModel.h" />
     <ClInclude Include="engine\Font.h" />
     <ClInclude Include="engine\GLDebugMessageCallback.h" />
     <ClInclude Include="engine\ObjLoaderIndex.h" />
     <ClInclude Include="engine\Shader.h" />
     <ClInclude Include="engine\Shaderloader.h" />
-    <ClInclude Include="Laginho.h" />
-    <ClInclude Include="LeCherngModel.h" />
     <ClInclude Include="lines3d.h" />
     <ClInclude Include="sphere.h" />
   </ItemGroup>

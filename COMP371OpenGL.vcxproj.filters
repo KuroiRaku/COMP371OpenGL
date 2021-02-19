@@ -17,6 +17,9 @@
     <Filter Include="Resources\Object">
       <UniqueIdentifier>{55a0af03-2d71-409f-bf79-a75356854a4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Quiz1LettersModels">
+      <UniqueIdentifier>{498180f9-ad93-49d6-a98c-6b6987b42d31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine\Shader.cpp">
@@ -37,18 +40,6 @@
     <ClCompile Include="grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AlessandroModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LeCherngModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Laginho.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DannModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Cylinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,6 +48,9 @@
     </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LModel.cpp">
+      <Filter>Source Files\Quiz1LettersModels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -75,19 +69,7 @@
     <ClInclude Include="engine\Shaderloader.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="LeCherngModel.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="lines3d.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AlessandroModel.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Laginho.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DannModel.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Cylinder.h">
@@ -98,6 +80,9 @@
     </ClInclude>
     <ClInclude Include="Cube.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LModel.h">
+      <Filter>Source Files\Quiz1LettersModels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

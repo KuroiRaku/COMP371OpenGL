@@ -1,67 +1,70 @@
 #include "Cube.h"
 
-Cube::Cube(float x, float y, float z) {
-	SetCube(x, y, z, 1);
+Cube::Cube(float x, float y, float z, float length, float width, float depth) {
+	SetCube(x, y, z, 1, length,width,depth);
 }
-void Cube::SetCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength)
+void Cube::SetCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength, float length, float width, float depth)
 {
 	GLfloat halfSide = edgeLength * 0.5f;
 
 	GLfloat vertices[] =
 	{
 		// front face
-		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left 0
-		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // top right  1
-		centerX + halfSide, centerY - halfSide, centerZ + halfSide, // bottom right 2
-		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // bottom left 3
+		(centerX - halfSide) * width, (centerY + halfSide) *length, (centerZ + halfSide )*depth, // top left 0
+		(centerX + halfSide)* width, (centerY + halfSide)* length, (centerZ + halfSide)* depth, // top right  1
+		(centerX + halfSide)* width, (centerY - halfSide)* length, (centerZ + halfSide)* depth, // bottom right 2
+		(centerX - halfSide)* width, (centerY - halfSide)* length, (centerZ + halfSide)* depth, // bottom left 3
 
 		// back face
-		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top left 4 
-		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // top right 5
-		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right 6 
-		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // bottom left 7
+		(centerX - halfSide)* width, (centerY + halfSide)* length, (centerZ - halfSide)* depth, // top left 4 
+		(centerX + halfSide)* width, (centerY + halfSide)* length, (centerZ - halfSide)* depth, // top right 5
+		(centerX + halfSide)* width, (centerY - halfSide)* length, (centerZ - halfSide)* depth, // bottom right 6 
+		(centerX - halfSide)* width, (centerY - halfSide)* length, (centerZ - halfSide)* depth, // bottom left 7
 
 		// left face
-		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left 8
-		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top right 9
-		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // bottom right 10
-		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // bottom left 11
+		(centerX - halfSide)* width, (centerY + halfSide)* length, (centerZ + halfSide)* depth, // top left 8
+		(centerX - halfSide)* width, (centerY + halfSide)* length, (centerZ - halfSide)* depth, // top right 9
+		(centerX - halfSide)* width, (centerY - halfSide)* length, (centerZ - halfSide)* depth, // bottom right 10
+		(centerX - halfSide)* width, (centerY - halfSide)* length, (centerZ + halfSide)* depth, // bottom left 11
 
 		// right face
-		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // top left 12
-		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // top right 13
-		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right 14
-		centerX + halfSide, centerY - halfSide, centerZ + halfSide, // bottom left 15
+		(centerX + halfSide)* width, (centerY + halfSide)* length, (centerZ + halfSide)* depth, // top left 12
+		(centerX + halfSide)* width, (centerY + halfSide)* length, (centerZ - halfSide)* depth, // top right 13
+		(centerX + halfSide)* width, (centerY - halfSide)* length, (centerZ - halfSide)* depth, // bottom right 14
+		(centerX + halfSide)* width, (centerY - halfSide)*length, (centerZ + halfSide)* depth, // bottom left 15
 
 		// top face
-		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left 16
-		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top right 17
-		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // bottom right 18
-		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // bottom left 19
+		(centerX - halfSide)* width, (centerY + halfSide)* length, (centerZ + halfSide)* depth, // top left 16
+		(centerX - halfSide)* width, (centerY + halfSide)* length, (centerZ - halfSide)* depth, // top right 17
+		(centerX + halfSide)* width, (centerY + halfSide)* length, (centerZ - halfSide)* depth, // bottom right 18
+		(centerX + halfSide)* width, (centerY + halfSide)* length, (centerZ + halfSide)* depth, // bottom left 19
 
 		// top face
-		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // top left 20
-		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // top right 21
-		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right 22
-		centerX + halfSide, centerY - halfSide, centerZ + halfSide  // bottom left 23
+		(centerX - halfSide)* width, (centerY - halfSide)* length, (centerZ + halfSide)* depth, // top left 20
+		(centerX - halfSide)* width, (centerY - halfSide)* length, (centerZ - halfSide)* depth, // top right 21
+		(centerX + halfSide)* width, (centerY - halfSide)* length, (centerZ - halfSide)* depth, // bottom right 22
+		(centerX + halfSide)* width, (centerY - halfSide)* length, (centerZ + halfSide)* depth  // bottom left 23
 	};
 
 	int indicies[] =
 	{
-		3,2,1,
+		 3,2,1,
 		1,0,3,
 
-		7,6,5,
-		5,4,7,
+		4,6,7,
+		4,5,6,
 
-		11,10,9,
-		9,8,11,
+		8,9,10,
+		10,11,8,
 
-		19,14,17,
+		13,12,15,
+		15,14,13,
+
+		19,18,17,
 		17,16,19,
 
-		23,22,21,
-		21,20,23,
+		22,23,20,
+		22,20,21,
 		
 	};
 	glGenVertexArrays(1, &this->vao_Cube);
