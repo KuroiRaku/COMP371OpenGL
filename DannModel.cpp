@@ -16,13 +16,13 @@ DannModel::DannModel() {
 	setNumber7(xOrigin + (1 * distance), yOrigin, zOrigin);
 	setLetterN(xOrigin - (1 * distance), yOrigin, zOrigin);
 	setNumber4(xOrigin + (3 * distance), yOrigin, zOrigin);
-
 	mode = GL_TRIANGLES;
+	
 }
 
-void DannModel::drawModel(int drawMode)
+void DannModel::drawModel(int drawMode, Shader* shader, glm::mat4 objectMatrix)
 {
-
+	
 	if (drawMode == 0) {
 		mode = GL_POINTS;
 		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
@@ -54,7 +54,40 @@ void DannModel::drawModel(int drawMode)
 	//N Model
 	glBindVertexArray(this->vao_N);
 	glDrawElements(mode, indiciesN, GL_UNSIGNED_INT, NULL);
+	drawLetter(0, 0, 0, shader, objectMatrix);
 }
+
+void DannModel::drawLetter(float x, float y, float z, Shader* shader, glm::mat4 objectMatrix)
+{
+	
+/*
+ Cube cube = Cube(2, 5, 0);
+	cube.drawModel();
+	cube = Cube(2, 6, 0);
+	cube.drawModel();
+	cube = Cube(2, 7, 0);
+	cube.drawModel();
+	cube = Cube(2, 8, 0);
+	cube.drawModel();
+	cube = Cube(2, 9, 0);
+	cube.drawModel();
+	cube = Cube(2, 10, 0);
+	cube.drawModel();
+ */
+	//Rotation of sphere is done like so
+	Sphere s = Sphere(2,2,2);
+	s.sphereMatrix = glm::rotate(s.sphereMatrix, glm::radians(50.f), glm::vec3(0, 0, 1));
+	s.sphereMatrix = objectMatrix * s.sphereMatrix;
+	GLuint mm_loc = shader->GetUniformLocation("mm");
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(s.sphereMatrix));
+	s.draw();
+	//Cancelling rotation for next object
+	Cube cube = Cube(2, 5, 0);
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(objectMatrix));
+	cube.drawModel();
+}
+
+
 
 void DannModel::setLetterN(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 {
