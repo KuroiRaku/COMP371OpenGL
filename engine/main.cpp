@@ -693,14 +693,14 @@ int main()
 		}
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
 
-		glUniform1i(flag_id, flag);
+		/*glUniform1i(flag_id, flag);
 		glUniform1i(lights_id, lights);
 		glUniform1i(normalcol_id, normalcol);
 		glUniform1i(greyscale_id, greyscale);
 		glUniform1i(red_id, red);
 		glUniform1i(green_id, green);
-		glUniform1i(blue_id, blue);
-		glUniform1i(colour_id, colour);
+		glUniform1i(blue_id, blue);*/
+		//glUniform1i(colour_id, colour);
 
 		// --- Render ---
 		// Clear the colorbuffer
@@ -714,10 +714,12 @@ int main()
 		// Draws Models
 		//model_A_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.3)));
 		alessandroModel.drawModel(renderingMode);
 
 		//model_L_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(1, 0, 0)));
 		leCherngModel.drawModel(renderingMode);
 
 		//model_La_shader.Bind();
