@@ -1,0 +1,94 @@
+#include "Cube.h"
+
+Cube::Cube(float x, float y, float z) {
+	SetCube(x, y, z, 1);
+}
+void Cube::SetCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength)
+{
+	GLfloat halfSide = edgeLength * 0.5f;
+
+	GLfloat vertices[] =
+	{
+		// front face
+		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left 0
+		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // top right  1
+		centerX + halfSide, centerY - halfSide, centerZ + halfSide, // bottom right 2
+		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // bottom left 3
+
+		// back face
+		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top left 4 
+		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // top right 5
+		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right 6 
+		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // bottom left 7
+
+		// left face
+		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left 8
+		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top right 9
+		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // bottom right 10
+		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // bottom left 11
+
+		// right face
+		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // top left 12
+		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // top right 13
+		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right 14
+		centerX + halfSide, centerY - halfSide, centerZ + halfSide, // bottom left 15
+
+		// top face
+		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left 16
+		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top right 17
+		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // bottom right 18
+		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // bottom left 19
+
+		// top face
+		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // top left 20
+		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // top right 21
+		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right 22
+		centerX + halfSide, centerY - halfSide, centerZ + halfSide  // bottom left 23
+	};
+
+	int indicies[] =
+	{
+		3,2,1,
+		1,0,3,
+
+		7,6,5,
+		5,4,7,
+
+		11,10,9,
+		9,8,11,
+
+		19,14,17,
+		17,16,19,
+
+		23,22,21,
+		21,20,23,
+		
+	};
+	glGenVertexArrays(1, &this->vao_Cube);
+	glBindVertexArray(this->vao_Cube);
+
+	GLuint vertices_VBO;
+	glGenBuffers(1, &vertices_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO);
+	glBufferData(GL_ARRAY_BUFFER, (sizeof(vertices) / sizeof(vertices[0])) * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+	indiciesC = (sizeof(indicies) / sizeof(indicies[0]));
+	GLuint EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indiciesC * sizeof(int), indicies, GL_STATIC_DRAW);
+
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+}
+void Cube:: drawModel() {
+	
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBindVertexArray(this->vao_Cube);
+	glDrawElements(GL_TRIANGLES, indiciesC, GL_UNSIGNED_INT, NULL);
+
+}

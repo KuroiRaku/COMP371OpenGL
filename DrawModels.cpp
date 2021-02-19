@@ -21,19 +21,33 @@ using namespace std;
 */
 DrawModel::DrawModel() {
 	
+	GLfloat xOrigin = 0.0f;
+	GLfloat yOrigin = 0.0f;
+	GLfloat zOrigin = 0.0f;
+
+	lineSize = 0.4f * 2;
+
+	GLfloat distance = 2.0f;
+
+	setLetterK(xOrigin - (3 * distance), yOrigin, zOrigin);
 	
+
+	mode = GL_TRIANGLES;
+	
+}
+
+void DrawModel::drawModel(int drawMode) {
+	
+
+
 	
 }
 
 
-
-void DrawModel::setLetterK()
+void DrawModel::setLetterK(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 {
-	DrawCube(0, 5, 0, 1);
-	glBindVertexArray(this->vao_Cube);
-	glDrawArrays(GL_QUADS, 0, 24);
-
 	
+
 }
 
 void DrawModel::setLetterA()
@@ -55,62 +69,3 @@ void DrawModel::setLetterS()
 
 }
 
-void DrawModel::DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength)
-{
-	GLfloat halfSide = edgeLength * 0.5f;
-
-	GLfloat vertices[] =
-	{
-		// front face
-		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left
-		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // top right
-		centerX + halfSide, centerY - halfSide, centerZ + halfSide, // bottom right
-		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // bottom left
-
-		// back face
-		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top left
-		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // top right
-		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
-		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // bottom left
-
-		// left face
-		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left
-		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top right
-		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
-		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // bottom left
-
-		// right face
-		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // top left
-		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // top right
-		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
-		centerX + halfSide, centerY - halfSide, centerZ + halfSide, // bottom left
-
-		// top face
-		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left
-		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top right
-		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // bottom right
-		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // bottom left
-
-		// top face
-		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // top left
-		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // top right
-		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
-		centerX + halfSide, centerY - halfSide, centerZ + halfSide  // bottom left
-	};
-
-	glGenVertexArrays(1, &this->vao_Cube);
-	glBindVertexArray(this->vao_Cube);
-
-	GLuint vertices_VBO;
-	glGenBuffers(1, &vertices_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO);
-	glBufferData(GL_ARRAY_BUFFER, (sizeof(vertices) / sizeof(vertices[0])) * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
-
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-}

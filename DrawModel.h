@@ -10,7 +10,7 @@ public:
 	DrawModel();
 	void drawModel(int drawMode);
 	void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength);
-	void setLetterK();
+	void setLetterK(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
 	void setLetterA();
 	void setLetterO();
 	void setLetterU();
@@ -26,7 +26,7 @@ GLuint vao_K;
 	GLuint vao_S;
 
 */
-	Sphere sphere = Sphere();
+
 	GLuint vao_Cube;
 	GLfloat lineSize;
 	GLenum mode;

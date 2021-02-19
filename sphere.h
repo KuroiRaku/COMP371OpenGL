@@ -1,17 +1,20 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 #include <glad/glad.h>	
-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 class Sphere
 {
 public:
-    Sphere();
+    Sphere(float x, float y, float z);
     ~Sphere();
-    void init(GLuint vertexPositionID);
-    void cleanup();
+    void init(float x, float y, float z);
     void draw();
-
+    glm::mat4 sphereMatrix = glm::mat4(1.0f);
 private:
+    
     int lats, longs;
     bool isInited;
     GLuint m_vao, m_vboVertex, m_vboIndex;
