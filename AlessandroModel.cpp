@@ -14,7 +14,7 @@ AlessandroModel::AlessandroModel() {
 	setLetterO(xOrigin - (1 * distance), yOrigin, zOrigin);
 	setNumber1(xOrigin + (1 * distance), yOrigin, zOrigin);
 	setNumber4(xOrigin + (3 * distance), yOrigin, zOrigin);
-	
+
 	mode = GL_TRIANGLES;
 }
 
@@ -58,31 +58,31 @@ void AlessandroModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 	GLfloat vertices[] =
 	{
 		// FRONT POSITION
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (left)
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (right)
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right 
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left
-		-1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left (left)
-		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left (right)
-		0.5 * lineSize + xOrigin, yOrigin, zOrigin, //hole [bottom right]
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //hole [top right]
-		-0.5 * lineSize + xOrigin, yOrigin, zOrigin, //hole [bottom left]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //hole [top left]
-		-0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //U LEFT
-		0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //U RIGHT
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (left)
+		1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (right)
+		1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right
+		-1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left
+		-1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left (left)
+		-0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left (right)
+		0.5f * lineSize + xOrigin, yOrigin, zOrigin, //hole [bottom right]
+		0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //hole [top right]
+		-0.5f * lineSize + xOrigin, yOrigin, zOrigin, //hole [bottom left]
+		-0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //hole [top left]
+		-0.5f * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //U LEFT
+		0.5f * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //U RIGHT
 		//BACK POSITION
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (left)
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (right)
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right 
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left
-		-1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (left)
-		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (right)
-		0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //hole [bottom right]
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //hole [top right]
-		-0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //hole [bottom left]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //hole [top left]
-		-0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //U LEFT
-		0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //U RIGHT
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (left)
+		1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (right)
+		1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right
+		-1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left
+		-1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (left)
+		-0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (right)
+		0.5f * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //hole [bottom right]
+		0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //hole [top right]
+		-0.5f * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //hole [bottom left]
+		-0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //hole [top left]
+		-0.5f * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //U LEFT
+		0.5f * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //U RIGHT
 	};
 
 	int indicies[] =
@@ -100,17 +100,17 @@ void AlessandroModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 		10,11,8, //middle
 		11,6,8,
 		// back indicies
-		20, 18, 23, 
-		20, 23, 22, 
-		17, 16, 22, 
-		22, 16, 20, 
-		16, 15, 20, 
-		20, 15, 21, 
-		21, 15, 19, 
-		15, 14, 19, 
-		19, 14, 18, 
-		18, 14, 13, 
-		23, 18, 13, 
+		20, 18, 23,
+		20, 23, 22,
+		17, 16, 22,
+		22, 16, 20,
+		16, 15, 20,
+		20, 15, 21,
+		21, 15, 19,
+		15, 14, 19,
+		19, 14, 18,
+		18, 14, 13,
+		23, 18, 13,
 		23, 13, 12,
 		// Sides
 		1,13,2,
@@ -165,27 +165,27 @@ void AlessandroModel::setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 	GLfloat vertices[] =
 	{
 		// FRONT POSITIONS
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, // bottom left
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right
-		0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right (left)
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top right (left) [bottom]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top left (right) [bottom]
-		-0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left (right)
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left
-		-1.5 * lineSize + xOrigin, yOrigin, zOrigin, //top left (bottom)
-		0.5 * lineSize + xOrigin, yOrigin, zOrigin, //middle under
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, // bottom left
+		1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right
+		1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right
+		0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right (left)
+		0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top right (left) [bottom]
+		-0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top left (right) [bottom]
+		-0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left (right)
+		-1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left
+		-1.5f * lineSize + xOrigin, yOrigin, zOrigin, //top left (bottom)
+		0.5f * lineSize + xOrigin, yOrigin, zOrigin, //middle under
 		// BACK POSITIONS
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, // bottom left
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right
-		0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right (left)
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top right (left) [bottom]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top left (right) [bottom]
-		-0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left (right)
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left
-		-1.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //top left (bottom)
-		0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //middle under
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, // bottom left
+		1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right
+		1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right
+		0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right (left)
+		0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top right (left) [bottom]
+		-0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top left (right) [bottom]
+		-0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left (right)
+		-1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left
+		-1.5f * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //top left (bottom)
+		0.5f * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //middle under
 	};
 
 	int indicies[] =
@@ -198,8 +198,8 @@ void AlessandroModel::setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 		8,5,7,
 		5,6,7,
 		// BACK INDICIES
-		17,16,15, 
-		17,15,18, 
+		17,16,15,
+		17,15,18,
 		18,15,19,
 		15,14,19,
 		10,13,12,
@@ -252,19 +252,19 @@ void AlessandroModel::setNumber1(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 	GLfloat vertices[] =
 	{
 		//FRONT POSITION
-		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right
-		0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, // top left
-		-1.5 * lineSize + xOrigin, lineSize + yOrigin, zOrigin, //under left
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //middle tucked
+		-0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right
+		0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right
+		-1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, // top left
+		-1.5f * lineSize + xOrigin, lineSize + yOrigin, zOrigin, //under left
+		-0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //middle tucked
 		//BACK POSITION
-		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right
-		0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, // top left
-		-1.5 * lineSize + xOrigin, lineSize + yOrigin, zOrigin - lineSize, //under left
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //middle tucked
+		-0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right
+		0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right
+		-1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, // top left
+		-1.5f * lineSize + xOrigin, lineSize + yOrigin, zOrigin - lineSize, //under left
+		-0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //middle tucked
 	};
 
 	int indicies[] =
@@ -318,24 +318,24 @@ void AlessandroModel::setLetterO(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 {
 	GLfloat vertices_lines[] =
 	{
-		// FRONT POSITION	
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //outer bottom left 
-		2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //outer bottom right
-		2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //outer top right
-		-2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //outer top left
-		-1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //inner bottom left 
-		1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //inner bottom right
-		1 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //inner top right
-		-1 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //inner top left
+		// FRONT POSITION
+		-2.0f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //outer bottom left
+		2.0f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //outer bottom right
+		2.0f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //outer top right
+		-2.0f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //outer top left
+		-1.0f * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //inner bottom left
+		1.0f * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //inner bottom right
+		1.0f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //inner top right
+		-1.0f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //inner top left
 		// BACK POSITION
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //outer bottom left 
-		2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //outer bottom right
-		2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //outer top right
-		-2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //outer top left
-		-1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //inner bottom left 
-		1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //inner bottom right
-		1 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //inner top right
-		-1 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //inner top left
+		-2.0f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //outer bottom left
+		2.0f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //outer bottom right
+		2.0f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //outer top right
+		-2.0f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //outer top left
+		-1.0f * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //inner bottom left
+		1.0f * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //inner bottom right
+		1.0f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //inner top right
+		-1.0f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //inner top left
 	};
 
 	int indicies_lines[] =

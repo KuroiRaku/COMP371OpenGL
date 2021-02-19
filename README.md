@@ -1,27 +1,13 @@
-Team Members:\
-Alessandro Kreslin (40025121)<br />
-Dann Kaoussarani (40133457)<br />
-Le Cherng Lee (40122814)<br />
-Arshia Hamidi (40068250)<br />
-<br />
-Our project started with 5 members, but one of the members dropped the class, that’s why there are only 4 models
 
-## Project Overview
-This project shows each member character model that consist of their first letter and last letter of their name as well as first number and last number of their student ID.<br /> This project allow user to rotate the models, moving the camera like in fps as well as rotating the world.<br /> There are some basic shaders code that changes models' colour as well as a little bit of lighting code and is just an extra work that we done.<br /> There's also an objectLoader and we loaded a cube with it as well as a font code which we did not use in the project as of right now. <br />
 
 ## Project Dependencies
-This project uses GLAD and GLFW libraries to run the OpenGL version 4.6 application.<br />
-Other libraries that this project uses are GLM, however the dependencies include other libraries which aren't being used as of right now which is freetype, SOIL, IMGUI, stb. <br />
-We have also set up linux cmake files but some of the libraries listed are not yet included since not all of the libraries are being used at the moment. <br /> 
-**To load and start the application in correct way, please open .sln file. The .sln file contains includes and dependcies configurations** <br />
-For Mac users, sorry that we didn't configure settings (.cmake files) on your platform, this application will only run on windows and maybe linux as of right now unless you implemented your own files.
+This project is meant to run on linux.
+Dependencies are GLEW, GLFW. You are going to need these 2 dependencies installed on your computer as well as pkg-config and ninja-build.
+install all these deps, then run "ninja" in the main directory of the project.
+Also, make sure you have clang(the compiler) installed.
 
 ## Grid and Lines
 The grid is made up of a series of lines 128 x 128 with equal length spreading across the x,z plane\
-The lines are made in the length of 7 grid units apart going in the x,y,z axis\ We binded a separate shader to achieve the different colors of each line.
-
-## The Models
-We only have 4 team members now so we made 4 models. We used the Vertex Array method of creating the models and modelled them using triangle primitives. Each team members model was placed in a separate class for ease of separation.
 
 ## The Camera
 We used the Model View Projection approach to modelling the 3d world with the camera position changing the values\ These are the camera controls:\
@@ -29,21 +15,17 @@ While right mouse button click and move the mouse in x direction: pan camera in 
 While middle button is pressed and move the mouse in y direction: tilt camera in Y direction\
 While left mouse button click: zoom in or out
 
+### More On camera
+You can move around the camera using the Arrow keys.
+You can use Left Shift to move the camera Down and Space to move the camera Up.
+
 ## Model Control
-You can select each of the model through the keys 1,2,3,4. From there here are the controls\
-‘U’: to increase the scale\
-‘J’: to decrease the scale\
-‘WASD’: to move the model up, left, down, right respectively\
-‘SHIFT + WASDQE’: to rotate the model in pitch, yaw, roll direction respectively by 5 degrees respectively\
-‘P’: to render model with points\
-‘L’: to render model with lines\
-’T’: to render model with triangles\
-'right arrow button': To rotate the world model to +y axis\
-'left arrow button': To rotate the world model to -y axis\
-'up arrow button': To rotate the world to +x axis\
-'down arrow button': To rotate the world to -x axis\
-'home button': Reset all the world matrix to its original position
-'0': Reset every model to its original position
+You can select each Letter using the number keys 0-5
+You can move around the selected letter using W A S D
+To move the letters vertically you use P for up and M for down
+You can also toggle between LINE polygon mode and FILL with hotkeys G and H
 
 ## Code Reference
-We have refer to code in [learnopengl.com](learnopengl.com)
+I have referred to code from [learnopengl.com](learnopengl.com)
+And I also used a precoded OBJLoader class: https://github.com/BennyQBD/ModernOpenGLTutorial/blob/master/obj_loader.cpp
+And here is the header for the OBJLoader class: https://github.com/BennyQBD/ModernOpenGLTutorial/blob/master/obj_loader.h

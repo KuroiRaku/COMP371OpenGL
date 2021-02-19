@@ -35,7 +35,7 @@ ShaderProgramSource Shader:: ParseShader(const std::string& vertexFilepath, cons
     else {
         std::cout << "Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n%s"+ vertexFilepath << std::endl;
         std::cin.get();
-        
+
     }
 
     // Read the Fragment Shader code from the file
@@ -53,24 +53,19 @@ ShaderProgramSource Shader:: ParseShader(const std::string& vertexFilepath, cons
 
  unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 {
-    unsigned int id = glCreateShader(type);
-    const char* src = source.c_str();
-    glShaderSource(id, 1, &src, nullptr);
-    glCompileShader(id);
+     unsigned int id = glCreateShader(type);
+     const char* src = source.c_str();
+     glShaderSource(id, 1, &src, nullptr);
+     glCompileShader(id);
 
-    int result;
-    glGetShaderiv(id, GL_COMPILE_STATUS, &result);
-    if (result == GL_FALSE)
-    {
-        int length;
-        glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-        char* message = (char*)_malloca(length * sizeof(char));
-
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << message << std::endl;
-        glDeleteShader(id);
-        return 0;
-    }
-    return id;
+     int result;
+     glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+     if (result == GL_FALSE) {
+          std::cout << "Failed to compile shader" << std::endl;
+          glDeleteShader(id);
+          return 0;
+     }
+     return id;
 }
 
 unsigned int Shader::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
@@ -129,7 +124,7 @@ int Shader::GetUniformLocation(const std::string& name)
     GLCall(int location = glGetUniformLocation(m_RendererID, name.c_str()));
     if (location == -1)
         std::cout << "Warning: Uniform" << name << " ' doesn't exist" << std::endl;
-    
+
     m_UniformLocationCache[name] = location;
     return location;
 }

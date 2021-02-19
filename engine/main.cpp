@@ -1,8 +1,9 @@
 //example skeleton code 2021 winter comp371
 //modified from http://learnopengl.com/
 
-#include <glad/glad.h>	// include GL Extension Wrangler
-#include <glfw/glfw3.h>	// include GLFW helper library
+#include <GL/glew.h>	// include GL Extension Wrangler
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>	// include GLFW helper library
 
 #include <stdio.h>
 #include <iostream>
@@ -16,7 +17,6 @@
 
 #include "ObjLoaderIndex.h"
 #include "Shader.h"
-#include "Font.h"
 #include "GLDebugMessageCallback.h"
 #include "../lines3d.h"
 #include "../grid.h"
@@ -24,15 +24,38 @@
 #include "../LeCherngModel.h"
 #include "../Laginho.h"
 #include "../DannModel.h"
+#include "../Model.hpp"
+#include "../Transform.hpp"
 
 using namespace std;
 
 // Window dimensions
 const GLuint WIDTH = 1024, HEIGHT = 768;
 
+struct Entity {
+	Entity(Transform t, glm::vec3 c, RawModel* m){
+		transform = t;
+		color = c;
+		model = m;
+	}
+	Transform transform;
+	glm::vec3 color;
+	RawModel* model;
+};
+
+struct Letter {
+	Letter(){
+
+	}
+	std::vector<Entity> entities;
+	bool isSelected = false;
+};
+
+std::vector<Letter> letters;
+
 //camera settings
-glm::vec3 cam_pos = glm::vec3(0, 2, 90);
-glm::vec3 cam_dir = glm::vec3(0, 0, -1); //direction means what the camera is looking at
+glm::vec3 cam_pos = glm::vec3(0, 10, 20);
+glm::vec3 cam_dir = glm::vec3(0, -1, -2); //direction means what the camera is looking at
 glm::vec3 temp_cam_dir = glm::vec3(0, 0, 1); //use this for the cross product or else when cam_dir and cam_up overlap, the cross product will be 0 (bad!)
 glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera is directing towards
 
@@ -105,8 +128,8 @@ void resetToPreviousModel(int previousActiveModel) {
 	activeModel = previousActiveModel;
 }
 
-// Rotate around a point 
-// Note: This function is not in used, because assignment doesn't require it. But we will still keep it if we want to play around :D 
+// Rotate around a point
+// Note: This function is not in used, because assignment doesn't require it. But we will still keep it if we want to play around :D
 void rotateAround(glm::vec3& moveVec, glm::mat4& matrix, glm::vec3 rotation) {
 	activeModel = 4;
 
@@ -126,262 +149,132 @@ bool worldOrientationKeyPressed = false;
 // Is called whenever a key is pressed/released via GLFW
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod)
 {
-	std::cout << key << std::endl;	//outputs the key value
+
+	if(key == GLFW_KEY_H){
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
+	if(key == GLFW_KEY_G){
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+
+	if(key == GLFW_KEY_0){
+		for(auto& i : letters){
+			i.isSelected = false;
+		}
+		letters[0].isSelected = true;
+	}
+	if(key == GLFW_KEY_1){
+		for(auto& i : letters){
+			i.isSelected = false;
+		}
+		letters[1].isSelected = true;
+	}
+	if(key == GLFW_KEY_2){
+		for(auto& i : letters){
+			i.isSelected = false;
+		}
+		letters[2].isSelected = true;
+	}
+	if(key == GLFW_KEY_3){
+		for(auto& i : letters){
+			i.isSelected = false;
+		}
+		letters[3].isSelected = true;
+	}
+	if(key == GLFW_KEY_4){
+		for(auto& i : letters){
+			i.isSelected = false;
+		}
+		letters[4].isSelected = true;
+	}
+	if(key == GLFW_KEY_5){
+		for(auto& i : letters){
+			i.isSelected = false;
+		}
+		letters[5].isSelected = true;
+	}
+
+	if(key == GLFW_KEY_W){
+		for(auto& i : letters){
+			if(i.isSelected){
+				for(auto& i : i.entities){
+					i.transform.position.z -= 1.0f;
+				}
+			}
+		}
+	}
+	if(key == GLFW_KEY_A){
+		for(auto& i : letters){
+			if(i.isSelected){
+				for(auto& i : i.entities){
+					i.transform.position.x -= 1.0f;
+				}
+			}
+		}
+	}
+	if(key == GLFW_KEY_S){
+		for(auto& i : letters){
+			if(i.isSelected){
+				for(auto& i : i.entities){
+					i.transform.position.z += 1.0f;
+				}
+			}
+		}
+	}
+	if(key == GLFW_KEY_D){
+		for(auto& i : letters){
+			if(i.isSelected){
+				for(auto& i : i.entities){
+					i.transform.position.x += 1.0f;
+				}
+			}
+		}
+	}
+	if(key == GLFW_KEY_P){
+		for(auto& i : letters){
+			if(i.isSelected){
+				for(auto& i : i.entities){
+					i.transform.position.y += 1.0f;
+				}
+			}
+		}
+	}
+	if(key == GLFW_KEY_M){
+		for(auto& i : letters){
+			if(i.isSelected){
+				for(auto& i : i.entities){
+					i.transform.position.y -= 1.0f;
+				}
+			}
+		}
+	}
+
+
+	if(key == GLFW_KEY_UP){
+		cam_pos.z -= 1.0f;
+	}
+	if(key == GLFW_KEY_DOWN){
+		cam_pos.z += 1.0f;
+	}
+	if(key == GLFW_KEY_LEFT){
+		cam_pos.x -= 1.0f;
+	}
+	if(key == GLFW_KEY_RIGHT){
+		cam_pos.x += 1.0f;
+	}
+	if(key == GLFW_KEY_SPACE){
+		cam_pos.y += 1.0f;
+	}
+	if(key == GLFW_KEY_LEFT_SHIFT){
+		cam_pos.y -= 1.0f;
+	}
 
 	//if you press the Esc key, the window will close
 	if (key == GLFW_KEY_ESCAPE) {
 		glfwSetWindowShouldClose(window, GL_TRUE);
 	}
 
-	if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS) {
-		leftShiftPressed = true;
-	}
-	if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE) {
-		leftShiftPressed = false;
-	}
-
-	if ((key == GLFW_KEY_LEFT|| key == GLFW_KEY_RIGHT || key == GLFW_KEY_UP || key == GLFW_KEY_DOWN) && action == GLFW_PRESS) {
-		activeModel = 4;
-		worldOrientationKeyPressed = true;
-	}
-
-	if ((key == GLFW_KEY_LEFT || key == GLFW_KEY_RIGHT || key == GLFW_KEY_UP || key == GLFW_KEY_DOWN) && action == GLFW_RELEASE) {
-		worldOrientationKeyPressed = false;
-		resetToPreviousModel(previousActiveModel);
-	}
-
-	//WASD buttons to move the camera
-	if (key == GLFW_KEY_T) { //W moves forward
-		cam_pos += cam_dir;
-	}
-
-	if (key == GLFW_KEY_G) { //S moves backwards
-		cam_pos -= cam_dir;
-	}
-
-	if (key == GLFW_KEY_H) { //D moves right
-		cam_pos -= glm::cross(cam_up, cam_dir);
-	}
-
-	if (key == GLFW_KEY_F) { //A moves left
-		cam_pos += glm::cross(cam_up, cam_dir);
-	}
-
-	if (worldOrientationKeyPressed)
-	{
-		//Left and Right key rotate camera
-		if (key == GLFW_KEY_RIGHT) { //left arrow rotates the camera left about the right vector
-			model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(0, 1, 0));
-		}
-		if (key == GLFW_KEY_DOWN) { //left arrow rotates the camera left about the down vector
-			model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(-1, 0, 0));
-		}
-		if (key == GLFW_KEY_UP) { //left arrow rotates the camera left about the up vector
-			model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(1, 0, 0));
-		}
-		if (key == GLFW_KEY_LEFT) { //left arrow rotates the camera left about the left vector
-			model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(0, -1, 0));
-		}
-	}
-
-	//reset to initial position
-	if (key == GLFW_KEY_HOME)
-	{
-		model_world = glm::mat4(1.f);
-	}
-
-	//full reset
-	if (key == GLFW_KEY_0)
-	{
-		model = glm::mat4(1.0f);
-		model_move = glm::vec3(0, 2, -10); //to apply translational transformations
-
-		//Alessandro
-		model_A = glm::mat4(1.0f);
-		model_A_move = glm::vec3(0, 2, -10); //to apply translational transformations
-		//Le Cherng
-		model_L = glm::mat4(1.0f);
-		model_L_move = glm::vec3(0, 2, 10); //to apply translational transformations
-		   //Dan
-		model_D = glm::mat4(1.0f);
-		model_D_move = glm::vec3(10, 2, 0); //to apply translational transformations
-	   //LaginHo
-		model_La = glm::mat4(1.0f);
-		model_La_move = glm::vec3(-10, 2, 0); //to apply translational transformations
-		  //LaginHo
-		model_grid = glm::mat4(1.0f);
-		model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
-
-		model_world = glm::mat4(1.f);
-	}
-	
-	if (!worldOrientationKeyPressed) {
-		//WASD buttons to move the model
-		if (!leftShiftPressed) {
-			if (key == GLFW_KEY_W) { //I moves the object along the +Y axis
-				model_move.y += 1;
-			}
-
-			if (key == GLFW_KEY_S) { //K moves the object along the -Y
-				model_move.y -= 1;
-			}
-
-			if (key == GLFW_KEY_A) { //J moves the object along the +X axis
-				model_move.x -= 1;
-			}
-
-			if (key == GLFW_KEY_D) { //L moves the object along the -X axis
-				model_move.x += 1;
-			}
-
-			if (key == GLFW_KEY_PAGE_UP) { //PgUp moves the object along the +Z axis
-				model_move.z += 1;
-			}
-
-			if (key == GLFW_KEY_PAGE_DOWN) { //PgDown moves the object along the -Z axis
-				model_move.z -= 1;
-			}
-		}
-
-		//BNE buttons to rotate the model
-		if (leftShiftPressed == true) {
-			if (key == GLFW_KEY_W) { //W rotates the object about the +X axis
-				model = glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
-			}
-			if (key == GLFW_KEY_S) { //S rotates the object about the -X axis
-				model = glm::rotate(model, glm::radians(5.f), glm::vec3(-1, 0, 0));
-			}
-			if (key == GLFW_KEY_A) { //N rotates the object about the Y axis,
-				model = glm::rotate(model, glm::radians(5.f), glm::vec3(0, 1, 0));
-			}
-			if (key == GLFW_KEY_D) { //N rotates the object about the -Y axis,
-				model = glm::rotate(model, glm::radians(5.f), glm::vec3(0, -1, 0));
-			}
-			if (key == GLFW_KEY_E) { //rotates the object about the Z axis
-				model = glm::rotate(model, glm::radians(5.f), glm::vec3(0, 0, 1));
-			}
-			if (key == GLFW_KEY_Q) { //rotates the object about the -Z axis
-				model = glm::rotate(model, glm::radians(5.f), glm::vec3(0, 0, -1));
-			}
-		}
-
-		//OP buttons to scale up and down
-		if (key == GLFW_KEY_U) { //O scales up the object by a factor of 10%
-			model = glm::scale(model, glm::vec3(1.1f));
-		}
-		if (key == GLFW_KEY_J) { //P scales up the object by a factor of -10%
-			model = glm::scale(model, glm::vec3(0.9f));
-		}
-
-		//toggle the red channel on/off
-		if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-			if (red != true) {
-				red = true;
-			}
-			else
-			{
-				red = false;
-			}
-			activeModel = 0;
-			previousActiveModel = 1;
-			model = model_A;
-			model_move = model_A_move;
-		}
-
-		//toggle the green channel on/off
-		if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-			if (green != true)
-			{
-				green = true;
-			}
-			else
-			{
-				green = false;
-			}
-			activeModel = 1;
-			previousActiveModel = 1;
-			model = model_La;
-			model_move = model_La_move;
-		}
-
-		//toggle the blue channel on/off
-		if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
-			if (blue != true) {
-				blue = true;
-			}
-			else {
-				blue = false;
-			}
-			activeModel = 2;
-			previousActiveModel = 2;
-			model = model_D;
-			model_move = model_D_move;
-		}
-
-		//turn on all channels
-		if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
-			if (colour != true) {
-				colour = true;
-
-				red = false;
-				green = false;
-				blue = false;
-				colour = false;
-			}
-			else
-				colour = false;
-
-			activeModel = 3;
-			previousActiveModel = 3;
-			model = model_L;
-			model_move = model_L_move;
-		}
-
-		//toggle between Gouraud and Phong shading
-		if (key == GLFW_KEY_5 && action == GLFW_PRESS) {
-			if (flag == false)
-				flag = true;
-			else
-				flag = false;
-		}
-
-		if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
-			if (lights == false)
-				lights = true;
-			else
-				lights = false;
-		}
-
-		/*if (key == GLFW_KEY_M && action == GLFW_PRESS) {
-			if (normalcol == false)
-				normalcol = true;
-			else
-				normalcol = false;
-		}
-
-		if (key == GLFW_KEY_G && action == GLFW_PRESS) {
-			if (greyscale == false)
-				greyscale = true;
-			else
-				greyscale = false;
-		}*/
-	}
-
-	//rendering mode
-	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
-			renderingMode = 0;
-		cout << "Rendering Mode: " << renderingMode << endl;
-	}
-
-	if (key == GLFW_KEY_L && action == GLFW_PRESS) {
-		renderingMode = 1;
-		cout << "Rendering Mode: " << renderingMode << endl;
-	}
-
-	if (key == GLFW_KEY_T && action == GLFW_PRESS) {
-		renderingMode = 2;
-		cout << "Rendering Mode: " << renderingMode << endl;
-	}
 }
 
 double last_y_pos = 0;
@@ -392,7 +285,7 @@ bool m_button_pressed = true;
 
 //LEFT mouse button + drag up and down, moves the camera further and closer to the object
 void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
-	
+
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 		lbutton_pressed = true;
 	}
@@ -442,7 +335,7 @@ void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 	if (m_button_pressed) {
 		glm::mat4 rotation_matrix(1);
 		glm::vec3 rotate_around_x = glm::cross(cam_up, cam_dir); //cross product
-		if (last_y_pos - ypos > 0) { //mouse going up, camera moves backward	
+		if (last_y_pos - ypos > 0) { //mouse going up, camera moves backward
 				rotation_matrix = glm::rotate(rotation_matrix, -(0.01f), rotate_around_x);
 				cam_dir = glm::mat3(rotation_matrix) * cam_dir;
 				cam_up = glm::mat3(rotation_matrix) * cam_up;
@@ -484,11 +377,13 @@ int main()
 	}
 	glfwMakeContextCurrent(window);
 
+     glfwSwapInterval(1);
+
 	// glad: load all OpenGL function pointers
 	// ---------------------------------------
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	if (glewInit() != GLEW_OK)
 	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
+		std::cout << "Failed to initialize GLEW" << std::endl;
 		return -1;
 	}
 
@@ -516,15 +411,79 @@ int main()
 
 	// Build and compile our shader program
 	Shader shader("resources/shaders/vertex.shader", "resources/shaders/fragment.shader");
+	RawModel cubeModel;
+	cubeModel.loadFromFile("resources/objects/cube.obj");
+	RawModel sphereModel;
+	sphereModel.loadFromFile("resources/objects/sphere.obj");
+	RawModel cylinderModel;
+	cylinderModel.loadFromFile("resources/objects/cylinder.obj");
+	RawModel monkey;
+	monkey.loadFromFile("resources/objects/monkey.obj");
+	Transform mTransform(glm::vec3(0, 10, -50), glm::vec3(0, 0, 0), glm::vec3(20, 20, 20));
+	Transform xTransform(glm::vec3(1.25, 0, 0), glm::vec3(0, 0, 90), glm::vec3(0.25, 2.5, 0.25));
+	Transform yTransform(glm::vec3(0, 1.25, 0), glm::vec3(0, 90, 0), glm::vec3(0.25, 2.5, 0.25));
+	Transform zTransform(glm::vec3(0, 0, 1.25), glm::vec3(90, 0, 0), glm::vec3(0.25, 2.5, 0.25));
+
+
+	//Creating entities
+	letters.push_back(Letter());
+	letters.push_back(Letter());
+	letters.push_back(Letter());
+	letters.push_back(Letter());
+	letters.push_back(Letter());
+	letters.push_back(Letter());
+	letters.push_back(Letter());
+
+	float offset = 0.0f;
+	float height = 0.0f;
+
+	letters[0].entities.emplace_back(Transform(glm::vec3(0 + offset, 2.5 + height, -5), glm::vec3(0, 0, 0), glm::vec3(1, 5, 1)), glm::vec3(1, 0, 0), &cubeModel);
+	letters[0].entities.emplace_back(Transform(glm::vec3(1 + offset, 2.5 + height, -5), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)), glm::vec3(1, 0, 0), &sphereModel);
+	letters[0].entities.emplace_back(Transform(glm::vec3(2 + offset, 2.5 + height, -5), glm::vec3(0, 0, 0), glm::vec3(1, 5, 1)), glm::vec3(1, 0, 0), &cubeModel);
+
+	height += 6.0f;
+
+	letters[1].entities.emplace_back(Transform(glm::vec3(0 + offset, 2.5 + height, -5), glm::vec3(0, 0, 0), glm::vec3(1, 5, 1)), glm::vec3(0.8, 0.8, 0), &cubeModel);
+	letters[1].entities.emplace_back(Transform(glm::vec3(2 + offset, 2.5 + height, -5), glm::vec3(0, 0, 0), glm::vec3(1, 5, 1)), glm::vec3(0.8, 0.8, 0), &cubeModel);
+	letters[1].entities.emplace_back(Transform(glm::vec3(1 + offset, 2.5 + height, -5), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)), glm::vec3(0.8, 0.8, 0), &sphereModel);
+	letters[1].entities.emplace_back(Transform(glm::vec3(1 + offset, 4.5 + height, -5), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)), glm::vec3(0.8, 0.8, 0), &sphereModel);
+
+	height += 6.0f;
+
+	letters[2].entities.emplace_back(Transform(glm::vec3(1 - 0.5f + offset, 4.0 + height, -5), glm::vec3(90, 90, -45), glm::vec3(1, 2, 1)), glm::vec3(0.0, 0.8, 0), &sphereModel);
+	letters[2].entities.emplace_back(Transform(glm::vec3(0 - 0.5f + offset, 2.5 + height, -5), glm::vec3(0, 0, 0), glm::vec3(1, 5, 1)), glm::vec3(0, 0.8, 0), &cubeModel);
+	letters[2].entities.emplace_back(Transform(glm::vec3(2 - 0.5f + offset, 4.0 + height, -5), glm::vec3(90, 90, 45), glm::vec3(1, 2, 1)), glm::vec3(0.0, 0.8, 0), &sphereModel);
+	letters[2].entities.emplace_back(Transform(glm::vec3(3 - 0.5f + offset, 2.5 + height, -5), glm::vec3(0, 0, 0), glm::vec3(1, 5, 1)), glm::vec3(0, 0.8, 0), &cubeModel);
+
+	height += 6.0f;
+
+	letters[3].entities.emplace_back(Transform(glm::vec3(0 + 1 + offset, 2.5 + height, -5), glm::vec3(0, 0, 0), glm::vec3(1, 5, 1)), glm::vec3(0, 0.8, 0.8), &cubeModel);
+	letters[3].entities.emplace_back(Transform(glm::vec3(0 + 1 + offset, 4.5 + height, -5), glm::vec3(90, 90, 0), glm::vec3(1, 4, 1)), glm::vec3(0.0, 0.8, 0.8), &sphereModel);
+	letters[3].entities.emplace_back(Transform(glm::vec3(0 + 1 + offset, 0.5 + height, -5), glm::vec3(90, 90, 0), glm::vec3(1, 4, 1)), glm::vec3(0.0, 0.8, 0.8), &sphereModel);
+
+	height += 6.0f;
+
+	letters[4].entities.emplace_back(Transform(glm::vec3(0 + offset, 2.5 + height, -5), glm::vec3(0, 0, 0), glm::vec3(1, 5, 1)), glm::vec3(0.8, 0.0, 0.8), &cubeModel);
+	letters[4].entities.emplace_back(Transform(glm::vec3(1 + offset, 4.5 + height, -5), glm::vec3(0, 0, 60), glm::vec3(1, 2, 1)), glm::vec3(0.8, 0.0, 0.8), &sphereModel);
+	letters[4].entities.emplace_back(Transform(glm::vec3(2 + offset, 2.5 + height, -5), glm::vec3(0, 0, 0), glm::vec3(1, 3, 1)), glm::vec3(0.8, 0.0, 0.8), &sphereModel);
+	letters[4].entities.emplace_back(Transform(glm::vec3(1 + offset, 0.5 + height, -5), glm::vec3(0, 0, -60), glm::vec3(1, 2, 1)), glm::vec3(0.8, 0.0, 0.8), &sphereModel);
+
+	height += 6.0f;
+
+	letters[5].entities.emplace_back(Transform(glm::vec3(0 + 1 + offset, 2.5 + height, -5), glm::vec3(0, 0, 0), glm::vec3(1, 5, 1)), glm::vec3(0, 0.0, 0.8), &cubeModel);
+	letters[5].entities.emplace_back(Transform(glm::vec3(0 + 1 + offset, 4.5 + height, -5), glm::vec3(90, 90, 0), glm::vec3(1, 4, 1)), glm::vec3(0.0, 0.0, 0.8), &sphereModel);
+	letters[5].entities.emplace_back(Transform(glm::vec3(0 + 1 + offset, 0.5 + height, -5), glm::vec3(90, 90, 0), glm::vec3(1, 4, 1)), glm::vec3(0.0, 0.0, 0.8), &sphereModel);
+
 
 	//lines
 	Shader lines3dShader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
 
-	std::vector<int> indices;
+	std::vector<unsigned int> indices;
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec2> UVs;
 	loadOBJ("resources/objects/cube.obj", indices, vertices, normals, UVs);
+
 
 	GLuint VAO;
 	glGenVertexArrays(1, &VAO);
@@ -568,10 +527,10 @@ int main()
 	shader.Bind();
 	glm::mat4 model_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 2, 0));
 	glm::mat4 view_matrix = glm::lookAt(cam_pos, cam_dir, cam_up);
-	glm::mat4 proj_matrix = glm::perspective(glm::radians(45.f), 1.f, 0.1f, 200.f); //perspective view. Third parameter should be > 0, or else errors
+	glm::mat4 proj_matrix = glm::perspective(glm::radians(70.f), 1.f, 0.1f, 200.f); //perspective view. Third parameter should be > 0, or else errors
 
 	//other model matrix
-	
+
 	//Alessandro
 	glm::mat4 model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 	//Le Cherng
@@ -615,128 +574,58 @@ int main()
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
 	// Game loop
+	float x = 0.0f;
 	while (!glfwWindowShouldClose(window))
 	{
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwPollEvents();
+		x += 0.01f;
+
+		mTransform.position.y = sin(x)*50;
+		mTransform.position.z = cos(x)*50;
+		mTransform.position.x = sin(x)*50;
+		mTransform.rotation.x += 1.0f;
+		mTransform.rotation.z += 0.2f;
+		mTransform.rotation.y += 2.2f;
+
 
 		shader.Bind();
 
 		view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 
-		
-		glm::mat4 translator_A = glm::translate(glm::mat4(1.0f), model_A_move);
-		glm::mat4 translator_La = glm::translate(glm::mat4(1.0f), model_La_move);
-		glm::mat4 translator_D = glm::translate(glm::mat4(1.0f), model_D_move);
-		glm::mat4 translator_L = glm::translate(glm::mat4(1.0f), model_L_move);
-		glm::mat4 translator_grid = glm::translate(glm::mat4(1.0f), model_grid_move);
-		glm::mat4 translator = glm::translate(glm::mat4(1.0f), model_move);
-
-		switch (activeModel) {
-		case 0:
-			model_matrix = model_world * translator * model;
-			model_A_matrix = model_world * translator * model;
-			model_A = model;
-			model_A_move = model_move;
-			
-			grid_matrix = model_world * translator_grid * model_grid;
-			model_La_matrix = model_world * translator_La * model_La;
-			model_D_matrix = model_world * translator_D * model_D;
-			model_L_matrix = model_world * translator_L * model_L;
-
-			break;
-		case 1:
-			model_La_matrix = model_world * translator * model;
-			model_La = model;
-			model_La_move = model_move;
-			
-			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world * translator_grid * model_grid;
-			model_A_matrix = model_world * translator_A * model_A;
-			model_D_matrix = model_world * translator_D * model_D;
-			model_L_matrix = model_world * translator_L * model_L;
-
-			break;
-		case 2:
-			model_D_matrix = model_world * translator * model;
-			model_D = model;
-			model_D_move = model_move;
-			
-			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world * translator_grid * model_grid;
-			model_A_matrix = model_world * translator_A * model_A;
-			model_La_matrix = model_world * translator_La * model_La;
-			model_L_matrix = model_world * translator_L * model_L;
-
-			break;
-		case 3:
-			model_L_matrix = model_world * translator * model;
-			model_L = model;
-			model_L_move = model_move;
-			
-			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world * translator_grid * model_grid;
-			model_A_matrix = model_world * translator_A * model_A;
-			model_La_matrix = model_world * translator_La * model_La;
-			model_D_matrix = model_world * translator_D * model_D;
-			break;
-		case 4:
-			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world * translator_grid * model_grid;
-			model_A_matrix = model_world * translator_A * model_A;
-			model_La_matrix = model_world * translator_La * model_La;
-			model_D_matrix = model_world * translator_D * model_D;
-			model_L_matrix = model_world * translator_L * model_L;
-
-			break;
-		}
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
-
-		glUniform1i(flag_id, flag);
-		glUniform1i(lights_id, lights);
-		glUniform1i(normalcol_id, normalcol);
-		glUniform1i(greyscale_id, greyscale);
-		glUniform1i(red_id, red);
-		glUniform1i(green_id, green);
-		glUniform1i(blue_id, blue);
-		glUniform1i(colour_id, colour);
-
 		// --- Render ---
 		// Clear the colorbuffer
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.5f, 0.5f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Draws cube
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+		glUniformMatrix4fv(mm_loc, 1, 0, &zTransform.getMatrix()[0][0]);
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, &glm::vec3(0.0, 0.0, 1.0)[0]);
+		cylinderModel.render();
+		glUniformMatrix4fv(mm_loc, 1, 0, &yTransform.getMatrix()[0][0]);
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, &glm::vec3(0.0, 1.0, 0.0)[0]);
+		cylinderModel.render();
+		glUniformMatrix4fv(mm_loc, 1, 0, &xTransform.getMatrix()[0][0]);
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, &glm::vec3(1.0, 0.0, 0.0)[0]);
+		cylinderModel.render();
 
-		// Draws Models
-		//model_A_shader.Bind();
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
-		alessandroModel.drawModel(renderingMode);
+		glUniformMatrix4fv(mm_loc, 1, 0, &mTransform.getMatrix()[0][0]);
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, &glm::vec3(1.0, 1.0, 1.0)[0]);
+		monkey.render();
 
-		//model_L_shader.Bind();
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
-		leCherngModel.drawModel(renderingMode);
 
-		//model_La_shader.Bind();
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
-		laginModel.drawModel(renderingMode);
 
-		//model_D_shader.Bind();
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
-		danModel.drawModel(renderingMode);
-
-		// Draws line
-		lines3dShader.Bind();
-		glLineWidth(1.0f);
-		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
-		lines3dObject.drawLines();
+		for(auto& i : letters){
+			for(auto& i : i.entities){
+				glUniformMatrix4fv(mm_loc, 1, 0, &i.transform.getMatrix()[0][0]);
+				glUniform3fv(shader.GetUniformLocation("object_color"), 1, &i.color[0]);
+				i.model->render();
+			}
+		}
 
 		// Draws grid
 		glLineWidth(0.5f);
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, &glm::vec3(0.5, 0.5, 0.5)[0]);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(grid_matrix));
 		grid.drawGrid();
@@ -805,4 +694,3 @@ void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLen
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 }
-

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glad/glad.h>
+#include <GL/glew.h>
 
 #include <iostream>
 #include <stdint.h>
@@ -59,4 +59,3 @@ bool inline GLCheckError()
 #else
 #define GLCall(x) x
 #endif
-

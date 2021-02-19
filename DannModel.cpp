@@ -10,8 +10,8 @@ DannModel::DannModel() {
 	lineSize = 0.4f * 2;
 
 	GLfloat distance = 2.5f;
-	
-	
+
+
 	setLetterD(xOrigin - (3 * distance), yOrigin, zOrigin);
 	setNumber7(xOrigin + (1 * distance), yOrigin, zOrigin);
 	setLetterN(xOrigin - (1 * distance), yOrigin, zOrigin);
@@ -38,7 +38,7 @@ void DannModel::drawModel(int drawMode)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
-	
+
 	//D Model
 	glBindVertexArray(this->vao_D);
 	glDrawElements(mode, indiciesD, GL_UNSIGNED_INT, NULL);
@@ -61,31 +61,31 @@ void DannModel::setLetterN(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 	GLfloat vertices[] =
 	{
 		// FRONT POSITIONS
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, // bottom left 0
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right 1
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right 2
-		0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right (left) 3
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, // bottom left 0
+		1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right 1
+		1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right 2
+		0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right (left) 3
 
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, // bottom left 4
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right 5 
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right 6
-		0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right (left) 7
-		//Right 
-		1.5 * lineSize + xOrigin, 0.5 * lineSize + yOrigin, zOrigin, //8
-		1.5 * lineSize + xOrigin, 0.5 * lineSize + yOrigin, zOrigin - lineSize,//9
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, // bottom left 4
+		1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right 5
+		1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right 6
+		0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right (left) 7
+		//Right
+		1.5f * lineSize + xOrigin, 0.5f * lineSize + yOrigin, zOrigin, //8
+		1.5f * lineSize + xOrigin, 0.5f * lineSize + yOrigin, zOrigin - lineSize,//9
 
-		1.5 * lineSize + xOrigin, 1.5 * lineSize + yOrigin, zOrigin,//10
-		1.5 * lineSize + xOrigin, 1.5 * lineSize + yOrigin, zOrigin - lineSize,//11
-		3.0 * lineSize + xOrigin, 0.5 * lineSize + yOrigin, zOrigin,//12
-		3.0 * lineSize + xOrigin, 0.5 * lineSize + yOrigin, zOrigin - lineSize,//13
-		3.0 * lineSize + xOrigin, 1.5 * lineSize + yOrigin, zOrigin,//14
-		3.0 * lineSize + xOrigin, 1.5 * lineSize + yOrigin, zOrigin - lineSize,//15
-		2.5 * lineSize + xOrigin, 0.5 * lineSize + yOrigin, zOrigin,//16
-		2.5 * lineSize + xOrigin, 0.5 * lineSize + yOrigin, zOrigin - lineSize,//17
-		2.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, // bottom left 18
-		2.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, // bottom left  19
-		3.0 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, // bottom left 20
-		3.0 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, // bottom left  21
+		1.5f * lineSize + xOrigin, 1.5f * lineSize + yOrigin, zOrigin,//10
+		1.5f * lineSize + xOrigin, 1.5f * lineSize + yOrigin, zOrigin - lineSize,//11
+		3.0f * lineSize + xOrigin, 0.5f * lineSize + yOrigin, zOrigin,//12
+		3.0f * lineSize + xOrigin, 0.5f * lineSize + yOrigin, zOrigin - lineSize,//13
+		3.0f * lineSize + xOrigin, 1.5f * lineSize + yOrigin, zOrigin,//14
+		3.0f * lineSize + xOrigin, 1.5f * lineSize + yOrigin, zOrigin - lineSize,//15
+		2.5f * lineSize + xOrigin, 0.5f * lineSize + yOrigin, zOrigin,//16
+		2.5f * lineSize + xOrigin, 0.5f * lineSize + yOrigin, zOrigin - lineSize,//17
+		2.5f * lineSize + xOrigin, -2.0f * lineSize + yOrigin, zOrigin, // bottom left 18
+		2.5f * lineSize + xOrigin, -2.0f * lineSize + yOrigin, zOrigin - lineSize, // bottom left  19
+		3.0f * lineSize + xOrigin, -2.0f * lineSize + yOrigin, zOrigin, // bottom left 20
+		3.0f * lineSize + xOrigin, -2.0f * lineSize + yOrigin, zOrigin - lineSize, // bottom left  21
 
 
 	};
@@ -97,7 +97,7 @@ void DannModel::setLetterN(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 		// BACK INDICIES
 		5,4,7,
 		7,6,5,
-		
+
 			//Left Side
 		4,0,3,
 		3,7,4,
@@ -109,10 +109,10 @@ void DannModel::setLetterN(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 		//Bottom
 		0,4,5,
 		5,1,0,
-		
-		
-		
-		
+
+
+
+
 		//Top
 		2,6,7,
 		7,3,2,
@@ -149,10 +149,10 @@ void DannModel::setLetterN(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 
 		19,21,20,
 		20,18,19,
-		
-	
-		
-		
+
+
+
+
 
 	};
 	glGenVertexArrays(1, &this->vao_N);
@@ -179,43 +179,43 @@ void DannModel::setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 	GLfloat vertices[] =
 	{
 		// FRONT POSITIONS
-		0.5 * lineSize + xOrigin, -2.5 * lineSize + yOrigin, zOrigin, //  0
-		1.5 * lineSize + xOrigin, -2.5 * lineSize + yOrigin, zOrigin, // 1
-		1.5 * lineSize + xOrigin, 2.5 * lineSize + yOrigin, zOrigin, // 2
-		0.5 * lineSize + xOrigin, 2.5 * lineSize + yOrigin, zOrigin, // 3
-		0.5 * lineSize + xOrigin, 1.5 * lineSize + yOrigin, zOrigin, // 4
-		-0.5 * lineSize + xOrigin, 1.5 * lineSize + yOrigin, zOrigin, // 5
-		-0.5 * lineSize + xOrigin, 2.5 * lineSize + yOrigin, zOrigin, // 6
-		-1.5 * lineSize + xOrigin, 2.5 * lineSize + yOrigin, zOrigin, // 7
-		-1.5 * lineSize + xOrigin, yOrigin, zOrigin, // 8
-		0.5 * lineSize + xOrigin, yOrigin, zOrigin, // 9
+		0.5f * lineSize + xOrigin, -2.5f * lineSize + yOrigin, zOrigin, //  0
+		1.5f * lineSize + xOrigin, -2.5f * lineSize + yOrigin, zOrigin, // 1
+		1.5f * lineSize + xOrigin, 2.5f * lineSize + yOrigin, zOrigin, // 2
+		0.5f * lineSize + xOrigin, 2.5f * lineSize + yOrigin, zOrigin, // 3
+		0.5f * lineSize + xOrigin, 1.5f * lineSize + yOrigin, zOrigin, // 4
+		-0.5f * lineSize + xOrigin, 1.5f * lineSize + yOrigin, zOrigin, // 5
+		-0.5f * lineSize + xOrigin, 2.5f * lineSize + yOrigin, zOrigin, // 6
+		-1.5f * lineSize + xOrigin, 2.5f * lineSize + yOrigin, zOrigin, // 7
+		-1.5f * lineSize + xOrigin, yOrigin, zOrigin, // 8
+		0.5f * lineSize + xOrigin, yOrigin, zOrigin, // 9
 
 		// BACK POSITIONS
-		0.5 * lineSize + xOrigin, -2.5 * lineSize + yOrigin, zOrigin - lineSize, //  10
-		1.5 * lineSize + xOrigin, -2.5 * lineSize + yOrigin, zOrigin - lineSize, // 11
-		1.5 * lineSize + xOrigin, 2.5 * lineSize + yOrigin, zOrigin - lineSize, // 12
-		0.5 * lineSize + xOrigin, 2.5 * lineSize + yOrigin, zOrigin - lineSize, //  13
-		0.5 * lineSize + xOrigin, 1.5 * lineSize + yOrigin, zOrigin - lineSize, // 14
-		-0.5 * lineSize + xOrigin, 1.5 * lineSize + yOrigin, zOrigin - lineSize, // 15
-		-0.5 * lineSize + xOrigin, 2.5 * lineSize + yOrigin, zOrigin - lineSize, // 16
-		-1.5 * lineSize + xOrigin, 2.5 * lineSize + yOrigin, zOrigin - lineSize, // 17
-		-1.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, // 18
-		0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, // 19
+		0.5f * lineSize + xOrigin, -2.5f * lineSize + yOrigin, zOrigin - lineSize, //  10
+		1.5f * lineSize + xOrigin, -2.5f * lineSize + yOrigin, zOrigin - lineSize, // 11
+		1.5f * lineSize + xOrigin, 2.5f * lineSize + yOrigin, zOrigin - lineSize, // 12
+		0.5f * lineSize + xOrigin, 2.5f * lineSize + yOrigin, zOrigin - lineSize, //  13
+		0.5f * lineSize + xOrigin, 1.5f * lineSize + yOrigin, zOrigin - lineSize, // 14
+		-0.5f * lineSize + xOrigin, 1.5f * lineSize + yOrigin, zOrigin - lineSize, // 15
+		-0.5f * lineSize + xOrigin, 2.5f * lineSize + yOrigin, zOrigin - lineSize, // 16
+		-1.5f * lineSize + xOrigin, 2.5f * lineSize + yOrigin, zOrigin - lineSize, // 17
+		-1.5f * lineSize + xOrigin, yOrigin, zOrigin - lineSize, // 18
+		0.5f * lineSize + xOrigin, yOrigin, zOrigin - lineSize, // 19
 
-		1.5 * lineSize + xOrigin, + yOrigin, zOrigin, // 20
-		1.5 * lineSize + xOrigin, +yOrigin, zOrigin - lineSize, // 21
-		2.5 * lineSize + xOrigin, +yOrigin, zOrigin, // 22
-		2.5 * lineSize + xOrigin, +yOrigin, zOrigin - lineSize, // 23
+		1.5f * lineSize + xOrigin, + yOrigin, zOrigin, // 20
+		1.5f * lineSize + xOrigin, +yOrigin, zOrigin - lineSize, // 21
+		2.5f * lineSize + xOrigin, +yOrigin, zOrigin, // 22
+		2.5f * lineSize + xOrigin, +yOrigin, zOrigin - lineSize, // 23
 
-		1.5 * lineSize + xOrigin,0.5 * lineSize +yOrigin, zOrigin, // 24 unsused
-		1.5 * lineSize + xOrigin,0.5 * lineSize +yOrigin, zOrigin - lineSize, // 25 unsused
-		2.5 * lineSize + xOrigin,0.5 * lineSize +yOrigin, zOrigin, // 26 unused for now
-		2.5 * lineSize + xOrigin,0.5 * lineSize +yOrigin, zOrigin - lineSize, // 27 unused
+		1.5f * lineSize + xOrigin, 0.5f * lineSize +yOrigin, zOrigin, // 24 unsused
+		1.5f * lineSize + xOrigin, 0.5f * lineSize +yOrigin, zOrigin - lineSize, // 25 unsused
+		2.5f * lineSize + xOrigin, 0.5f * lineSize +yOrigin, zOrigin, // 26 unused for now
+		2.5f * lineSize + xOrigin, 0.5f * lineSize +yOrigin, zOrigin - lineSize, // 27 unused
 	};
 
 	int indicies[] =
 	{
-		
+
 		0,1,2,
 		2,3,0,
 		9,4,5,
@@ -228,28 +228,28 @@ void DannModel::setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 		15,14,19,
 		10,13,12,
 		12,11,10,
-		1,11,12, 
+		1,11,12,
 		12,2,1,
 		2,12,13,
 		2,13,3,
 		1,0,10,
 		1,10,11,
-		4,3,14, 
+		4,3,14,
 		3,13,14,
 		4,15,5,
 		4,14,15,
 		5,15,6,
 		15,16,6,
-		7,6,16, 
+		7,6,16,
 		16,17,7,
 		8,7,18,
 		7,17,18,
 		9,8,18,
 		9,18,19,
-		0,9,10, 
+		0,9,10,
 		9,19,10,
 
-		
+
 	};
 
 	glGenVertexArrays(1, &this->vao_4);
@@ -277,19 +277,19 @@ void DannModel::setNumber7(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 	GLfloat vertices[] =
 	{
 		//FRONT POSITION
-		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right
-		0.5 * lineSize + xOrigin, 3 * lineSize + yOrigin, zOrigin, //top right
-		-2.0 * lineSize + xOrigin, 3 * lineSize + yOrigin, zOrigin, // top left
-		-2.0 * lineSize + xOrigin, 2*lineSize + yOrigin, zOrigin, //under left
-		-0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //middle tucked
+		-0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right
+		0.5f * lineSize + xOrigin, 3 * lineSize + yOrigin, zOrigin, //top right
+		-2.0f * lineSize + xOrigin, 3 * lineSize + yOrigin, zOrigin, // top left
+		-2.0f * lineSize + xOrigin, 2*lineSize + yOrigin, zOrigin, //under left
+		-0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //middle tucked
 		//BACK POSITION
-		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right
-		0.5 * lineSize + xOrigin, 3 * lineSize + yOrigin, zOrigin - lineSize, //top right
-		-2.0 * lineSize + xOrigin, 3 * lineSize + yOrigin, zOrigin - lineSize, // top left
-		-2.0 * lineSize + xOrigin, 2 *lineSize + yOrigin, zOrigin - lineSize, //under left
-		-0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //middle tucked
+		-0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right
+		0.5f * lineSize + xOrigin, 3 * lineSize + yOrigin, zOrigin - lineSize, //top right
+		-2.0f * lineSize + xOrigin, 3 * lineSize + yOrigin, zOrigin - lineSize, // top left
+		-2.0f * lineSize + xOrigin, 2 *lineSize + yOrigin, zOrigin - lineSize, //under left
+		-0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //middle tucked
 	};
 
 	int indicies[] =
@@ -343,24 +343,24 @@ void DannModel::setLetterD(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 {
 	GLfloat vertices[] =
 	{
-		// FRONT POSITION	
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //outer bottom left 
-		2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //outer bottom right
-		2 * lineSize + xOrigin, 4 * lineSize + yOrigin, zOrigin, //outer top right
-		-2 * lineSize + xOrigin, 4 * lineSize + yOrigin, zOrigin, //outer top left
-		-1.5 * lineSize + xOrigin, -1.5 * lineSize + yOrigin, zOrigin, //inner bottom left 
-		1 * lineSize + xOrigin, -1.5 * lineSize + yOrigin, zOrigin, //inner bottom right
-		1 * lineSize + xOrigin, 3.5 * lineSize + yOrigin, zOrigin, //inner top right
-		-1.5 * lineSize + xOrigin, 3.5 * lineSize + yOrigin, zOrigin, //inner top left
+		// FRONT POSITION
+		-2.0f * lineSize + xOrigin, -2.0f * lineSize + yOrigin, zOrigin, //outer bottom left
+		2.0f * lineSize + xOrigin, -2.0f * lineSize + yOrigin, zOrigin, //outer bottom right
+		2.0f * lineSize + xOrigin, 4.0f * lineSize + yOrigin, zOrigin, //outer top right
+		-2.0f * lineSize + xOrigin, 4.0f * lineSize + yOrigin, zOrigin, //outer top left
+		-1.5f * lineSize + xOrigin, -1.5f * lineSize + yOrigin, zOrigin, //inner bottom left
+		1.0f * lineSize + xOrigin, -1.5f * lineSize + yOrigin, zOrigin, //inner bottom right
+		1.0f * lineSize + xOrigin, 3.5f * lineSize + yOrigin, zOrigin, //inner top right
+		-1.5f * lineSize + xOrigin, 3.5f * lineSize + yOrigin, zOrigin, //inner top left
 		// BACK POSITION
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //outer bottom left 
-		2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //outer bottom right
-		2 * lineSize + xOrigin, 4 * lineSize + yOrigin, zOrigin - lineSize, //outer top right
-		-2 * lineSize + xOrigin, 4 * lineSize + yOrigin, zOrigin - lineSize, //outer top left
-		-1.5 * lineSize + xOrigin, -1.5 * lineSize + yOrigin, zOrigin - lineSize, //inner bottom left 
-		1 * lineSize + xOrigin, -1.5 * lineSize + yOrigin, zOrigin - lineSize, //inner bottom right
-		1 * lineSize + xOrigin, 3.5 * lineSize + yOrigin, zOrigin - lineSize, //inner top right
-		-1.5 * lineSize + xOrigin, 3.5 * lineSize + yOrigin, zOrigin - lineSize, //inner top left
+		-2.0f * lineSize + xOrigin, -2.0f * lineSize + yOrigin, zOrigin - lineSize, //outer bottom left
+		2.0f * lineSize + xOrigin, -2.0f * lineSize + yOrigin, zOrigin - lineSize, //outer bottom right
+		2.0f * lineSize + xOrigin, 4.0f * lineSize + yOrigin, zOrigin - lineSize, //outer top right
+		-2.0f * lineSize + xOrigin, 4.0f * lineSize + yOrigin, zOrigin - lineSize, //outer top left
+		-1.5f * lineSize + xOrigin, -1.5f * lineSize + yOrigin, zOrigin - lineSize, //inner bottom left
+		1.0f * lineSize + xOrigin, -1.5f * lineSize + yOrigin, zOrigin - lineSize, //inner bottom right
+		1.0f * lineSize + xOrigin, 3.5f * lineSize + yOrigin, zOrigin - lineSize, //inner top right
+		-1.5f * lineSize + xOrigin, 3.5f * lineSize + yOrigin, zOrigin - lineSize, //inner top left
 	};
 
 	int indicies[] =

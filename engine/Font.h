@@ -27,7 +27,7 @@
 
 
 // This Holds All Of The Information Related To Any
-// FreeType Font That We Want To Create. 
+// FreeType Font That We Want To Create.
 struct FontData {
     unsigned int TextureID; // ID handle of the glyph texture
     glm::ivec2   Size;      // Size of glyph

@@ -1,0 +1,22 @@
+cflags = -std=c++20 -fdiagnostics-color=always -g -O0 -m64 $$(pkg-config --cflags glfw3) $$(pkg-config --cflags glew)
+lflags = $$(pkg-config --libs glfw3) $$(pkg-config --libs glew)
+
+rule cc
+ command = clang++ -c $in -o $out $cflags
+
+rule lnk
+ command = clang++ -o $out $in $lflags
+
+build main.o: cc engine/main.cpp
+build aless.o: cc AlessandroModel.cpp
+build dann.o: cc DannModel.cpp
+build grid.o: cc grid.cpp
+build lag.o: cc Laginho.cpp
+build lecherng.o: cc LeCherngModel.cpp
+build lines.o: cc lines3d.cpp
+build shader.o: cc engine/Shader.cpp
+build loader.o: cc OBJLoader.cpp
+build model.o: cc Model.cpp
+build transform.o: cc Transform.cpp
+
+build out: lnk main.o aless.o dann.o grid.o lag.o lecherng.o lines.o loader.o shader.o model.o transform.o

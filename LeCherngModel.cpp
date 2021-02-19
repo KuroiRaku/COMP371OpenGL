@@ -19,7 +19,7 @@ LeCherngModel::LeCherngModel() {
 
 void LeCherngModel::drawModel(int drawMode)
 {
-	
+
 	if (drawMode == 0) {
 		mode = GL_POINTS;
 		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
@@ -58,20 +58,20 @@ void LeCherngModel::setLetterL(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin
 	GLfloat vertices[] =
 	{
 		// FRONT POSITION
-		-2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left (left) 
-		-1 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left (right)
-		-1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //bottom left (right top)
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left (left corner)
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (bottom)
-		1.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //bottom right (above)
+		-2.0f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left (left)
+		-1.0f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left (right)
+		-1.0f * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //bottom left (right top)
+		-2.0f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left (left corner)
+		1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (bottom)
+		1.5f * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //bottom right (above)
 
 		//BACK POSITION
-		-2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left (left) 
-		-1 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left (right)
-		-1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (right top)
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (left corner)
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (bottom)
-		1.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (above)
+		-2.0f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left (left)
+		-1.0f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left (right)
+		-1.0f * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (right top)
+		-2.0f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (left corner)
+		1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (bottom)
+		1.5f * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (above)
 	}; //12 * 3 = 36
 
 	int indicies[] =
@@ -101,8 +101,8 @@ void LeCherngModel::setLetterL(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin
 		1,8,7,
 		2,5,11,
 		2,11,8
-		
-	};// 22 * 3 () =  66 
+
+	};// 22 * 3 () =  66
 
 	glGenVertexArrays(1, &this->vao_L);
 	glBindVertexArray(this->vao_L);
@@ -130,27 +130,27 @@ void LeCherngModel::setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin
 	GLfloat vertices[] =
 	{
 		// FRONT POSITIONS
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, // bottom left
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right
-		0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right (left)
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top right (left) [bottom]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top left (right) [bottom]
-		-0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left (right)
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left
-		-1.5 * lineSize + xOrigin, yOrigin, zOrigin, //top left (bottom)
-		0.5 * lineSize + xOrigin, yOrigin, zOrigin, //middle under
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, // bottom left
+		1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right
+		1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right
+		0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right (left)
+		0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top right (left) [bottom]
+		-0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top left (right) [bottom]
+		-0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left (right)
+		-1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left
+		-1.5f * lineSize + xOrigin, yOrigin, zOrigin, //top left (bottom)
+		0.5f * lineSize + xOrigin, yOrigin, zOrigin, //middle under
 		// BACK POSITIONS
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, // bottom left
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right
-		0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right (left)
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top right (left) [bottom]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top left (right) [bottom]
-		-0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left (right)
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left
-		-1.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //top left (bottom)
-		0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //middle under
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, // bottom left
+		1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right
+		1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right
+		0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right (left)
+		0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top right (left) [bottom]
+		-0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top left (right) [bottom]
+		-0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left (right)
+		-1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left
+		-1.5f * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //top left (bottom)
+		0.5f * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //middle under
 	};
 
 	int indicies[] =
@@ -217,27 +217,27 @@ void LeCherngModel::setNumber4_2(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 	GLfloat vertices[] =
 	{
 		// FRONT POSITIONS
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, // bottom left
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right
-		0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right (left)
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top right (left) [bottom]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top left (right) [bottom]
-		-0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left (right)
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left
-		-1.5 * lineSize + xOrigin, yOrigin, zOrigin, //top left (bottom)
-		0.5 * lineSize + xOrigin, yOrigin, zOrigin, //middle under
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, // bottom left
+		1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right
+		1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right
+		0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right (left)
+		0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top right (left) [bottom]
+		-0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top left (right) [bottom]
+		-0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left (right)
+		-1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left
+		-1.5f * lineSize + xOrigin, yOrigin, zOrigin, //top left (bottom)
+		0.5f * lineSize + xOrigin, yOrigin, zOrigin, //middle under
 		// BACK POSITIONS
-		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, // bottom left
-		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right
-		0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right (left)
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top right (left) [bottom]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top left (right) [bottom]
-		-0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left (right)
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left
-		-1.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //top left (bottom)
-		0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //middle under
+		0.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, // bottom left
+		1.5f * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right
+		1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right
+		0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right (left)
+		0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top right (left) [bottom]
+		-0.5f * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top left (right) [bottom]
+		-0.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left (right)
+		-1.5f * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left
+		-1.5f * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //top left (bottom)
+		0.5f * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //middle under
 	};
 
 	int indicies[] =
@@ -303,38 +303,38 @@ void LeCherngModel::setLetterG(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin
 {
 	GLfloat vertices_lines[] =
 	{
-		// FRONT POSITION	
-		2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //outer top right (Above) 
-		2 * lineSize + xOrigin, 1.5 * lineSize + yOrigin, zOrigin, //outer top right (Bottom)
-		-1 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, 
-		-1 * lineSize + xOrigin, 1.5 * lineSize + yOrigin, zOrigin, 
-		-2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, 
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, 
-		-1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, 
-		2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, 
-		2 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, 
-		1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, 
-		2 * lineSize + xOrigin, 0 * lineSize + yOrigin, zOrigin, 
-		1 * lineSize + xOrigin, 0 * lineSize + yOrigin, zOrigin, 
-		0 * lineSize + xOrigin, 0 * lineSize + yOrigin, zOrigin, 
-		0 * lineSize + xOrigin, 0.5 * lineSize + yOrigin, zOrigin, 
-		2 * lineSize + xOrigin, 0.5 * lineSize + yOrigin, zOrigin, 
+		// FRONT POSITION
+		2.0f * lineSize + xOrigin, 2.0f * lineSize + yOrigin, zOrigin, //outer top right (Above)
+		2.0f * lineSize + xOrigin, 1.5f * lineSize + yOrigin, zOrigin, //outer top right (Bottom)
+		-1.0f * lineSize + xOrigin, 2.0f * lineSize + yOrigin, zOrigin,
+		-1.0f * lineSize + xOrigin, 1.5f * lineSize + yOrigin, zOrigin, 
+		-2.0f * lineSize + xOrigin, 2.0f * lineSize + yOrigin, zOrigin,
+		-2.0f * lineSize + xOrigin, -2.0f * lineSize + yOrigin, zOrigin,
+		-1.0f * lineSize + xOrigin, -1.0f * lineSize + yOrigin, zOrigin,
+		2.0f * lineSize + xOrigin, -2.0f * lineSize + yOrigin, zOrigin,
+		2.0f * lineSize + xOrigin, -1.0f * lineSize + yOrigin, zOrigin,
+		1.0f * lineSize + xOrigin, -1.0f * lineSize + yOrigin, zOrigin,
+		2.0f * lineSize + xOrigin, 0.0f * lineSize + yOrigin, zOrigin,
+		1.0f * lineSize + xOrigin, 0.0f * lineSize + yOrigin, zOrigin,
+		0.0f * lineSize + xOrigin, 0.0f * lineSize + yOrigin, zOrigin,
+		0.0f * lineSize + xOrigin, 0.5f * lineSize + yOrigin, zOrigin,
+		2.0f * lineSize + xOrigin, 0.5f * lineSize + yOrigin, zOrigin,
 		// BACK POSITION
-		2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //outer top right (Above)
-		2 * lineSize + xOrigin, 1.5 * lineSize + yOrigin, zOrigin - lineSize, //outer top right (Bottom)
-		-1 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize,
-		-1 * lineSize + xOrigin, 1.5 * lineSize + yOrigin, zOrigin - lineSize,
-		-2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize,
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize,
-		-1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize,
-		2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize,
-		2 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize,
-		1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize,
-		2 * lineSize + xOrigin, 0 * lineSize + yOrigin, zOrigin - lineSize,
-		1 * lineSize + xOrigin, 0 * lineSize + yOrigin, zOrigin - lineSize,
-		0 * lineSize + xOrigin, 0 * lineSize + yOrigin, zOrigin - lineSize,
-		0 * lineSize + xOrigin, 0.5 * lineSize + yOrigin, zOrigin - lineSize,
-		2 * lineSize + xOrigin, 0.5 * lineSize + yOrigin, zOrigin - lineSize,
+		2.0f * lineSize + xOrigin, 2.0f * lineSize + yOrigin, zOrigin - lineSize, //outer top right (Above)
+		2.0f * lineSize + xOrigin, 1.5f * lineSize + yOrigin, zOrigin - lineSize, //outer top right (Bottom)
+		-1.0f * lineSize + xOrigin, 2.0f * lineSize + yOrigin, zOrigin - lineSize,
+		-1.0f * lineSize + xOrigin, 1.5f * lineSize + yOrigin, zOrigin - lineSize,
+		-2.0f * lineSize + xOrigin, 2.0f * lineSize + yOrigin, zOrigin - lineSize,
+		-2.0f * lineSize + xOrigin, -2.0f * lineSize + yOrigin, zOrigin - lineSize,
+		-1.0f * lineSize + xOrigin, -1.0f * lineSize + yOrigin, zOrigin - lineSize,
+		2.0f * lineSize + xOrigin, -2.0f * lineSize + yOrigin, zOrigin - lineSize,
+		2.0f * lineSize + xOrigin, -1.0f * lineSize + yOrigin, zOrigin - lineSize,
+		1.0f * lineSize + xOrigin, -1.0f * lineSize + yOrigin, zOrigin - lineSize,
+		2.0f * lineSize + xOrigin, 0.0f * lineSize + yOrigin, zOrigin - lineSize,
+		1.0f * lineSize + xOrigin, 0.0f * lineSize + yOrigin, zOrigin - lineSize,
+		0.0f * lineSize + xOrigin, 0.0f * lineSize + yOrigin, zOrigin - lineSize,
+		0.0f * lineSize + xOrigin, 0.5f * lineSize + yOrigin, zOrigin - lineSize,
+		2.0f * lineSize + xOrigin, 0.5f * lineSize + yOrigin, zOrigin - lineSize,
 	}; //30*3 = 90
 
 	int indicies_lines[] =
@@ -362,12 +362,12 @@ void LeCherngModel::setLetterG(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin
 		29,25,27,
 		29,27,28,
 		// SIDES
-		0,1,16, //top right side 
+		0,1,16, //top right side
 		16,15,0,
 		4,15,19, //top
 		15,4,0,
 		1,3,16, // inner top
-		16,3,18, 
+		16,3,18,
 		3,6,21, //inner left
 		21,18,3,
 		6,8,23,
