@@ -24,6 +24,8 @@
 #include "../LeCherngModel.h"
 #include "../Laginho.h"
 #include "../DannModel.h"
+#include "../Stage.h"
+#include "../Screen.h"
 
 using namespace std;
 
@@ -59,6 +61,12 @@ glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transfo
 //World Matrix
 glm::mat4 model_world = glm::mat4(1.0f);
 glm::vec3 model_world_move = glm::vec3(0, 0, 0); //to apply translational transformations
+
+glm::mat4 model_Stage = glm::mat4(1.0f);
+glm::vec3 model_Stage_move = glm::vec3(0, 7, 0); //to apply translational transformations
+
+glm::mat4 model_Screen = glm::mat4(1.0f);
+glm::vec3 model_Screen_move = glm::vec3(0, 7, 0); //to apply translational transformations
 
 //color settings
 bool flag = false;
@@ -563,6 +571,8 @@ int main()
 	LeCherngModel leCherngModel = LeCherngModel();
 	DannModel danModel = DannModel();
 	LaginhoModel laginModel = LaginhoModel();
+	Stage stage = Stage();
+	Screen screen = Screen();
 
 	//shader set up
 	shader.Bind();
@@ -580,6 +590,10 @@ int main()
 	glm::mat4 model_D_matrix = glm::translate(glm::mat4(1.f), model_D_move);
 	//LaginHo
 	glm::mat4 model_La_matrix = glm::translate(glm::mat4(1.f), model_La_move);
+
+	glm::mat4 model_Stage_matrix = glm::translate(glm::mat4(1.f), model_Stage_move);
+
+	glm::mat4 model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
 
 	glm::mat4 grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 
@@ -632,6 +646,8 @@ int main()
 		glm::mat4 translator_L = glm::translate(glm::mat4(1.0f), model_L_move);
 		glm::mat4 translator_grid = glm::translate(glm::mat4(1.0f), model_grid_move);
 		glm::mat4 translator = glm::translate(glm::mat4(1.0f), model_move);
+		glm::mat4 translator_Stage = glm::translate(glm::mat4(1.0f), model_Stage_move);
+		glm::mat4 translator_Screen = glm::translate(glm::mat4(1.0f), model_Screen_move);
 
 		switch (activeModel) {
 		case 0:
@@ -644,7 +660,8 @@ int main()
 			model_La_matrix = model_world * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
-
+			model_Stage_matrix = model_world * translator_Stage * model_Stage;
+			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 1:
 			model_La_matrix = model_world * translator * model;
@@ -656,7 +673,8 @@ int main()
 			model_A_matrix = model_world * translator_A * model_A;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
-
+			model_Stage_matrix = model_world * translator_Stage * model_Stage;
+			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 2:
 			model_D_matrix = model_world * translator * model;
@@ -668,7 +686,8 @@ int main()
 			model_A_matrix = model_world * translator_A * model_A;
 			model_La_matrix = model_world * translator_La * model_La;
 			model_L_matrix = model_world * translator_L * model_L;
-
+			model_Stage_matrix = model_world * translator_Stage * model_Stage;
+			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 3:
 			model_L_matrix = model_world * translator * model;
@@ -680,6 +699,8 @@ int main()
 			model_A_matrix = model_world * translator_A * model_A;
 			model_La_matrix = model_world * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
+			model_Stage_matrix = model_world * translator_Stage * model_Stage;
+			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 4:
 			model_matrix = model_world * translator_A * model_A;
@@ -688,6 +709,8 @@ int main()
 			model_La_matrix = model_world * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
+			model_Stage_matrix = model_world * translator_Stage * model_Stage;
+			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 
 			break;
 		}
@@ -713,20 +736,35 @@ int main()
 
 		// Draws Models
 		//model_A_shader.Bind();
+
+
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 		alessandroModel.drawModel(renderingMode);
 
 		//model_L_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 		leCherngModel.drawModel(renderingMode);
+
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Screen_matrix));
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 0, 0)));
+		screen.drawModel(renderingMode);
 
 		//model_La_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 		laginModel.drawModel(renderingMode);
 
 		//model_D_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 		danModel.drawModel(renderingMode);
+
+		//model_Stage_shader Bind()
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Stage_matrix));
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
+		stage.drawModel(renderingMode);
 
 		// Draws line
 		lines3dShader.Bind();
@@ -741,6 +779,10 @@ int main()
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(grid_matrix));
 		grid.drawGrid();
 		// Unbinds VAO
+
+
+		
+
 		glBindVertexArray(0);
 		//activeModel = initModel;
 		// Swap the screen buffers
