@@ -156,7 +156,11 @@
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="Laginho.cpp" />
     <ClCompile Include="LeCherngModel.cpp" />
+<<<<<<< Updated upstream
     <ClCompile Include="lines3d.cpp" />
+=======
+    <ClCompile Include="SModel.cpp" />
+>>>>>>> Stashed changes
     <ClCompile Include="sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +176,10 @@
     <ClInclude Include="Laginho.h" />
     <ClInclude Include="LeCherngModel.h" />
     <ClInclude Include="lines3d.h" />
+<<<<<<< Updated upstream
+=======
+    <ClInclude Include="SModel.h" />
+>>>>>>> Stashed changes
     <ClInclude Include="sphere.h" />
   </ItemGroup>
   <ItemGroup>

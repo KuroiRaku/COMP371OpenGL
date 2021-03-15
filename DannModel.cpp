@@ -7,83 +7,46 @@ DannModel::DannModel() {
 	GLfloat yOrigin = 0.0f;
 	GLfloat zOrigin = 0.0f;
 
-	lineSize = 0.4f * 2;
+	
 
 	GLfloat distance = 2.5f;
 	
-	
-	setLetterD(xOrigin - (3 * distance), yOrigin, zOrigin);
-	setNumber7(xOrigin + (1 * distance), yOrigin, zOrigin);
-	setLetterN(xOrigin - (1 * distance), yOrigin, zOrigin);
-	setNumber4(xOrigin + (3 * distance), yOrigin, zOrigin);
-	mode = GL_TRIANGLES;
+
+
 	
 }
 
 void DannModel::drawModel(int drawMode, Shader* shader, glm::mat4 objectMatrix)
 {
 	
-	if (drawMode == 0) {
-		mode = GL_POINTS;
-		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-	}
-	else if (drawMode == 1)
-	{
-		mode = GL_TRIANGLES;
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
-	else
-	{
-		mode = GL_TRIANGLES;
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-
 	
-	//D Model
-	glBindVertexArray(this->vao_D);
-	glDrawElements(mode, indiciesD, GL_UNSIGNED_INT, NULL);
 
-	//7 Model
-	glBindVertexArray(this->vao_7);
-	glDrawElements(mode, indicies7, GL_UNSIGNED_INT, NULL);
 
-	//4 Model
-	glBindVertexArray(this->vao_4);
-	glDrawElements(mode, indicies4, GL_UNSIGNED_INT, NULL);
-
-	//N Model
-	glBindVertexArray(this->vao_N);
-	glDrawElements(mode, indiciesN, GL_UNSIGNED_INT, NULL);
 	drawLetter(0, 0, 0, shader, objectMatrix);
 }
 
 void DannModel::drawLetter(float x, float y, float z, Shader* shader, glm::mat4 objectMatrix)
 {
-	
-/*
- Cube cube = Cube(2, 5, 0);
+	/*
+	Cube cube = Cube(0, 0, 0);
+	cube.cubeMatrix = glm::scale(cube.cubeMatrix, glm::vec3(0,1,0));
+	cube.cubeMatrix = objectMatrix * cube.cubeMatrix;
+	GLuint mm_loc2 = shader->GetUniformLocation("mm");
+	glUniformMatrix4fv(mm_loc2, 1, 0, glm::value_ptr(cube.cubeMatrix));
 	cube.drawModel();
-	cube = Cube(2, 6, 0);
+	*/
+	Cube cube = Cube(0, 0, 0,4);
 	cube.drawModel();
-	cube = Cube(2, 7, 0);
-	cube.drawModel();
-	cube = Cube(2, 8, 0);
-	cube.drawModel();
-	cube = Cube(2, 9, 0);
-	cube.drawModel();
-	cube = Cube(2, 10, 0);
-	cube.drawModel();
- */
-	//Rotation of sphere is done like so
-	Sphere s = Sphere(2,2,2);
+	Sphere s = Sphere(2,2,0, 2, 0.5);
 	s.sphereMatrix = glm::rotate(s.sphereMatrix, glm::radians(50.f), glm::vec3(0, 0, 1));
 	s.sphereMatrix = objectMatrix * s.sphereMatrix;
 	GLuint mm_loc = shader->GetUniformLocation("mm");
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(s.sphereMatrix));
 	s.draw();
 	//Cancelling rotation for next object
-	Cube cube = Cube(2, 5, 0);
+	s = Sphere(0.2, 4,0, 2, 0.5);
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(objectMatrix));
+<<<<<<< Updated upstream
 	cube.drawModel();
 }
 
@@ -373,88 +336,14 @@ void DannModel::setNumber7(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+=======
+	s.sphereMatrix = glm::rotate(s.sphereMatrix, glm::radians(50.f), glm::vec3(0, 0, -1));
+	s.sphereMatrix = objectMatrix * s.sphereMatrix;
+	 mm_loc = shader->GetUniformLocation("mm");
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(s.sphereMatrix));
+	s.draw();
+>>>>>>> Stashed changes
 }
 
-void DannModel::setLetterD(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
-{
-	GLfloat vertices[] =
-	{
-		// FRONT POSITION	
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //outer bottom left 
-		2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //outer bottom right
-		2 * lineSize + xOrigin, 4 * lineSize + yOrigin, zOrigin, //outer top right
-		-2 * lineSize + xOrigin, 4 * lineSize + yOrigin, zOrigin, //outer top left
-		-1.5 * lineSize + xOrigin, -1.5 * lineSize + yOrigin, zOrigin, //inner bottom left 
-		1 * lineSize + xOrigin, -1.5 * lineSize + yOrigin, zOrigin, //inner bottom right
-		1 * lineSize + xOrigin, 3.5 * lineSize + yOrigin, zOrigin, //inner top right
-		-1.5 * lineSize + xOrigin, 3.5 * lineSize + yOrigin, zOrigin, //inner top left
-		// BACK POSITION
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //outer bottom left 
-		2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //outer bottom right
-		2 * lineSize + xOrigin, 4 * lineSize + yOrigin, zOrigin - lineSize, //outer top right
-		-2 * lineSize + xOrigin, 4 * lineSize + yOrigin, zOrigin - lineSize, //outer top left
-		-1.5 * lineSize + xOrigin, -1.5 * lineSize + yOrigin, zOrigin - lineSize, //inner bottom left 
-		1 * lineSize + xOrigin, -1.5 * lineSize + yOrigin, zOrigin - lineSize, //inner bottom right
-		1 * lineSize + xOrigin, 3.5 * lineSize + yOrigin, zOrigin - lineSize, //inner top right
-		-1.5 * lineSize + xOrigin, 3.5 * lineSize + yOrigin, zOrigin - lineSize, //inner top left
-	};
 
-	int indicies[] =
-	{
-		// FRONT INDICIES
-		0,1,4,
-		4,1,5,
-		1,2,5,
-		2,6,5,
-		2,7,6,
-		2,3,7,
-		3,0,7,
-		7,0,4,
-		// BACK INDICIES
-		8,12,9,
-		12,13,9,
-		9,13,10,
-		10,13,14,
-		10,14,15,
-		10,15,11,
-		11,15,8,
-		15,12,8,
-		// OUTER SIDES
-		0,3,11, //left
-		11,8,0,
-		3,2,10, //top
-		3,10,11,
-		0,8,1, //bottom
-		1,8,9,
-		1,10,2, //right
-		1,9,10,
-		// INNER SIDES
-		4,15,7, //left
-		15,4,12,
-		7,14,6, //top
-		7,15,14,
-		4,5,12, //bottom
-		5,13,12,
-		5,6,14, //right
-		5,14,13
-	};
 
-	glGenVertexArrays(1, &this->vao_D);
-	glBindVertexArray(this->vao_D);
-
-	GLuint vertices_VBO;
-	glGenBuffers(1, &vertices_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO);
-	glBufferData(GL_ARRAY_BUFFER, (sizeof(vertices) / sizeof(vertices[0])) * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
-	indiciesD= (sizeof(indicies) / sizeof(indicies[0]));
-	GLuint EBO;
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,indiciesD * sizeof(int), indicies, GL_STATIC_DRAW);
-
-	glBindVertexArray(0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}

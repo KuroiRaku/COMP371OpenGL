@@ -8,7 +8,7 @@
 #include <math.h>
 #define _USE_MATH_DEFINES
 # define M_PI          3.141592653589793238462643383279502884L /* pi */
-Sphere::Sphere(float x, float y , float z)
+Sphere::Sphere(float x, float y, float z, float xLength, float yLength)
 {
    
     m_vao = 0;
@@ -17,7 +17,7 @@ Sphere::Sphere(float x, float y , float z)
 
     lats = 40;
     longs = 40;
-    init(x, y, z);
+    init(x, y, z, xLength, yLength);
 }
 
 Sphere::~Sphere()
@@ -34,7 +34,7 @@ GLfloat sphere_nor[nn]; // normal
 GLuint  sphere_ix[na * (nb - 1) * 6];    // indices
 GLuint sphere_vbo[4] = { -1,-1,-1,-1 };
 GLuint sphere_vao[4] = { -1,-1,-1,-1 };
-void Sphere::init(float xOrigin, float yOrigin, float zOrigin)
+void Sphere::init(float xOrigin, float yOrigin, float zOrigin, float xLength, float yLength)
 {
     // generate the sphere data
     GLfloat x, y, z, a, b, da, db, r = 1;
@@ -50,8 +50,8 @@ void Sphere::init(float xOrigin, float yOrigin, float zOrigin)
             x = cos(b) * cos(a);
             y = cos(b) * sin(a);
             z = sin(b);
-            sphere_pos[ix + 0] = (x+xOrigin) * r;
-            sphere_pos[ix + 1] = (y + yOrigin)* 0.5;
+            sphere_pos[ix + 0] = (x+xOrigin) * xLength;
+            sphere_pos[ix + 1] = (y + yOrigin)* yLength;
             sphere_pos[ix + 2] = (z+zOrigin) * r;
             sphere_nor[ix + 0] = (x + xOrigin);
             sphere_nor[ix + 1] = (y + yOrigin);

@@ -31,9 +31,6 @@
     <ClCompile Include="engine\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lines3d.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -49,13 +46,24 @@
     <ClCompile Include="DannModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="Cylinder.cpp">
+=======
+    <ClCompile Include="Cube.cpp">
+>>>>>>> Stashed changes
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="Cube.cpp">
+=======
+    <ClCompile Include="SModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cylinder.cpp">
+>>>>>>> Stashed changes
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -78,9 +86,6 @@
     <ClInclude Include="LeCherngModel.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="lines3d.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="AlessandroModel.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -90,15 +95,25 @@
     <ClInclude Include="DannModel.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="Cylinder.h">
+=======
+    <ClInclude Include="Cube.h">
+>>>>>>> Stashed changes
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="sphere.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="Cube.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+=======
+    <ClInclude Include="SModel.h" />
+    <ClInclude Include="Cylinder.h" />
+    <ClInclude Include="lines3d.h" />
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">

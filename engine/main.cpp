@@ -24,6 +24,11 @@
 #include "../LeCherngModel.h"
 #include "../Laginho.h"
 #include "../DannModel.h"
+<<<<<<< Updated upstream
+=======
+#include "../Cube.h"
+#include "../SModel.h"
+>>>>>>> Stashed changes
 
 using namespace std;
 
@@ -38,20 +43,20 @@ glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera 
 
 //model settings
 glm::mat4 model = glm::mat4(1.0f); //active model
-glm::vec3 model_move = glm::vec3(0, 2, -10); //to apply translational transformations
+glm::vec3 model_move = glm::vec3(0.5, 23 - 0.5, -25); //to apply translational transformations
 
 //Alessandro
 glm::mat4 model_A = glm::mat4(1.0f);
-glm::vec3 model_A_move = glm::vec3(0, 2, -10); //to apply translational transformations
+glm::vec3 model_A_move = glm::vec3(0.5, 23 - 0.5, -25); //to apply translational transformations
 //Le Cherng
 glm::mat4 model_L = glm::mat4(1.0f);
-glm::vec3 model_L_move = glm::vec3(0, 2, 10); //to apply translational transformations
+glm::vec3 model_L_move = glm::vec3(0.5, 13 - 0.5, -25); //to apply translational transformations
 //Dan
 glm::mat4 model_D = glm::mat4(1.0f);
-glm::vec3 model_D_move = glm::vec3(10, 2, 0); //to apply translational transformations
+glm::vec3 model_D_move = glm::vec3(-0.5, 28 - 0.5, -25); //to apply translational transformations
 //LaginHo
 glm::mat4 model_La = glm::mat4(1.0f);
-glm::vec3 model_La_move = glm::vec3(-10, 2, 0); //to apply translational transformations
+glm::vec3 model_La_move = glm::vec3(0.5, 18 - 0.5, -25); //to apply translational transformations
 //LaginHo
 glm::mat4 model_grid = glm::mat4(1.0f);
 glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
@@ -59,6 +64,12 @@ glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transfo
 //World Matrix
 glm::mat4 model_world = glm::mat4(1.0f);
 glm::vec3 model_world_move = glm::vec3(0, 0, 0); //to apply translational transformations
+
+glm::mat4 model_S1 = glm::mat4(1.0f);
+glm::vec3 model_S1_move = glm::vec3(0, 0.5, -25); //to apply translational transformations
+
+glm::mat4 model_S2 = glm::mat4(1.0f);
+glm::vec3 model_S2_move = glm::vec3(0, 7-0.5, -25); //to apply translational transformations
 
 //color settings
 bool flag = false;
@@ -99,7 +110,13 @@ void resetToPreviousModel(int previousActiveModel) {
 		model_move = model_L_move;
 		break;
 	case 4:
-		cout << "Error Occured" << endl;
+		model = model_S1;
+		model_move = model_S1_move;
+		break;
+
+	case 5:
+		model = model_S2;
+		model_move = model_S2_move;
 		break;
 	}
 	activeModel = previousActiveModel;
@@ -108,7 +125,6 @@ void resetToPreviousModel(int previousActiveModel) {
 // Rotate around a point 
 // Note: This function is not in used, because assignment doesn't require it. But we will still keep it if we want to play around :D 
 void rotateAround(glm::vec3& moveVec, glm::mat4& matrix, glm::vec3 rotation) {
-	activeModel = 4;
 
 	glm::mat4 identityMatrix(1.f);
 	identityMatrix = glm::translate(identityMatrix, glm::vec3(-moveVec.x, -moveVec.y, -moveVec.z));
@@ -141,7 +157,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 
 	if ((key == GLFW_KEY_LEFT|| key == GLFW_KEY_RIGHT || key == GLFW_KEY_UP || key == GLFW_KEY_DOWN) && action == GLFW_PRESS) {
-		activeModel = 4;
+		activeModel = 6;
 		worldOrientationKeyPressed = true;
 	}
 
@@ -189,8 +205,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	{
 		model_world = glm::mat4(1.f);
 	}
-
-	//full reset
+	/*
 	if (key == GLFW_KEY_0)
 	{
 		model = glm::mat4(1.0f);
@@ -214,6 +229,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 		model_world = glm::mat4(1.f);
 	}
+	*/
+	//full reset
+	
 	
 	if (!worldOrientationKeyPressed) {
 		//WASD buttons to move the model
@@ -275,13 +293,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 		//toggle the red channel on/off
 		if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-			if (red != true) {
-				red = true;
-			}
-			else
-			{
-				red = false;
-			}
+			
 			activeModel = 0;
 			previousActiveModel = 1;
 			model = model_A;
@@ -290,14 +302,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 		//toggle the green channel on/off
 		if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-			if (green != true)
-			{
-				green = true;
-			}
-			else
-			{
-				green = false;
-			}
+			
 			activeModel = 1;
 			previousActiveModel = 1;
 			model = model_La;
@@ -306,12 +311,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 		//toggle the blue channel on/off
 		if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
-			if (blue != true) {
-				blue = true;
-			}
-			else {
-				blue = false;
-			}
+			
 			activeModel = 2;
 			previousActiveModel = 2;
 			model = model_D;
@@ -320,16 +320,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 		//turn on all channels
 		if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
-			if (colour != true) {
-				colour = true;
-
-				red = false;
-				green = false;
-				blue = false;
-				colour = false;
-			}
-			else
-				colour = false;
+			
 
 			activeModel = 3;
 			previousActiveModel = 3;
@@ -337,7 +328,24 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			model_move = model_L_move;
 		}
 
-		//toggle between Gouraud and Phong shading
+		if (key == GLFW_KEY_5 && action == GLFW_PRESS) {
+
+
+			activeModel = 4;
+			previousActiveModel = 4;
+			model = model_S2;
+			model_move = model_S1_move;
+		}
+		if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
+
+
+			activeModel = 5;
+			previousActiveModel = 5;
+			model = model_S2;
+			model_move = model_S2_move;
+		}
+/*
+//toggle between Gouraud and Phong shading
 		if (key == GLFW_KEY_5 && action == GLFW_PRESS) {
 			if (flag == false)
 				flag = true;
@@ -351,6 +359,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			else
 				lights = false;
 		}
+
+*/
+		
 
 		/*if (key == GLFW_KEY_M && action == GLFW_PRESS) {
 			if (normalcol == false)
@@ -466,6 +477,7 @@ int main()
 {
 	std::cout << "Starting GLFW context" << std::endl;
 	glfwInit();
+	
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -563,6 +575,13 @@ int main()
 	LeCherngModel leCherngModel = LeCherngModel();
 	DannModel danModel = DannModel();
 	LaginhoModel laginModel = LaginhoModel();
+<<<<<<< Updated upstream
+=======
+	AlessandroModel alessandroModel = AlessandroModel();
+	SModel sModel1 = SModel();
+	SModel sModel2 = SModel();
+	
+>>>>>>> Stashed changes
 
 	//shader set up
 	shader.Bind();
@@ -580,6 +599,10 @@ int main()
 	glm::mat4 model_D_matrix = glm::translate(glm::mat4(1.f), model_D_move);
 	//LaginHo
 	glm::mat4 model_La_matrix = glm::translate(glm::mat4(1.f), model_La_move);
+
+	glm::mat4 model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
+
+	glm::mat4 model_S2_matrix = glm::translate(glm::mat4(1.f), model_S2_move);
 
 	glm::mat4 grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 
@@ -632,6 +655,8 @@ int main()
 		glm::mat4 translator_L = glm::translate(glm::mat4(1.0f), model_L_move);
 		glm::mat4 translator_grid = glm::translate(glm::mat4(1.0f), model_grid_move);
 		glm::mat4 translator = glm::translate(glm::mat4(1.0f), model_move);
+		glm::mat4 translator_S1 = glm::translate(glm::mat4(1.0f), model_S1_move);
+		glm::mat4 translator_S2 = glm::translate(glm::mat4(1.0f), model_S2_move);
 
 		switch (activeModel) {
 		case 0:
@@ -656,6 +681,8 @@ int main()
 			model_A_matrix = model_world * translator_A * model_A;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
+			model_S1_matrix = model_world * translator_S1 * model_S1;
+			model_S2_matrix = model_world * translator_S2 * model_S2;
 
 			break;
 		case 2:
@@ -668,6 +695,8 @@ int main()
 			model_A_matrix = model_world * translator_A * model_A;
 			model_La_matrix = model_world * translator_La * model_La;
 			model_L_matrix = model_world * translator_L * model_L;
+			model_S1_matrix = model_world * translator_S1 * model_S1;
+			model_S2_matrix = model_world * translator_S2 * model_S2;
 
 			break;
 		case 3:
@@ -680,14 +709,50 @@ int main()
 			model_A_matrix = model_world * translator_A * model_A;
 			model_La_matrix = model_world * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
+			model_S1_matrix = model_world * translator_S1 * model_S1;
+			model_S2_matrix = model_world * translator_S2 * model_S2;
 			break;
 		case 4:
+			model_S1_matrix = model_world * translator * model;
+			model_S1 = model;
+			model_S1_move = model_move;
+
 			model_matrix = model_world * translator_A * model_A;
 			grid_matrix = model_world * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
 			model_La_matrix = model_world * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
+			model_S2_matrix = model_world * translator_S2 * model_S2;
+
+			break;
+
+		case 5:
+			model_S2_matrix = model_world * translator * model;
+			model_S2 = model;
+			model_S2_move = model_move;
+
+			model_matrix = model_world * translator_A * model_A;
+			grid_matrix = model_world * translator_grid * model_grid;
+			model_A_matrix = model_world * translator_A * model_A;
+			model_La_matrix = model_world * translator_La * model_La;
+			model_D_matrix = model_world * translator_D * model_D;
+			model_L_matrix = model_world * translator_L * model_L;
+			model_S1_matrix = model_world * translator_S1 * model_S1;
+
+			break;
+
+		case 6:
+		
+			
+			model_matrix = model_world * translator_A * model_A;
+			grid_matrix = model_world * translator_grid * model_grid;
+			model_A_matrix = model_world * translator_A * model_A;
+			model_La_matrix = model_world * translator_La * model_La;
+			model_D_matrix = model_world * translator_D * model_D;
+			model_L_matrix = model_world * translator_L * model_L;
+			model_S1_matrix = model_world * translator_S1 * model_S1;
+			model_S2_matrix = model_world * translator_S2 * model_S2;
 
 			break;
 		}
@@ -707,33 +772,45 @@ int main()
 		glClearColor(0.0f, 0.5019f, 0.5019f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Draws cube
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	
+		
 
 		// Draws Models
 		//model_A_shader.Bind();
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
-		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.3)));
-		alessandroModel.drawModel(renderingMode);
+		
 
 		//model_L_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
 		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(1, 0, 0)));
-		leCherngModel.drawModel(renderingMode);
+		leCherngModel.drawModel(renderingMode, & shader, model_D_matrix);
 
 		//model_La_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
-		laginModel.drawModel(renderingMode);
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 1, 0)));
+		laginModel.drawModel(renderingMode, &shader, model_D_matrix);
+
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 0, 1)));
+		alessandroModel.drawModel(renderingMode, & shader, model_D_matrix);
 
 		//model_D_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(1, 1, 0)));
 		danModel.drawModel(renderingMode, &shader, model_D_matrix);
+
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S1_matrix));
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(1, 0, 1)));
+		sModel1.drawModel(renderingMode, &shader, model_S1_matrix);
+
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S2_matrix));
+		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(1, 1, 1)));
+		sModel2.drawModel(renderingMode, &shader, model_S2_matrix);
 
 		// Draws line
 		glLineWidth(1.0f);
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 		lines3dObject.drawLines(mm_loc, &shader, line_matrix);
+<<<<<<< Updated upstream
 
 		// Draws grid
 		lines3dShader.Bind();
@@ -742,9 +819,16 @@ int main()
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(grid_matrix));
 		//grid.drawGrid();
 		// Unbinds VAO
+=======
+	
+		// Draws grid
+		
+		glLineWidth(0.5f);
+		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(grid_matrix));
+		grid.drawGrid();
+>>>>>>> Stashed changes
 		glBindVertexArray(0);
-		//activeModel = initModel;
-		// Swap the screen buffers
 		glfwSwapBuffers(window);
 	}
 

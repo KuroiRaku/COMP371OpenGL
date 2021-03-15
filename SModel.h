@@ -5,15 +5,16 @@
 #include "../sphere.h"
 #include "Shader.h"
 #pragma once
-class DannModel
+class SModel
 {
 
 public:
-	DannModel();
+	SModel();
 	void drawModel(int drawMode, Shader* shader, glm::mat4 objectMatrix);
 	void drawLetter(float x, float y, float z, Shader* shader, glm::mat4 objectMatrix);
 
 
-	
-	
+
+
 };
+

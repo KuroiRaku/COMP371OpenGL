@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 #include "lines3d.h"
 
 Lines3d::Lines3d() 
@@ -38,3 +39,5 @@ void Lines3d::drawLines(GLint mm, Shader* shader, glm::mat4 objectMatrix)
 
 }
 
+=======
+>>>>>>> Stashed changes
