@@ -15,4 +15,5 @@ WASD: Moves them around<br>
 J/I: Scales up / down<br>
 SHIFT + WASD: Rotates them (hold the WASD keys) <br><br>
 
-When selecting the world, use the arrow keys to rotate the world around
+When selecting the world, use the arrow keys to rotate the world around<br>
+
