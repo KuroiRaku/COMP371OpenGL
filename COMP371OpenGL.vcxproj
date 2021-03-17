@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AlessandroModel.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DannModel.cpp" />
     <ClCompile Include="dependencies\windows\glad\src\glad.c" />
     <ClCompile Include="engine\Font.cpp" />
@@ -155,9 +156,14 @@
     <ClCompile Include="Laginho.cpp" />
     <ClCompile Include="LeCherngModel.cpp" />
     <ClCompile Include="lines3d.cpp" />
+    <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlessandroModel.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="DannModel.h" />
     <ClInclude Include="engine\Font.h" />
     <ClInclude Include="engine\GLDebugMessageCallback.h" />
@@ -167,6 +173,10 @@
     <ClInclude Include="Laginho.h" />
     <ClInclude Include="LeCherngModel.h" />
     <ClInclude Include="lines3d.h" />
+    <ClInclude Include="Screen.h" />
+    <ClInclude Include="Stage.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader" />
@@ -180,6 +190,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\shaders\lines3d_fragment.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\Desktop\boxtexture.jpg" />
+    <Image Include="..\..\..\Desktop\metaltexture.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
