@@ -1,8 +1,8 @@
 #include "Texture.h"
-#include "stb_image.h" // this is sus
+#include "stb_image.h"
 
 Texture::Texture(const string& path) 
-	: m_RendererID(0), m_FilePath(path), m_LocalBuffer(nullptr), m_Width(0), m_Height(0), m_BPP(0)
+	: m_RendererID(0), m_FilePath(path), m_LocalBuffer(nullptr), m_Width(0), m_Height(0), m_BPP(0), activeTexture(true)
 {
 
 	stbi_set_flip_vertically_on_load(1);
@@ -27,8 +27,13 @@ Texture::~Texture() {
 }
 
 void Texture::Bind(unsigned int slot) const {
-	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, m_RendererID);
+	if (activeTexture) {
+		glActiveTexture(GL_TEXTURE0 + slot);
+		glBindTexture(GL_TEXTURE_2D, m_RendererID);
+	}
+	else {
+		Unbind();
+	}
 }
 
 void Texture::Unbind() const {

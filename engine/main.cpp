@@ -78,6 +78,7 @@ bool red = false;
 bool green = false;
 bool blue = false;
 bool colour = false;
+bool activeModelTexture = true;
 
 //0 for points, 1 for lines, 2 for triangle
 int renderingMode = 2;
@@ -359,6 +360,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				lights = true;
 			else
 				lights = false;
+		}
+
+		if (key == GLFW_KEY_X && action == GLFW_PRESS) {
+			activeModelTexture = !activeModelTexture;
 		}
 
 		/*if (key == GLFW_KEY_M && action == GLFW_PRESS) {
@@ -752,9 +757,11 @@ int main()
 		glBindVertexArray(VAO);
 		//glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
+		boxTexture.activeTexture = activeModelTexture;
+		metalTexture.activeTexture = activeModelTexture;
+
 		// Draws Models
 		//model_A_shader.Bind();
-		//s.Bind();
 		modelsShader.Bind();
 		modelsShader.SetUniform1i("u_Texture", 0);
 		
