@@ -20,6 +20,11 @@ in vec3 normal;
 
 flat in vec3 col;
 
+//Texture
+in vec2 v_TexCoord;
+uniform vec4 u_Color;
+uniform sampler2D u_Texture;
+
 void main()
 {
 
@@ -40,6 +45,12 @@ void main()
 
 	vec3 color = (specular + diffuse + ambient) * object_color;
 
+	//Texture
+	vec4 texColor = texture(u_Texture, v_TexCoord);
+	result_color = texColor;
+
+
+	
 	if (red == true) {
 		if (color.x != ((specular + diffuse + ambient) * object_color).x) {
 			color.x = ((specular + diffuse + ambient) * object_color).x;
@@ -161,4 +172,5 @@ void main()
 			}
 		}
 	}
+	result_color = result_color + texColor;
 }

@@ -762,39 +762,41 @@ int main()
 
 		// Draws Models
 		//model_A_shader.Bind();
-		modelsShader.Bind();
-		modelsShader.SetUniform1i("u_Texture", 0);
+		shader.SetUniform1i("u_Texture", 0);
 		
-		glUniformMatrix4fv(vm_loc_models, 1, 0, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(mm_loc_models, 1, 0, glm::value_ptr(line_matrix));
+		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 
-		glUniformMatrix4fv(mm_loc_models, 1, 0, glm::value_ptr(model_A_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 		alessandroModel.drawModel(renderingMode, &boxTexture, &metalTexture);
 
 		//model_L_shader.Bind();
-		glUniformMatrix4fv(mm_loc_models, 1, 0, glm::value_ptr(model_L_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 		leCherngModel.drawModel(renderingMode, &boxTexture, &metalTexture);
 
 		//model_La_shader.Bind();
-		glUniformMatrix4fv(mm_loc_models, 1, 0, glm::value_ptr(model_La_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 		laginModel.drawModel(renderingMode, &boxTexture, &metalTexture);
 
 		//model_D_shader.Bind();
-		glUniformMatrix4fv(mm_loc_models, 1, 0, glm::value_ptr(model_D_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 		danModel.drawModel(renderingMode, &boxTexture, &metalTexture);
 
-		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Screen_matrix));
+		boxTexture.activeTexture = false;
+		metalTexture.activeTexture = false;
+
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Screen_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 0, 0)));
-		//screen.drawModel(renderingMode);
+		screen.drawModel(renderingMode);
 
 		//model_Stage_shader Bind()
-		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Stage_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Stage_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		//stage.drawModel(renderingMode);
+		stage.drawModel(renderingMode);
 
 		// Draws line
 		lines3dShader.Bind();
@@ -809,9 +811,6 @@ int main()
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(grid_matrix));
 		grid.drawGrid();
 		// Unbinds VAO
-
-
-		
 
 		glBindVertexArray(0);
 		//activeModel = initModel;

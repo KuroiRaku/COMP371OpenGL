@@ -27,6 +27,9 @@ flat out vec3 col;
 
 uniform mat4 projection;
 
+//Texture
+out vec2 v_TexCoord;
+
 void main()
 {
 	normal = mat3(transpose(inverse(mm))) * normals;
@@ -47,6 +50,9 @@ void main()
 	vec3 reflect_light_direction = reflect(-light_direction, normalize(normal));
 	float specular_strength = 1.0f;
 	vec3 specular = specular_strength * pow(max(dot(reflect_light_direction, view_direction), 0.0), 32) * light_color;
+
+	//Texture
+	v_TexCoord = vec2(position);
 
 	//Gouraud
 	if (flag == true) {
