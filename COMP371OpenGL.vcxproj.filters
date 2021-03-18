@@ -144,12 +144,6 @@
       <Filter>Resources\Shader</Filter>
     </None>
     <None Include="shader1.bin" />
-    <None Include="resources\shaders\models_fragment.shader">
-      <Filter>Resources\Shader</Filter>
-    </None>
-    <None Include="resources\shaders\models_vertex.shader">
-      <Filter>Resources\Shader</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\shaders\lines3d_fragment.shader">

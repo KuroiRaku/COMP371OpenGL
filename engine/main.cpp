@@ -534,9 +534,6 @@ int main()
 	//lines
 	Shader lines3dShader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
 
-	//models
-	Shader modelsShader("resources/shaders/models_vertex.shader", "resources/shaders/models_fragment.shader");
-
 	std::vector<int> indices;
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec3> normals;
@@ -637,15 +634,6 @@ int main()
 	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
-
-	//models shader camera setup
-	modelsShader.Bind();
-	GLuint vm_loc_models = modelsShader.GetUniformLocation("vm");
-	GLuint pm_loc_models = modelsShader.GetUniformLocation("pm");
-	GLuint mm_loc_models = modelsShader.GetUniformLocation("mm");
-	glUniformMatrix4fv(vm_loc_models, 1, GL_FALSE, glm::value_ptr(view_matrix));
-	glUniformMatrix4fv(pm_loc_models, 1, GL_FALSE, glm::value_ptr(proj_matrix));
-	glUniformMatrix4fv(mm_loc_models, 1, GL_FALSE, glm::value_ptr(line_matrix));
 
 	// Textures
 	Texture boxTexture("resources/textures/boxtexture.jpg");
@@ -755,7 +743,7 @@ int main()
 
 		// Draws cube
 		glBindVertexArray(VAO);
-		//glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
 		boxTexture.activeTexture = activeModelTexture;
 		metalTexture.activeTexture = activeModelTexture;
