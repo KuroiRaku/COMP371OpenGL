@@ -179,6 +179,8 @@
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="models_fragment.shader" />
+    <None Include="models_vertex.shader" />
     <None Include="resources\shaders\Basic.shader" />
     <None Include="resources\shaders\fragment.shader" />
     <None Include="resources\shaders\lines3d_vertex.shader" />

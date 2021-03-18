@@ -142,6 +142,12 @@
     <None Include="resources\shaders\lines3d_vertex.shader">
       <Filter>Resources\Shader</Filter>
     </None>
+    <None Include="models_vertex.shader">
+      <Filter>Resources\Shader</Filter>
+    </None>
+    <None Include="models_fragment.shader">
+      <Filter>Resources\Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\shaders\lines3d_fragment.shader">

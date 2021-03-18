@@ -1,4 +1,5 @@
 #include "AlessandroModel.h"
+#include "Texture.h";
 
 
 AlessandroModel::AlessandroModel() {
@@ -36,21 +37,23 @@ void AlessandroModel::drawModel(int drawMode)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
+
+
 	//O Model
 	glBindVertexArray(this->vao_O);
 	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
 	//1 Model
-	glBindVertexArray(this->vao_1);
-	glDrawElements(mode, 60, GL_UNSIGNED_INT, NULL);
+	//glBindVertexArray(this->vao_1);
+	//glDrawElements(mode, 60, GL_UNSIGNED_INT, NULL);
 
 	//4 Model
-	glBindVertexArray(this->vao_4);
-	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
+	//glBindVertexArray(this->vao_4);
+	//glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
 	//A Model
-	glBindVertexArray(this->vao_A);
-	glDrawElements(mode, 144, GL_UNSIGNED_INT, NULL);
+	//glBindVertexArray(this->vao_A);
+	//glDrawElements(mode, 144, GL_UNSIGNED_INT, NULL);
 }
 
 void AlessandroModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
@@ -316,26 +319,27 @@ void AlessandroModel::setNumber1(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 
 void AlessandroModel::setLetterO(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 {
+	// position 3, textureCoords 2
 	GLfloat vertices_lines[] =
 	{
 		// FRONT POSITION	
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //outer bottom left 
-		2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //outer bottom right
-		2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //outer top right
-		-2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //outer top left
-		-1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //inner bottom left 
-		1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //inner bottom right
-		1 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //inner top right
-		-1 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //inner top left
+		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, 0.0f, 0.0f, //outer bottom left 
+		2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, 1.0f, 0.0f,//outer bottom right
+		2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, 1.0f, 1.0f, //outer top right
+		-2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, 0.0f, 1.0f,//outer top left
+		-1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, 0.0f, 0.0f,//inner bottom left 
+		1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, 1.0f, 0.0f,//inner bottom right
+		1 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, 1.0f, 1.0f,//inner top right
+		-1 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, 0.0f, 1.0f,//inner top left
 		// BACK POSITION
-		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //outer bottom left 
-		2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //outer bottom right
-		2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //outer top right
-		-2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //outer top left
-		-1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //inner bottom left 
-		1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //inner bottom right
-		1 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //inner top right
-		-1 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //inner top left
+		-2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, 0.0f, 0.0f, //outer bottom left 
+		2 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, 1.0f, 0.0f, //outer bottom right
+		2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, 1.0f, 1.0f,//outer top right
+		-2 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, 0.0f, 1.0f,//outer top left
+		-1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, 0.0f, 0.0f, //inner bottom left 
+		1 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, 1.0f, 0.0f, //inner bottom right
+		1 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, 1.0f, 1.0f,//inner top right
+		-1 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, 0.0f, 1.0f,//inner top left
 	};
 
 	int indicies_lines[] =
@@ -384,9 +388,17 @@ void AlessandroModel::setLetterO(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 	GLuint vertices_VBO;
 	glGenBuffers(1, &vertices_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO);
-	glBufferData(GL_ARRAY_BUFFER, 48 * sizeof(float), vertices_lines, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 80 * sizeof(float), vertices_lines, GL_STATIC_DRAW);
+
+	// position
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);  //3*sizeof(GLfloat) is the offset of 3 float numbers
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)0);  //3*sizeof(GLfloat) is the offset of 3 float numbers
+
+	// texture
+	//color attribute
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	GLuint EBO;
 	glGenBuffers(1, &EBO);
