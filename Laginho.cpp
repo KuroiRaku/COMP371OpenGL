@@ -17,7 +17,7 @@ LaginhoModel::LaginhoModel() {
 	mode = GL_TRIANGLES;
 }
 
-void LaginhoModel::drawModel(int drawMode)
+void LaginhoModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture)
 {
 
 	if (drawMode == 0) {
@@ -35,22 +35,28 @@ void LaginhoModel::drawModel(int drawMode)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
-	//O Model
-	glBindVertexArray(this->vao_0);
-	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
+	boxTexture->Bind();
 
-	//1 Model
+	//H Model
 	glBindVertexArray(this->vao_H);
 	glDrawElements(mode, 200, GL_UNSIGNED_INT, NULL);
-
-	//4 Model
-	glBindVertexArray(this->vao_4);
-	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
 	//A Model
 	glBindVertexArray(this->vao_A);
 	glDrawElements(mode, 144, GL_UNSIGNED_INT, NULL);
 
+	boxTexture->Unbind();
+	metalTexture->Bind();
+
+	//O Model
+	glBindVertexArray(this->vao_0);
+	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
+
+	//4 Model
+	glBindVertexArray(this->vao_4);
+	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
+
+	metalTexture->Unbind();
 }
 
 void LaginhoModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)

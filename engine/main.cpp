@@ -767,31 +767,29 @@ int main()
 		
 		glUniformMatrix4fv(vm_loc_models, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_models, 1, 0, glm::value_ptr(line_matrix));
+
 		glUniformMatrix4fv(mm_loc_models, 1, 0, glm::value_ptr(model_A_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-
 		alessandroModel.drawModel(renderingMode, &boxTexture, &metalTexture);
 
-
-
 		//model_L_shader.Bind();
-		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
+		glUniformMatrix4fv(mm_loc_models, 1, 0, glm::value_ptr(model_L_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		//leCherngModel.drawModel(renderingMode);
+		leCherngModel.drawModel(renderingMode, &boxTexture, &metalTexture);
+
+		//model_La_shader.Bind();
+		glUniformMatrix4fv(mm_loc_models, 1, 0, glm::value_ptr(model_La_matrix));
+		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
+		laginModel.drawModel(renderingMode, &boxTexture, &metalTexture);
+
+		//model_D_shader.Bind();
+		glUniformMatrix4fv(mm_loc_models, 1, 0, glm::value_ptr(model_D_matrix));
+		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
+		danModel.drawModel(renderingMode, &boxTexture, &metalTexture);
 
 		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Screen_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 0, 0)));
 		//screen.drawModel(renderingMode);
-
-		//model_La_shader.Bind();
-		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
-		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		//laginModel.drawModel(renderingMode);
-
-		//model_D_shader.Bind();
-		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
-		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		//danModel.drawModel(renderingMode);
 
 		//model_Stage_shader Bind()
 		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Stage_matrix));

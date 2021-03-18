@@ -17,7 +17,7 @@ LeCherngModel::LeCherngModel() {
 	mode = GL_TRIANGLES;
 }
 
-void LeCherngModel::drawModel(int drawMode)
+void LeCherngModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture)
 {
 	
 	if (drawMode == 0) {
@@ -35,10 +35,17 @@ void LeCherngModel::drawModel(int drawMode)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
-
+	boxTexture->Bind();
 	//G Model
 	glBindVertexArray(this->vao_G);
 	glDrawElements(mode, indiciesG, GL_UNSIGNED_INT, NULL);
+
+	//L Model
+	glBindVertexArray(this->vao_L);
+	glDrawElements(mode, indiciesL, GL_UNSIGNED_INT, NULL);
+
+	boxTexture->Unbind();
+	metalTexture->Bind();
 
 	//4 Model
 	glBindVertexArray(this->vao_4);
@@ -48,9 +55,7 @@ void LeCherngModel::drawModel(int drawMode)
 	glBindVertexArray(this->vao_4_2);
 	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
-	//L Model
-	glBindVertexArray(this->vao_L);
-	glDrawElements(mode, indiciesL, GL_UNSIGNED_INT, NULL);
+	metalTexture->Unbind();
 }
 
 void LeCherngModel::setLetterL(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)

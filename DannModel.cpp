@@ -20,7 +20,7 @@ DannModel::DannModel() {
 	mode = GL_TRIANGLES;
 }
 
-void DannModel::drawModel(int drawMode)
+void DannModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture)
 {
 
 	if (drawMode == 0) {
@@ -38,10 +38,18 @@ void DannModel::drawModel(int drawMode)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
+	boxTexture->Bind();
 	
 	//D Model
 	glBindVertexArray(this->vao_D);
 	glDrawElements(mode, indiciesD, GL_UNSIGNED_INT, NULL);
+
+	//N Model
+	glBindVertexArray(this->vao_N);
+	glDrawElements(mode, indiciesN, GL_UNSIGNED_INT, NULL);
+
+	boxTexture->Unbind();
+	metalTexture->Bind();
 
 	//7 Model
 	glBindVertexArray(this->vao_7);
@@ -51,9 +59,7 @@ void DannModel::drawModel(int drawMode)
 	glBindVertexArray(this->vao_4);
 	glDrawElements(mode, indicies4, GL_UNSIGNED_INT, NULL);
 
-	//N Model
-	glBindVertexArray(this->vao_N);
-	glDrawElements(mode, indiciesN, GL_UNSIGNED_INT, NULL);
+	metalTexture->Unbind();
 }
 
 void DannModel::setLetterN(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
