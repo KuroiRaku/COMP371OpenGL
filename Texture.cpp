@@ -1,7 +1,6 @@
 #include "Texture.h"
 #include "stb_image.h" // this is sus
 
-
 Texture::Texture(const string& path) 
 	: m_RendererID(0), m_FilePath(path), m_LocalBuffer(nullptr), m_Width(0), m_Height(0), m_BPP(0)
 {

@@ -1,5 +1,5 @@
 #version 330 core
-layout(location = 0) in vec3 position;   
+layout(location = 0) in vec3 position;
 layout(location = 1) in vec2 texCoord;
 
 uniform mat4 vm;
@@ -12,5 +12,5 @@ void main()
 {
     fragment_position = vec3(mm * vec4(position, 1.0f));
     gl_Position = pm * vm * mm * vec4(position, 1.0);
-    v_TexCoord = texCoord;
+    v_TexCoord = vec2(position);
 }

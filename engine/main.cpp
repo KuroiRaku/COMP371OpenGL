@@ -642,8 +642,9 @@ int main()
 	glUniformMatrix4fv(pm_loc_models, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_models, 1, GL_FALSE, glm::value_ptr(line_matrix));
 
-	Texture texture("resources/textures/boxtexture.jpg");
-	//Texture texture("resources/textures/metaltexture.jpg");
+	// Textures
+	Texture boxTexture("resources/textures/boxtexture.jpg");
+	Texture metalTexture("resources/textures/metaltexture.jpg");
 
 	// Game loop
 	while (!glfwWindowShouldClose(window))
@@ -753,15 +754,18 @@ int main()
 
 		// Draws Models
 		//model_A_shader.Bind();
-		texture.Bind();
+		//s.Bind();
 		modelsShader.Bind();
 		modelsShader.SetUniform1i("u_Texture", 0);
+		
 		glUniformMatrix4fv(vm_loc_models, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_models, 1, 0, glm::value_ptr(line_matrix));
 		glUniformMatrix4fv(mm_loc_models, 1, 0, glm::value_ptr(model_A_matrix));
-		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		alessandroModel.drawModel(renderingMode);
-		texture.Unbind();
+		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
+
+		alessandroModel.drawModel(renderingMode, &boxTexture, &metalTexture);
+
+
 
 		//model_L_shader.Bind();
 		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));

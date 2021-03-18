@@ -1,6 +1,7 @@
 #include <glad/glad.h>	// include GL Extension Wrangler
 #include <glfw/glfw3.h>	// include GLFW helper library
 #include <iostream>
+#include "Texture.h";
 
 #pragma once
 class AlessandroModel
@@ -8,7 +9,7 @@ class AlessandroModel
 
 public:
 	AlessandroModel();
-	void drawModel(int drawMode);
+	void drawModel(int drawMode, Texture * boxTexture, Texture * metalTexture);
 
 private:
 	void setLetterO(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
@@ -23,4 +24,3 @@ private:
 	GLfloat lineSize;
 	GLenum mode;
 };
-

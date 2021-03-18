@@ -116,6 +116,7 @@
     </ClInclude>
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">
@@ -142,10 +143,11 @@
     <None Include="resources\shaders\lines3d_vertex.shader">
       <Filter>Resources\Shader</Filter>
     </None>
-    <None Include="models_vertex.shader">
+    <None Include="shader1.bin" />
+    <None Include="resources\shaders\models_fragment.shader">
       <Filter>Resources\Shader</Filter>
     </None>
-    <None Include="models_fragment.shader">
+    <None Include="resources\shaders\models_vertex.shader">
       <Filter>Resources\Shader</Filter>
     </None>
   </ItemGroup>
@@ -161,5 +163,8 @@
     <Image Include="..\..\..\Desktop\metaltexture.jpg">
       <Filter>Resources\Textures</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="COMP371OpenGL.rc" />
   </ItemGroup>
 </Project>
