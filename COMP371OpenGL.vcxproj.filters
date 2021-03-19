@@ -73,6 +73,9 @@
     <ClCompile Include="Cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GroundPlain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Shader.h">
@@ -117,6 +120,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="GroundPlain.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">
@@ -155,6 +159,9 @@
       <Filter>Resources\Textures</Filter>
     </Image>
     <Image Include="..\..\..\Desktop\metaltexture.jpg">
+      <Filter>Resources\Textures</Filter>
+    </Image>
+    <Image Include="..\..\..\Desktop\tiletexture.jpg">
       <Filter>Resources\Textures</Filter>
     </Image>
   </ItemGroup>
