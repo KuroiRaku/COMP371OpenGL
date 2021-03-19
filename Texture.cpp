@@ -25,6 +25,9 @@ Texture::Texture(const string& path)
 Texture::~Texture() {
 	glDeleteTextures(1, &m_RendererID);
 }
+Texture::Texture() {
+	
+}
 
 void Texture::Bind(unsigned int slot) const {
 	if (activeTexture) {

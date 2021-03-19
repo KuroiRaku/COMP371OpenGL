@@ -1,4 +1,5 @@
 #include "Screen.h"
+#include <time.h>
 Screen::Screen()
 {
 	GLfloat xOrigin = 0.0f;
@@ -9,9 +10,11 @@ Screen::Screen()
 
 }
 
-void Screen::drawModel(int drawMode)
+void Screen::drawModel(int drawMode, Texture* texture)
 {
+	texture->Bind();
 	drawScreen(0, 0, 0);
+	texture->Unbind();
 }
 
 void Screen::drawScreen(float x, float y, float z)

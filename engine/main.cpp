@@ -14,6 +14,9 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <time.h>;
+#include <vector>
+
 #include "ObjLoaderIndex.h"
 #include "Shader.h"
 #include "Font.h"
@@ -27,6 +30,7 @@
 #include "../Stage.h"
 #include "../Screen.h"
 #include "../Texture.h";
+
 
 using namespace std;
 
@@ -623,7 +627,7 @@ int main()
 	glUniformMatrix4fv(mm_loc, 1, GL_FALSE, glm::value_ptr(model_matrix));
 
 	glUniform3fv(shader.GetUniformLocation("light_color"), 1, glm::value_ptr(glm::vec3(0.8, 0.8, 0.8)));
-	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(glm::vec3(0.0, 20.0, 5.0)));
+	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(glm::vec3(0.0, 30.0, 5.0)));
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 	// 3D Lines Shader camera projection setup
@@ -638,8 +642,36 @@ int main()
 	// Textures
 	Texture boxTexture("resources/textures/boxtexture.jpg");
 	Texture metalTexture("resources/textures/metaltexture.jpg");
+	Texture evilDann("resources/textures/evilDann.png");
+	Texture dio("resources/textures/dio.jpg");
+	Texture texture_AL_1("resources/textures/allesandro1.jpg");
+	Texture texture_AL_2("resources/textures/allesandro2.jpg");
+	Texture texture_LA_1("resources/textures/laginho1.jpg");
+	Texture texture_LA_2("resources/textures/laginho2.jpg");
+	Texture bonus1("resources/textures/bonusTexture1.jpg");
+	Texture bonus2("resources/textures/bonusTexture2.jpg");
 
+
+	Texture stage_texture("resources/textures/stage_texture.jpg");
+
+
+	Texture arrayOfTexture[10];
+	arrayOfTexture[0] = boxTexture;
+	arrayOfTexture[1] = metalTexture;
+	arrayOfTexture[2] = evilDann;
+	arrayOfTexture[3] = dio;
+	arrayOfTexture[4] = texture_AL_1;
+	arrayOfTexture[5] = texture_AL_2;
+	arrayOfTexture[6] = texture_LA_1;
+	arrayOfTexture[7] = texture_LA_2;
+	arrayOfTexture[8] = bonus1;
+	arrayOfTexture[9] = bonus2;
+	int currentIndex=0;
 	// Game loop
+	int n=2;
+	int milli_seconds = n * 1000;
+	time_t start, end;
+	start = time(0);
 	while (!glfwWindowShouldClose(window))
 	{
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
@@ -650,7 +682,7 @@ int main()
 		view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 
-		
+
 		glm::mat4 translator_A = glm::translate(glm::mat4(1.0f), model_A_move);
 		glm::mat4 translator_La = glm::translate(glm::mat4(1.0f), model_La_move);
 		glm::mat4 translator_D = glm::translate(glm::mat4(1.0f), model_D_move);
@@ -666,7 +698,7 @@ int main()
 			model_A_matrix = model_world * translator * model;
 			model_A = model;
 			model_A_move = model_move;
-			
+
 			grid_matrix = model_world * translator_grid * model_grid;
 			model_La_matrix = model_world * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
@@ -678,7 +710,7 @@ int main()
 			model_La_matrix = model_world * translator * model;
 			model_La = model;
 			model_La_move = model_move;
-			
+
 			model_matrix = model_world * translator_A * model_A;
 			grid_matrix = model_world * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
@@ -691,7 +723,7 @@ int main()
 			model_D_matrix = model_world * translator * model;
 			model_D = model;
 			model_D_move = model_move;
-			
+
 			model_matrix = model_world * translator_A * model_A;
 			grid_matrix = model_world * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
@@ -704,7 +736,7 @@ int main()
 			model_L_matrix = model_world * translator * model;
 			model_L = model;
 			model_L_move = model_move;
-			
+
 			model_matrix = model_world * translator_A * model_A;
 			grid_matrix = model_world * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
@@ -747,11 +779,20 @@ int main()
 
 		boxTexture.activeTexture = activeModelTexture;
 		metalTexture.activeTexture = activeModelTexture;
+		evilDann.activeTexture = activeModelTexture;
+		dio.activeTexture = activeModelTexture;
+		texture_AL_1.activeTexture = activeModelTexture;
+		texture_AL_2.activeTexture = activeModelTexture;
+		stage_texture.activeTexture = activeModelTexture;
+		
+		for (int i = 0; i < sizeof(arrayOfTexture) / sizeof(arrayOfTexture[0]); i++) {
+			arrayOfTexture[i].activeTexture = activeModelTexture;
+		}
 
 		// Draws Models
 		//model_A_shader.Bind();
 		shader.SetUniform1i("u_Texture", 0);
-		
+
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 
@@ -776,15 +817,23 @@ int main()
 
 		boxTexture.activeTexture = false;
 		metalTexture.activeTexture = false;
-
+		if (time(0) - start == n) {
+			if (currentIndex == (sizeof(arrayOfTexture) / sizeof(arrayOfTexture[0])-1)) {
+				currentIndex = 0;
+			}
+			else {
+				currentIndex++;
+			}
+			start = start + n;
+		}
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Screen_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 0, 0)));
-		screen.drawModel(renderingMode);
+		screen.drawModel(renderingMode, &arrayOfTexture[currentIndex]);
 
 		//model_Stage_shader Bind()
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Stage_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		stage.drawModel(renderingMode);
+		stage.drawModel(renderingMode, &stage_texture);
 
 		// Draws line
 		lines3dShader.Bind();

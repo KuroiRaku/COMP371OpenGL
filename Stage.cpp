@@ -12,9 +12,11 @@ Stage::Stage()
 
 }
 
-void Stage::drawModel(int drawMode)
+void Stage::drawModel(int drawMode, Texture* texture)
 {
+	texture->Bind();
 	drawStage(0, 0, 0);
+	texture->Unbind();
 }
 
 void Stage::drawStage(float x, float y, float z)
