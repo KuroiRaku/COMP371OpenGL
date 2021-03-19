@@ -23,6 +23,7 @@
 #include "GLDebugMessageCallback.h"
 #include "../lines3d.h"
 #include "../grid.h"
+#include "../GroundPlain.h"
 #include "../AlessandroModel.h"
 #include "../LeCherngModel.h"
 #include "../Laginho.h"
@@ -577,6 +578,7 @@ int main()
 	//model loading sort of
 	Lines3d lines3dObject = Lines3d();
 	Grid grid = Grid();
+	GroundPlain ground = GroundPlain();
 	AlessandroModel alessandroModel = AlessandroModel();
 	LeCherngModel leCherngModel = LeCherngModel();
 	DannModel danModel = DannModel();
@@ -606,7 +608,7 @@ int main()
 	glm::mat4 model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
 
 	glm::mat4 grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-
+	glm::mat4 ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 	glm::mat4 line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 
 	GLuint vm_loc = shader.GetUniformLocation("vm");
@@ -650,6 +652,7 @@ int main()
 	Texture texture_LA_2("resources/textures/laginho2.jpg");
 	Texture bonus1("resources/textures/bonusTexture1.jpg");
 	Texture bonus2("resources/textures/bonusTexture2.jpg");
+	Texture tileTexture("resources/textures/tiletexture.jpg");
 
 
 	Texture stage_texture("resources/textures/stage_texture.jpg");
@@ -691,6 +694,9 @@ int main()
 		glm::mat4 translator = glm::translate(glm::mat4(1.0f), model_move);
 		glm::mat4 translator_Stage = glm::translate(glm::mat4(1.0f), model_Stage_move);
 		glm::mat4 translator_Screen = glm::translate(glm::mat4(1.0f), model_Screen_move);
+
+		glm::mat4 ground_rotatation = glm::rotate(model_grid, 4.71239f, glm::vec3(1, 0, 0));
+		ground_matrix = model_world  * model_grid * ground_rotatation;
 
 		switch (activeModel) {
 		case 0:
@@ -834,6 +840,11 @@ int main()
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Stage_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 		stage.drawModel(renderingMode, &stage_texture);
+
+		// Ground
+		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(ground_matrix));
+		ground.drawGround(&tileTexture);
 
 		// Draws line
 		lines3dShader.Bind();
