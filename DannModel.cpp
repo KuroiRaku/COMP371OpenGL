@@ -116,9 +116,6 @@ void DannModel::setLetterN(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 		0,4,5,
 		5,1,0,
 		
-		
-		
-		
 		//Top
 		2,6,7,
 		7,3,2,
@@ -156,11 +153,8 @@ void DannModel::setLetterN(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
 		19,21,20,
 		20,18,19,
 		
-	
-		
-		
-
 	};
+
 	glGenVertexArrays(1, &this->vao_N);
 	glBindVertexArray(this->vao_N);
 	GLuint vertices_VBO;

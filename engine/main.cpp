@@ -628,7 +628,7 @@ int main()
 	glUniformMatrix4fv(pm_loc, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc, 1, GL_FALSE, glm::value_ptr(model_matrix));
 
-	glUniform3fv(shader.GetUniformLocation("light_color"), 1, glm::value_ptr(glm::vec3(0.8, 0.8, 0.8)));
+	glUniform3fv(shader.GetUniformLocation("light_color"), 1, glm::value_ptr(glm::vec3(1.0, 1.0, 1.0)));
 	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(glm::vec3(0.0, 30.0, 5.0)));
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
@@ -654,27 +654,38 @@ int main()
 	Texture bonus2("resources/textures/bonusTexture2.jpg");
 	Texture tileTexture("resources/textures/tiletexture.jpg");
 
+	Texture modelAllesandroTexture("resources/textures/ModelAllesandro.png");
+	Texture modelDanielTexture("resources/textures/ModelDaniel.png");
+	Texture modelLaginhoTexture("resources/textures/ModelLaginho.png");
+	Texture modelLeCherngTexture("resources/textures/ModelLeCherng.png");
+
 
 	Texture stage_texture("resources/textures/stage_texture.jpg");
 
 
-	Texture arrayOfTexture[10];
-	arrayOfTexture[0] = boxTexture;
-	arrayOfTexture[1] = metalTexture;
-	arrayOfTexture[2] = evilDann;
-	arrayOfTexture[3] = dio;
-	arrayOfTexture[4] = texture_AL_1;
-	arrayOfTexture[5] = texture_AL_2;
-	arrayOfTexture[6] = texture_LA_1;
-	arrayOfTexture[7] = texture_LA_2;
-	arrayOfTexture[8] = bonus1;
-	arrayOfTexture[9] = bonus2;
+	Texture arrayOfTexture[14];
+	arrayOfTexture[0] = modelAllesandroTexture;
+	arrayOfTexture[1] = modelDanielTexture;
+	arrayOfTexture[2] = modelLaginhoTexture;
+	arrayOfTexture[3] = modelLeCherngTexture;
+	arrayOfTexture[4] = boxTexture;
+	arrayOfTexture[5] = metalTexture;
+	arrayOfTexture[6] = evilDann;
+	arrayOfTexture[7] = dio;
+	arrayOfTexture[8] = texture_AL_1;
+	arrayOfTexture[9] = texture_AL_2;
+	arrayOfTexture[10] = texture_LA_1;
+	arrayOfTexture[11] = texture_LA_2;
+	arrayOfTexture[12] = bonus1;
+	arrayOfTexture[13] = bonus2;
+
 	int currentIndex=0;
 	// Game loop
-	int n=2;
+	int n=10;
 	int milli_seconds = n * 1000;
 	time_t start, end;
 	start = time(0);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
@@ -776,7 +787,7 @@ int main()
 
 		// --- Render ---
 		// Clear the colorbuffer
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Draws cube
