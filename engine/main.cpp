@@ -32,7 +32,6 @@
 #include "../Screen.h"
 #include "../Texture.h";
 
-
 using namespace std;
 
 // Window dimensions
@@ -45,8 +44,14 @@ glm::vec3 temp_cam_dir = glm::vec3(0, 0, 1); //use this for the cross product or
 glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera is directing towards
 
 //model settings
-glm::mat4 model = glm::mat4(1.0f); //active model
-glm::vec3 model_move = glm::vec3(0, 2, -10); //to apply translational transformations
+glm::mat4 model_active = glm::mat4(1.0f); //active model
+glm::vec3 model_active_move = glm::vec3(0, 2, -10); //to apply translational transformations
+
+glm::mat4 model_general = glm::mat4(1.0f); //active model
+glm::vec3 model_general_move = glm::vec3(0, 2, -10); //to apply translational transformations
+
+float shearX = 0.f;
+float shearY = 0.f;
 
 //Alessandro
 glm::mat4 model_A = glm::mat4(1.0f);
@@ -69,14 +74,14 @@ glm::mat4 model_world = glm::mat4(1.0f);
 glm::vec3 model_world_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 glm::mat4 model_Stage = glm::mat4(1.0f);
-glm::vec3 model_Stage_move = glm::vec3(0, 7, 0); //to apply translational transformations
+glm::vec3 model_Stage_move = glm::vec3(0, 0, -5); //to apply translational transformations
 
 glm::mat4 model_Screen = glm::mat4(1.0f);
-glm::vec3 model_Screen_move = glm::vec3(0, 7, 0); //to apply translational transformations
+glm::vec3 model_Screen_move = glm::vec3(0, 0, -10); //to apply translational transformations
 
 //color settings
 bool flag = false;
-bool lights = false;
+bool lights = true;
 bool normalcol = false;
 bool greyscale = false;
 bool red = false;
@@ -98,20 +103,20 @@ void resetToPreviousModel(int previousActiveModel) {
 	switch (previousActiveModel)
 	{
 	case 0:
-		model = model_A;
-		model_move = model_A_move;
+		model_active = model_A;
+		model_active_move = model_A_move;
 		break;
 	case 1:
-		model = model_La;
-		model_move = model_La_move;
+		model_active = model_La;
+		model_active_move = model_La_move;
 		break;
 	case 2:
-		model = model_D;
-		model_move = model_D_move;
+		model_active = model_D;
+		model_active_move = model_D_move;
 		break;
 	case 3:
-		model = model_L;
-		model_move = model_L_move;
+		model_active = model_L;
+		model_active_move = model_L_move;
 		break;
 	case 4:
 		cout << "Error Occured" << endl;
@@ -165,21 +170,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		resetToPreviousModel(previousActiveModel);
 	}
 
-	//WASD buttons to move the camera
-	if (key == GLFW_KEY_T) { //W moves forward
-		cam_pos += cam_dir;
-	}
+	//TGFH buttons to move the camera
+	if (!leftShiftPressed) {
+		if (key == GLFW_KEY_T) { //W moves forward
+			cam_pos += cam_dir;
+		}
 
-	if (key == GLFW_KEY_G) { //S moves backwards
-		cam_pos -= cam_dir;
-	}
+		if (key == GLFW_KEY_G) { //S moves backwards
+			cam_pos -= cam_dir;
+		}
 
-	if (key == GLFW_KEY_H) { //D moves right
-		cam_pos -= glm::cross(cam_up, cam_dir);
-	}
+		if (key == GLFW_KEY_H) { //D moves right
+			cam_pos -= glm::cross(cam_up, cam_dir);
+		}
 
-	if (key == GLFW_KEY_F) { //A moves left
-		cam_pos += glm::cross(cam_up, cam_dir);
+		if (key == GLFW_KEY_F) { //A moves left
+			cam_pos += glm::cross(cam_up, cam_dir);
+		}
 	}
 
 	if (worldOrientationKeyPressed)
@@ -206,10 +213,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 
 	//full reset
-	if (key == GLFW_KEY_0)
+	if (key == GLFW_KEY_SPACE)
 	{
-		model = glm::mat4(1.0f);
-		model_move = glm::vec3(0, 2, -10); //to apply translational transformations
+		model_active = glm::mat4(1.0f);
+		model_active_move = glm::vec3(0, 2, -10); //to apply translational transformations
 
 		//Alessandro
 		model_A = glm::mat4(1.0f);
@@ -228,64 +235,98 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 		model_world = glm::mat4(1.f);
+
+		shearX = 0;
+		shearY = 0;
 	}
 	
 	if (!worldOrientationKeyPressed) {
 		//WASD buttons to move the model
 		if (!leftShiftPressed) {
 			if (key == GLFW_KEY_W) { //I moves the object along the +Y axis
-				model_move.y += 1;
+				model_active_move.y += 1;
 			}
 
 			if (key == GLFW_KEY_S) { //K moves the object along the -Y
-				model_move.y -= 1;
+				model_active_move.y -= 1;
 			}
 
 			if (key == GLFW_KEY_A) { //J moves the object along the +X axis
-				model_move.x -= 1;
+				model_active_move.x -= 1;
 			}
 
 			if (key == GLFW_KEY_D) { //L moves the object along the -X axis
-				model_move.x += 1;
+				model_active_move.x += 1;
 			}
 
 			if (key == GLFW_KEY_PAGE_UP) { //PgUp moves the object along the +Z axis
-				model_move.z += 1;
+				model_active_move.z += 1;
 			}
 
 			if (key == GLFW_KEY_PAGE_DOWN) { //PgDown moves the object along the -Z axis
-				model_move.z -= 1;
+				model_active_move.z -= 1;
 			}
 		}
 
 		//BNE buttons to rotate the model
-		if (leftShiftPressed == true) {
+		if (leftShiftPressed) {
 			if (key == GLFW_KEY_W) { //W rotates the object about the +X axis
-				model = glm::rotate(model, glm::radians(5.f), glm::vec3(1, 0, 0));
+				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(1, 0, 0));
 			}
 			if (key == GLFW_KEY_S) { //S rotates the object about the -X axis
-				model = glm::rotate(model, glm::radians(5.f), glm::vec3(-1, 0, 0));
+				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(-1, 0, 0));
 			}
 			if (key == GLFW_KEY_A) { //N rotates the object about the Y axis,
-				model = glm::rotate(model, glm::radians(5.f), glm::vec3(0, 1, 0));
+				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(0, 1, 0));
 			}
 			if (key == GLFW_KEY_D) { //N rotates the object about the -Y axis,
-				model = glm::rotate(model, glm::radians(5.f), glm::vec3(0, -1, 0));
+				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(0, -1, 0));
 			}
 			if (key == GLFW_KEY_E) { //rotates the object about the Z axis
-				model = glm::rotate(model, glm::radians(5.f), glm::vec3(0, 0, 1));
+				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(0, 0, 1));
 			}
 			if (key == GLFW_KEY_Q) { //rotates the object about the -Z axis
-				model = glm::rotate(model, glm::radians(5.f), glm::vec3(0, 0, -1));
+				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(0, 0, -1));
+			}
+
+			// For moving the models?
+			if (key == GLFW_KEY_T) { //I moves the object along the +Y axis
+				shearY += 0.1;
+			}
+
+			if (key == GLFW_KEY_G) { //K moves the object along the -Y
+				shearY -= 0.1;
+			}
+
+			if (key == GLFW_KEY_F) { //J moves the object along the +X axis
+				shearX -= 0.1;
+			}
+
+			if (key == GLFW_KEY_H) { //L moves the object along the -X axis
+				shearX += 0.1;
+			}
+
+			// For rotating the models
+			if (key == GLFW_KEY_UP) { //W rotates the object about the +X axis
+				model_general = glm::rotate(model_general, glm::radians(5.f), glm::vec3(1, 0, 0));
+			}
+			if (key == GLFW_KEY_DOWN) { //S rotates the object about the -X axis
+				model_general = glm::rotate(model_general, glm::radians(5.f), glm::vec3(-1, 0, 0));
+			}
+			if (key == GLFW_KEY_LEFT) { //N rotates the object about the Y axis,
+				model_general = glm::rotate(model_general, glm::radians(5.f), glm::vec3(0, 1, 0));
+			}
+			if (key == GLFW_KEY_RIGHT) { //N rotates the object about the -Y axis,
+				model_general = glm::rotate(model_general, glm::radians(5.f), glm::vec3(0, -1, 0));
 			}
 		}
 
 		//OP buttons to scale up and down
 		if (key == GLFW_KEY_U) { //O scales up the object by a factor of 10%
-			model = glm::scale(model, glm::vec3(1.1f));
+			model_active = glm::scale(model_active, glm::vec3(1.1f));
 		}
 		if (key == GLFW_KEY_J) { //P scales up the object by a factor of -10%
-			model = glm::scale(model, glm::vec3(0.9f));
+			model_active = glm::scale(model_active, glm::vec3(0.9f));
 		}
 
 		//toggle the red channel on/off
@@ -299,8 +340,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			}
 			activeModel = 0;
 			previousActiveModel = 1;
-			model = model_A;
-			model_move = model_A_move;
+			model_active = model_A;
+			model_active_move = model_A_move;
 		}
 
 		//toggle the green channel on/off
@@ -315,8 +356,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			}
 			activeModel = 1;
 			previousActiveModel = 1;
-			model = model_La;
-			model_move = model_La_move;
+			model_active = model_La;
+			model_active_move = model_La_move;
 		}
 
 		//toggle the blue channel on/off
@@ -329,8 +370,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			}
 			activeModel = 2;
 			previousActiveModel = 2;
-			model = model_D;
-			model_move = model_D_move;
+			model_active = model_D;
+			model_active_move = model_D_move;
 		}
 
 		//turn on all channels
@@ -348,8 +389,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 			activeModel = 3;
 			previousActiveModel = 3;
-			model = model_L;
-			model_move = model_L_move;
+			model_active = model_L;
+			model_active_move = model_L_move;
 		}
 
 		//toggle between Gouraud and Phong shading
@@ -389,17 +430,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	//rendering mode
 	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
 			renderingMode = 0;
-		cout << "Rendering Mode: " << renderingMode << endl;
 	}
 
 	if (key == GLFW_KEY_L && action == GLFW_PRESS) {
 		renderingMode = 1;
-		cout << "Rendering Mode: " << renderingMode << endl;
 	}
 
 	if (key == GLFW_KEY_T && action == GLFW_PRESS) {
 		renderingMode = 2;
-		cout << "Rendering Mode: " << renderingMode << endl;
 	}
 }
 
@@ -702,7 +740,7 @@ int main()
 		glm::mat4 translator_D = glm::translate(glm::mat4(1.0f), model_D_move);
 		glm::mat4 translator_L = glm::translate(glm::mat4(1.0f), model_L_move);
 		glm::mat4 translator_grid = glm::translate(glm::mat4(1.0f), model_grid_move);
-		glm::mat4 translator = glm::translate(glm::mat4(1.0f), model_move);
+		glm::mat4 translator = glm::translate(glm::mat4(1.0f), model_active_move);
 		glm::mat4 translator_Stage = glm::translate(glm::mat4(1.0f), model_Stage_move);
 		glm::mat4 translator_Screen = glm::translate(glm::mat4(1.0f), model_Screen_move);
 
@@ -711,10 +749,10 @@ int main()
 
 		switch (activeModel) {
 		case 0:
-			model_matrix = model_world * translator * model;
-			model_A_matrix = model_world * translator * model;
-			model_A = model;
-			model_A_move = model_move;
+			model_matrix = model_world * translator * model_active;
+			model_A_matrix = model_world * translator * model_active;
+			model_A = model_active;
+			model_A_move = model_active_move;
 
 			grid_matrix = model_world * translator_grid * model_grid;
 			model_La_matrix = model_world * translator_La * model_La;
@@ -724,9 +762,9 @@ int main()
 			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 1:
-			model_La_matrix = model_world * translator * model;
-			model_La = model;
-			model_La_move = model_move;
+			model_La_matrix = model_world * translator * model_active;
+			model_La = model_active;
+			model_La_move = model_active_move;
 
 			model_matrix = model_world * translator_A * model_A;
 			grid_matrix = model_world * translator_grid * model_grid;
@@ -737,9 +775,9 @@ int main()
 			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 2:
-			model_D_matrix = model_world * translator * model;
-			model_D = model;
-			model_D_move = model_move;
+			model_D_matrix = model_world * translator * model_active;
+			model_D = model_active;
+			model_D_move = model_active_move;
 
 			model_matrix = model_world * translator_A * model_A;
 			grid_matrix = model_world * translator_grid * model_grid;
@@ -750,9 +788,9 @@ int main()
 			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 3:
-			model_L_matrix = model_world * translator * model;
-			model_L = model;
-			model_L_move = model_move;
+			model_L_matrix = model_world * translator * model_active;
+			model_L = model_active;
+			model_L_move = model_active_move;
 
 			model_matrix = model_world * translator_A * model_A;
 			grid_matrix = model_world * translator_grid * model_grid;
@@ -815,22 +853,22 @@ int main()
 
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		alessandroModel.drawModel(renderingMode, &boxTexture, &metalTexture);
+		alessandroModel.drawModel(renderingMode, &boxTexture, &metalTexture, shearX, shearY);
 
 		//model_L_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		leCherngModel.drawModel(renderingMode, &boxTexture, &metalTexture);
+		leCherngModel.drawModel(renderingMode, &boxTexture, &metalTexture, shearX, shearY);
 
 		//model_La_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		laginModel.drawModel(renderingMode, &boxTexture, &metalTexture);
+		laginModel.drawModel(renderingMode, &boxTexture, &metalTexture, shearX, shearY);
 
 		//model_D_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
 		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		danModel.drawModel(renderingMode, &boxTexture, &metalTexture);
+		danModel.drawModel(renderingMode, &boxTexture, &metalTexture, shearX, shearY);
 
 		boxTexture.activeTexture = false;
 		metalTexture.activeTexture = false;

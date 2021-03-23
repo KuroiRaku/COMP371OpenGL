@@ -9,18 +9,19 @@ class AlessandroModel
 
 public:
 	AlessandroModel();
-	void drawModel(int drawMode, Texture * boxTexture, Texture * metalTexture);
+	void drawModel(int drawMode, Texture * boxTexture, Texture * metalTexture, float shearX, float shearY);
 
 private:
-	void setLetterO(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
-	void setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
-	void setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
-	void setNumber1(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
+	void setLetterO(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY);
+	void setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY);
+	void setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY);
+	void setNumber1(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY);
 
 	GLuint vao_O;
 	GLuint vao_A;
 	GLuint vao_4;
 	GLuint vao_1;
 	GLfloat lineSize;
+	GLfloat distance;
 	GLenum mode;
 };

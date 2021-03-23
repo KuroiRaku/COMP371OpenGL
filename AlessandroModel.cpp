@@ -1,6 +1,5 @@
 #include "AlessandroModel.h"
 
-
 AlessandroModel::AlessandroModel() {
 	
 	GLfloat xOrigin = 0.0f;
@@ -9,17 +8,17 @@ AlessandroModel::AlessandroModel() {
 
 	lineSize = 0.4f * 2;
 
-	GLfloat distance = 2.0f;
+	distance = 2.0f;
 
-	setLetterA(xOrigin - (3 * distance), yOrigin, zOrigin);
-	setLetterO(xOrigin - (1 * distance), yOrigin, zOrigin);
-	setNumber1(xOrigin + (1 * distance), yOrigin, zOrigin);
-	setNumber4(xOrigin + (3 * distance), yOrigin, zOrigin);
+	setLetterA(xOrigin - (3 * distance), yOrigin, zOrigin, 0.f, 0.f);
+	setLetterO(xOrigin - (1 * distance), yOrigin, zOrigin, 0.f, 0.f);
+	setNumber1(xOrigin + (1 * distance), yOrigin, zOrigin, 0.f, 0.f);
+	setNumber4(xOrigin + (3 * distance), yOrigin, zOrigin, 0.f, 0.f);
 	
 	mode = GL_TRIANGLES;
 }
 
-void AlessandroModel::drawModel(int drawMode, Texture * boxTexture, Texture * metalTexture)
+void AlessandroModel::drawModel(int drawMode, Texture * boxTexture, Texture * metalTexture, float shearX, float shearY)
 {
 
 	if (drawMode == 0) {
@@ -39,22 +38,26 @@ void AlessandroModel::drawModel(int drawMode, Texture * boxTexture, Texture * me
 
 	boxTexture->Bind();
 
-	//O Model
-	glBindVertexArray(this->vao_O);
-	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
-
 	//A Model
+	setLetterA(0 - (3 * distance), 0, 0, shearX, shearY);
 	glBindVertexArray(this->vao_A);
 	glDrawElements(mode, 144, GL_UNSIGNED_INT, NULL);
+
+	//O Model
+	setLetterO(0 - (1* distance), 0, 0, shearX, shearY);
+	glBindVertexArray(this->vao_O);
+	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
 	boxTexture->Unbind();
 	metalTexture->Bind();
 
 	//1 Model
+	setNumber1(0 + (1 * distance), 0, 0, shearX, shearY);
 	glBindVertexArray(this->vao_1);
 	glDrawElements(mode, 60, GL_UNSIGNED_INT, NULL);
 
 	//4 Model
+	setNumber4(0 + (3 * distance), 0, 0, shearX, shearY);
 	glBindVertexArray(this->vao_4);
 	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
@@ -62,34 +65,34 @@ void AlessandroModel::drawModel(int drawMode, Texture * boxTexture, Texture * me
 
 }
 
-void AlessandroModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
+void AlessandroModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY)
 {
 	GLfloat vertices[] =
 	{
 		// FRONT POSITION
 		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (left)
 		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right (right)
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right 
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left
+		1.5 * lineSize + xOrigin + shearX, 2 * lineSize + yOrigin + shearY + shearY, zOrigin, //top right 
+		-1.5 * lineSize + xOrigin + shearX, 2 * lineSize + yOrigin + shearY + shearY, zOrigin, //top left
 		-1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left (left)
 		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom left (right)
 		0.5 * lineSize + xOrigin, yOrigin, zOrigin, //hole [bottom right]
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //hole [top right]
+		0.5 * lineSize + xOrigin + shearX, 1 * lineSize + yOrigin + shearY, zOrigin, //hole [top right]
 		-0.5 * lineSize + xOrigin, yOrigin, zOrigin, //hole [bottom left]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //hole [top left]
+		-0.5 * lineSize + xOrigin + shearX, 1 * lineSize + yOrigin + shearY, zOrigin, //hole [top left]
 		-0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //U LEFT
 		0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin, //U RIGHT
 		//BACK POSITION
 		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (left)
 		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right (right)
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right 
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left
+		1.5 * lineSize + xOrigin + shearX, 2 * lineSize + yOrigin + shearY, zOrigin - lineSize, //top right 
+		-1.5 * lineSize + xOrigin + shearX, 2 * lineSize + yOrigin + shearY, zOrigin - lineSize, //top left
 		-1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (left)
 		-0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom left (right)
 		0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //hole [bottom right]
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //hole [top right]
+		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin + shearY, zOrigin - lineSize, //hole [top right]
 		-0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //hole [bottom left]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //hole [top left]
+		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin + shearY, zOrigin - lineSize, //hole [top left]
 		-0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //U LEFT
 		0.5 * lineSize + xOrigin, -1 * lineSize + yOrigin, zOrigin - lineSize, //U RIGHT
 	};
@@ -169,31 +172,31 @@ void AlessandroModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void AlessandroModel::setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
+void AlessandroModel::setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY)
 {
 	GLfloat vertices[] =
 	{
 		// FRONT POSITIONS
 		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, // bottom left
 		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin, //bottom right
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right
-		0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top right (left)
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top right (left) [bottom]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin, //top left (right) [bottom]
-		-0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left (right)
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin, //top left
-		-1.5 * lineSize + xOrigin, yOrigin, zOrigin, //top left (bottom)
+		1.5 * lineSize + xOrigin + shearX, 2 * lineSize + yOrigin + shearY, zOrigin, //top right
+		0.5 * lineSize + xOrigin + shearX, 2 * lineSize + yOrigin + shearY, zOrigin, //top right (left)
+		0.5 * lineSize + xOrigin + shearX, 1 * lineSize + yOrigin + shearY, zOrigin, //top right (left) [bottom]
+		-0.5 * lineSize + xOrigin + shearX, 1 * lineSize + yOrigin + shearY, zOrigin, //top left (right) [bottom]
+		-0.5 * lineSize + xOrigin + shearX, 2 * lineSize + yOrigin + shearY, zOrigin, //top left (right)
+		-1.5 * lineSize + xOrigin + shearX, 2 * lineSize + yOrigin + shearY, zOrigin, //top left
+		-1.5 * lineSize + xOrigin + shearX, yOrigin + shearY, zOrigin, //top left (bottom)
 		0.5 * lineSize + xOrigin, yOrigin, zOrigin, //middle under
 		// BACK POSITIONS
 		0.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, // bottom left
 		1.5 * lineSize + xOrigin, -2 * lineSize + yOrigin, zOrigin - lineSize, //bottom right
-		1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right
-		0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top right (left)
-		0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top right (left) [bottom]
-		-0.5 * lineSize + xOrigin, 1 * lineSize + yOrigin, zOrigin - lineSize, //top left (right) [bottom]
-		-0.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left (right)
-		-1.5 * lineSize + xOrigin, 2 * lineSize + yOrigin, zOrigin - lineSize, //top left
-		-1.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //top left (bottom)
+		1.5 * lineSize + xOrigin + shearX, 2 * lineSize + yOrigin + shearY, zOrigin - lineSize, //top right
+		0.5 * lineSize + xOrigin + shearX, 2 * lineSize + yOrigin + shearY, zOrigin - lineSize, //top right (left)
+		0.5 * lineSize + xOrigin + shearX, 1 * lineSize + yOrigin + shearY, zOrigin - lineSize, //top right (left) [bottom]
+		-0.5 * lineSize + xOrigin + shearX, 1 * lineSize + yOrigin + shearY, zOrigin - lineSize, //top left (right) [bottom]
+		-0.5 * lineSize + xOrigin + shearX, 2 * lineSize + yOrigin + shearY, zOrigin - lineSize, //top left (right)
+		-1.5 * lineSize + xOrigin + shearX, 2 * lineSize + yOrigin + shearY, zOrigin - lineSize, //top left
+		-1.5 * lineSize + xOrigin + shearX, yOrigin + shearY, zOrigin - lineSize + shearY, //top left (bottom)
 		0.5 * lineSize + xOrigin, yOrigin, zOrigin - lineSize, //middle under
 	};
 
@@ -256,22 +259,22 @@ void AlessandroModel::setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void AlessandroModel::setNumber1(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
+void AlessandroModel::setNumber1(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY)
 {
 	GLfloat vertices[] =
 	{
 		//FRONT POSITION
 		-0.5 * lineSize + xOrigin,	-2 * lineSize + yOrigin,	zOrigin, //bottom left
 		0.5 * lineSize + xOrigin,	-2 * lineSize + yOrigin,	zOrigin, //bottom right
-		0.5 * lineSize + xOrigin,	2 * lineSize + yOrigin,		zOrigin, //top right
-		-1.5 * lineSize + xOrigin,	2 * lineSize + yOrigin,		zOrigin, // top left
+		0.5 * lineSize + xOrigin + shearX,	2 * lineSize + yOrigin + shearY,		zOrigin, //top right
+		-1.5 * lineSize + xOrigin + shearX,	2 * lineSize + yOrigin + shearY,		zOrigin, // top left
 		-1.5 * lineSize + xOrigin,	lineSize + yOrigin,			zOrigin, //under left
 		-0.5 * lineSize + xOrigin,	1 * lineSize + yOrigin,		zOrigin, //middle tucked
 		//BACK POSITION
 		-0.5 * lineSize + xOrigin,	-2 * lineSize + yOrigin,	zOrigin - lineSize, //bottom left
 		0.5 * lineSize + xOrigin,	-2 * lineSize + yOrigin,	zOrigin - lineSize, //bottom right
-		0.5 * lineSize + xOrigin,	2 * lineSize + yOrigin,		zOrigin - lineSize, //top right
-		-1.5 * lineSize + xOrigin,	2 * lineSize + yOrigin,		zOrigin - lineSize, // top left
+		0.5 * lineSize + xOrigin + shearX,	2 * lineSize + yOrigin + shearY,		zOrigin - lineSize, //top right
+		-1.5 * lineSize + xOrigin + shearX,	2 * lineSize + yOrigin + shearY,		zOrigin - lineSize, // top left
 		-1.5 * lineSize + xOrigin,	lineSize + yOrigin,			zOrigin - lineSize, //under left
 		-0.5 * lineSize + xOrigin,	1 * lineSize + yOrigin,		zOrigin - lineSize, //middle tucked
 	};
@@ -323,7 +326,7 @@ void AlessandroModel::setNumber1(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void AlessandroModel::setLetterO(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin)
+void AlessandroModel::setLetterO(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY)
 {
 	// position 3, textureCoords 2
 	GLfloat vertices_lines[] =
@@ -331,21 +334,21 @@ void AlessandroModel::setLetterO(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrig
 		// FRONT POSITION	
 		-2 * lineSize + xOrigin,	 -2 * lineSize + yOrigin,	zOrigin,  //outer bottom left 
 		2 * lineSize + xOrigin,		-2 * lineSize + yOrigin,	zOrigin, //outer bottom right
-		2 * lineSize + xOrigin,		2 * lineSize + yOrigin,		zOrigin,  //outer top right
-		-2 * lineSize + xOrigin,	2 * lineSize + yOrigin,		zOrigin, //outer top left
+		2 * lineSize + xOrigin + shearX,		2 * lineSize + yOrigin + shearY,		zOrigin,  //outer top right
+		-2 * lineSize + xOrigin + shearX,	2 * lineSize + yOrigin + shearY,		zOrigin, //outer top left
 		-1 * lineSize + xOrigin,	-1 * lineSize + yOrigin,	zOrigin, //inner bottom left 
 		1 * lineSize + xOrigin,		-1 * lineSize + yOrigin,	zOrigin, //inner bottom right
-		1 * lineSize + xOrigin,		1 * lineSize + yOrigin,		zOrigin, //inner top right
-		-1 * lineSize + xOrigin,	1 * lineSize + yOrigin,		zOrigin, //inner top left
+		1 * lineSize + xOrigin + shearX,		1 * lineSize + yOrigin + shearY,		zOrigin, //inner top right
+		-1 * lineSize + xOrigin + shearX,	1 * lineSize + yOrigin + shearY,		zOrigin, //inner top left
 		// BACK POSITION
 		-2 * lineSize + xOrigin,	-2 * lineSize + yOrigin,	zOrigin - lineSize,  //outer bottom left 
 		2 * lineSize + xOrigin,		-2 * lineSize + yOrigin,	zOrigin - lineSize,  //outer bottom right
-		2 * lineSize + xOrigin,		2 * lineSize + yOrigin,		zOrigin - lineSize, //outer top right
-		-2 * lineSize + xOrigin,	2 * lineSize + yOrigin,		zOrigin - lineSize, //outer top left
+		2 * lineSize + xOrigin + shearX,		2 * lineSize + yOrigin + shearY,		zOrigin - lineSize, //outer top right
+		-2 * lineSize + xOrigin + shearX,	2 * lineSize + yOrigin + shearY,		zOrigin - lineSize, //outer top left
 		-1 * lineSize + xOrigin,	-1 * lineSize + yOrigin,	zOrigin - lineSize,  //inner bottom left 
 		1 * lineSize + xOrigin,		-1 * lineSize + yOrigin,	zOrigin - lineSize,  //inner bottom right
-		1 * lineSize + xOrigin,		1 * lineSize + yOrigin,		zOrigin - lineSize, //inner top right
-		-1 * lineSize + xOrigin,	1 * lineSize + yOrigin,		zOrigin - lineSize, //inner top left
+		1 * lineSize + xOrigin + shearX,		1 * lineSize + yOrigin + shearY,		zOrigin - lineSize, //inner top right
+		-1 * lineSize + xOrigin + shearX,	1 * lineSize + yOrigin + shearY,		zOrigin - lineSize, //inner top left
 	};
 
 	int indicies_lines[] =

@@ -9,19 +9,20 @@ class DannModel
 
 public:
 	DannModel();
-	void drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture);
+	void drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture, float shearX, float shearY);
 
 private:
-	void setLetterD(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
-	void setLetterN(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
-	void setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
-	void setNumber7(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
+	void setLetterD(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY);
+	void setLetterN(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY);
+	void setNumber4(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY);
+	void setNumber7(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY);
 
 	GLuint vao_D;
 	GLuint vao_N;
 	GLuint vao_4;
 	GLuint vao_7;
 	GLfloat lineSize;
+	GLfloat distance;
 	GLenum mode;
 	int indiciesD;
 	int indiciesN;
