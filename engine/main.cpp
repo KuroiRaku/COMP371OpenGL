@@ -19,7 +19,6 @@
 
 #include "ObjLoaderIndex.h"
 #include "Shader.h"
-#include "Font.h"
 #include "GLDebugMessageCallback.h"
 #include "../lines3d.h"
 #include "../grid.h"
@@ -37,6 +36,16 @@ using namespace std;
 // Window dimensions
 const GLuint WIDTH = 1024, HEIGHT = 768;
 
+void renderScene(GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture);
+glm::mat4 model_matrix;
+glm::mat4 view_matrix;
+glm::mat4 proj_matrix;
+
+std::vector<int> indices;
+std::vector<glm::vec3> vertices;
+std::vector<glm::vec3> normals;
+std::vector<glm::vec2> UVs;
+
 //camera settings
 glm::vec3 cam_pos = glm::vec3(0, 2, 90);
 glm::vec3 cam_dir = glm::vec3(0, 0, -1); //direction means what the camera is looking at
@@ -52,6 +61,20 @@ glm::vec3 model_general_move = glm::vec3(0, 2, -10); //to apply translational tr
 
 float shearX = 0.f;
 float shearY = 0.f;
+
+
+GLuint vm_loc ;
+GLuint pm_loc ;
+GLuint mm_loc;
+GLuint flag_id ;
+GLuint lights_id ;
+GLuint normalcol_id ;
+GLuint greyscale_id ;
+GLuint red_id ;
+GLuint green_id ;
+GLuint blue_id ;
+GLuint colour_id ;
+
 
 //Alessandro
 glm::mat4 model_A = glm::mat4(1.0f);
@@ -79,6 +102,39 @@ glm::vec3 model_Stage_move = glm::vec3(0, 0, -5); //to apply translational trans
 glm::mat4 model_Screen = glm::mat4(1.0f);
 glm::vec3 model_Screen_move = glm::vec3(0, 0, -10); //to apply translational transformations
 
+
+glm::mat4 model_A_matrix ;
+//Le Cherng
+glm::mat4 model_L_matrix ;
+//Dan
+glm::mat4 model_D_matrix ;
+//LaginHo
+glm::mat4 model_La_matrix ;
+
+glm::mat4 model_Stage_matrix ;
+
+glm::mat4 model_Screen_matrix;
+
+
+glm::mat4 grid_matrix ;
+glm::mat4 ground_matrix ;
+glm::mat4 line_matrix;
+
+
+
+
+Texture arrayOfTexture[14];
+
+int currentIndex = 0;
+// Game loop
+int n = 10;
+int milli_seconds = n * 1000;
+time_t start, end;
+
+GLuint vm_loc_lines_3d;
+GLuint pm_loc_lines_3d;
+GLuint mm_loc_lines_3d;
+
 //color settings
 bool flag = false;
 bool lights = true;
@@ -97,6 +153,12 @@ int activeModel = 0;
 int previousActiveModel = 0;
 int initModel = activeModel;
 //glm::vec3 object_color = glm::vec3(0.5, 0.5, 0.5);
+
+
+
+
+
+
 void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeSize);
 
 void resetToPreviousModel(int previousActiveModel) {
@@ -160,7 +222,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		leftShiftPressed = false;
 	}
 
-	if ((key == GLFW_KEY_LEFT|| key == GLFW_KEY_RIGHT || key == GLFW_KEY_UP || key == GLFW_KEY_DOWN) && action == GLFW_PRESS) {
+	if ((key == GLFW_KEY_LEFT || key == GLFW_KEY_RIGHT || key == GLFW_KEY_UP || key == GLFW_KEY_DOWN) && action == GLFW_PRESS) {
 		activeModel = 4;
 		worldOrientationKeyPressed = true;
 	}
@@ -239,7 +301,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		shearX = 0;
 		shearY = 0;
 	}
-	
+
 	if (!worldOrientationKeyPressed) {
 		//WASD buttons to move the model
 		if (!leftShiftPressed) {
@@ -429,7 +491,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	//rendering mode
 	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
-			renderingMode = 0;
+		renderingMode = 0;
 	}
 
 	if (key == GLFW_KEY_L && action == GLFW_PRESS) {
@@ -449,7 +511,7 @@ bool m_button_pressed = true;
 
 //LEFT mouse button + drag up and down, moves the camera further and closer to the object
 void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
-	
+
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
 		lbutton_pressed = true;
 	}
@@ -500,9 +562,9 @@ void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 		glm::mat4 rotation_matrix(1);
 		glm::vec3 rotate_around_x = glm::cross(cam_up, cam_dir); //cross product
 		if (last_y_pos - ypos > 0) { //mouse going up, camera moves backward	
-				rotation_matrix = glm::rotate(rotation_matrix, -(0.01f), rotate_around_x);
-				cam_dir = glm::mat3(rotation_matrix) * cam_dir;
-				cam_up = glm::mat3(rotation_matrix) * cam_up;
+			rotation_matrix = glm::rotate(rotation_matrix, -(0.01f), rotate_around_x);
+			cam_dir = glm::mat3(rotation_matrix) * cam_dir;
+			cam_up = glm::mat3(rotation_matrix) * cam_up;
 			last_y_pos = ypos;
 		}
 
@@ -577,10 +639,7 @@ int main()
 	//lines
 	Shader lines3dShader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
 
-	std::vector<int> indices;
-	std::vector<glm::vec3> vertices;
-	std::vector<glm::vec3> normals;
-	std::vector<glm::vec2> UVs;
+	
 	loadOBJ("resources/objects/cube.obj", indices, vertices, normals, UVs);
 
 	GLuint VAO;
@@ -614,52 +673,44 @@ int main()
 	glBindVertexArray(0);
 
 	//model loading sort of
-	Lines3d lines3dObject = Lines3d();
-	Grid grid = Grid();
-	GroundPlain ground = GroundPlain();
-	AlessandroModel alessandroModel = AlessandroModel();
-	LeCherngModel leCherngModel = LeCherngModel();
-	DannModel danModel = DannModel();
-	LaginhoModel laginModel = LaginhoModel();
-	Stage stage = Stage();
-	Screen screen = Screen();
+	 
 
 	//shader set up
 	shader.Bind();
-	glm::mat4 model_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 2, 0));
-	glm::mat4 view_matrix = glm::lookAt(cam_pos, cam_dir, cam_up);
-	glm::mat4 proj_matrix = glm::perspective(glm::radians(45.f), 1.f, 0.1f, 200.f); //perspective view. Third parameter should be > 0, or else errors
+	model_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 2, 0));
+	view_matrix = glm::lookAt(cam_pos, cam_dir, cam_up);
+	proj_matrix = glm::perspective(glm::radians(45.f), 1.f, 0.1f, 200.f); //perspective view. Third parameter should be > 0, or else errors
 
 	//other model matrix
-	
+
 	//Alessandro
-	glm::mat4 model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
+model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 	//Le Cherng
-	glm::mat4 model_L_matrix = glm::translate(glm::mat4(1.f), model_L_move);
+	model_L_matrix = glm::translate(glm::mat4(1.f), model_L_move);
 	//Dan
-	glm::mat4 model_D_matrix = glm::translate(glm::mat4(1.f), model_D_move);
+	model_D_matrix = glm::translate(glm::mat4(1.f), model_D_move);
 	//LaginHo
-	glm::mat4 model_La_matrix = glm::translate(glm::mat4(1.f), model_La_move);
+ model_La_matrix = glm::translate(glm::mat4(1.f), model_La_move);
 
-	glm::mat4 model_Stage_matrix = glm::translate(glm::mat4(1.f), model_Stage_move);
+ model_Stage_matrix = glm::translate(glm::mat4(1.f), model_Stage_move);
 
-	glm::mat4 model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
+ model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
 
-	glm::mat4 grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-	glm::mat4 ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-	glm::mat4 line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+	 grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+     ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+	 line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 
-	GLuint vm_loc = shader.GetUniformLocation("vm");
-	GLuint pm_loc = shader.GetUniformLocation("pm");
-	GLuint mm_loc = shader.GetUniformLocation("mm");
-	GLuint flag_id = shader.GetUniformLocation("flag");
-	GLuint lights_id = shader.GetUniformLocation("lights");
-	GLuint normalcol_id = shader.GetUniformLocation("normalcol");
-	GLuint greyscale_id = shader.GetUniformLocation("greyscale");
-	GLuint red_id = shader.GetUniformLocation("red");
-	GLuint green_id = shader.GetUniformLocation("green");
-	GLuint blue_id = shader.GetUniformLocation("blue");
-	GLuint colour_id = shader.GetUniformLocation("colour");
+	 vm_loc = shader.GetUniformLocation("vm");
+	 pm_loc = shader.GetUniformLocation("pm");
+     mm_loc = shader.GetUniformLocation("mm");
+     flag_id = shader.GetUniformLocation("flag");
+     lights_id = shader.GetUniformLocation("lights");
+	 normalcol_id = shader.GetUniformLocation("normalcol");
+	 greyscale_id = shader.GetUniformLocation("greyscale");
+	 red_id = shader.GetUniformLocation("red");
+	 green_id = shader.GetUniformLocation("green");
+     blue_id = shader.GetUniformLocation("blue");
+	 colour_id = shader.GetUniformLocation("colour");
 
 	//glUniformMatrix4fv(vm_loc, 1, GL_FALSE, &view_matrix[0][0]); OR
 	glUniformMatrix4fv(vm_loc, 1, GL_FALSE, glm::value_ptr(view_matrix));
@@ -672,14 +723,17 @@ int main()
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 	// 3D Lines Shader camera projection setup
 	lines3dShader.Bind();
-	GLuint vm_loc_lines_3d = lines3dShader.GetUniformLocation("vm");
-	GLuint pm_loc_lines_3d = lines3dShader.GetUniformLocation("pm");
-	GLuint mm_loc_lines_3d = lines3dShader.GetUniformLocation("mm");
+	 vm_loc_lines_3d = lines3dShader.GetUniformLocation("vm");
+	 pm_loc_lines_3d = lines3dShader.GetUniformLocation("pm");
+	 mm_loc_lines_3d = lines3dShader.GetUniformLocation("mm");
 	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
 
-	// Textures
+	
+	
+
+
 	Texture boxTexture("resources/textures/boxtexture.jpg");
 	Texture metalTexture("resources/textures/metaltexture.jpg");
 	Texture evilDann("resources/textures/evilDann.png");
@@ -691,17 +745,12 @@ int main()
 	Texture bonus1("resources/textures/bonusTexture1.jpg");
 	Texture bonus2("resources/textures/bonusTexture2.jpg");
 	Texture tileTexture("resources/textures/tiletexture.jpg");
-
 	Texture modelAllesandroTexture("resources/textures/ModelAllesandro.png");
 	Texture modelDanielTexture("resources/textures/ModelDaniel.png");
 	Texture modelLaginhoTexture("resources/textures/ModelLaginho.png");
 	Texture modelLeCherngTexture("resources/textures/ModelLeCherng.png");
-
-
 	Texture stage_texture("resources/textures/stage_texture.jpg");
-
-
-	Texture arrayOfTexture[14];
+	
 	arrayOfTexture[0] = modelAllesandroTexture;
 	arrayOfTexture[1] = modelDanielTexture;
 	arrayOfTexture[2] = modelLaginhoTexture;
@@ -717,12 +766,20 @@ int main()
 	arrayOfTexture[12] = bonus1;
 	arrayOfTexture[13] = bonus2;
 
-	int currentIndex=0;
-	// Game loop
-	int n=10;
-	int milli_seconds = n * 1000;
-	time_t start, end;
+	
 	start = time(0);
+
+	Lines3d lines3dObject = Lines3d();
+	Grid grid = Grid();
+	GroundPlain ground = GroundPlain();
+	AlessandroModel alessandroModel = AlessandroModel();
+	LeCherngModel leCherngModel = LeCherngModel();
+	DannModel danModel = DannModel();
+	LaginhoModel laginModel = LaginhoModel();
+	Stage stage = Stage();
+	Screen screen = Screen();
+
+
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -745,7 +802,7 @@ int main()
 		glm::mat4 translator_Screen = glm::translate(glm::mat4(1.0f), model_Screen_move);
 
 		glm::mat4 ground_rotatation = glm::rotate(model_grid, 4.71239f, glm::vec3(1, 0, 0));
-		ground_matrix = model_world  * model_grid * ground_rotatation;
+		ground_matrix = model_world * model_grid * ground_rotatation;
 
 		switch (activeModel) {
 		case 0:
@@ -827,73 +884,18 @@ int main()
 		// Clear the colorbuffer
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// Draws cube
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-
-		boxTexture.activeTexture = activeModelTexture;
-		metalTexture.activeTexture = activeModelTexture;
-		evilDann.activeTexture = activeModelTexture;
-		dio.activeTexture = activeModelTexture;
-		texture_AL_1.activeTexture = activeModelTexture;
-		texture_AL_2.activeTexture = activeModelTexture;
-		stage_texture.activeTexture = activeModelTexture;
 		
-		for (int i = 0; i < sizeof(arrayOfTexture) / sizeof(arrayOfTexture[0]); i++) {
-			arrayOfTexture[i].activeTexture = activeModelTexture;
-		}
+		// Draws cube
+		
+
+		
 
 		// Draws Models
 		//model_A_shader.Bind();
+		
+		glBindVertexArray(VAO);
 		shader.SetUniform1i("u_Texture", 0);
-
-		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
-
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
-		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		alessandroModel.drawModel(renderingMode, &boxTexture, &metalTexture, shearX, shearY);
-
-		//model_L_shader.Bind();
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
-		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		leCherngModel.drawModel(renderingMode, &boxTexture, &metalTexture, shearX, shearY);
-
-		//model_La_shader.Bind();
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
-		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		laginModel.drawModel(renderingMode, &boxTexture, &metalTexture, shearX, shearY);
-
-		//model_D_shader.Bind();
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
-		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		danModel.drawModel(renderingMode, &boxTexture, &metalTexture, shearX, shearY);
-
-		boxTexture.activeTexture = false;
-		metalTexture.activeTexture = false;
-		if (time(0) - start == n) {
-			if (currentIndex == (sizeof(arrayOfTexture) / sizeof(arrayOfTexture[0])-1)) {
-				currentIndex = 0;
-			}
-			else {
-				currentIndex++;
-			}
-			start = start + n;
-		}
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Screen_matrix));
-		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 0, 0)));
-		screen.drawModel(renderingMode, &arrayOfTexture[currentIndex]);
-
-		//model_Stage_shader Bind()
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Stage_matrix));
-		//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-		stage.drawModel(renderingMode, &stage_texture);
-
-		// Ground
-		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(ground_matrix));
-		ground.drawGround(&tileTexture);
+		renderScene(ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
 
 		// Draws line
 		lines3dShader.Bind();
@@ -906,10 +908,22 @@ int main()
 		glLineWidth(0.5f);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(grid_matrix));
+		boxTexture.activeTexture = activeModelTexture;
+		metalTexture.activeTexture = activeModelTexture;
+		evilDann.activeTexture = activeModelTexture;
+		dio.activeTexture = activeModelTexture;
+		texture_AL_1.activeTexture = activeModelTexture;
+		texture_AL_2.activeTexture = activeModelTexture;
+		stage_texture.activeTexture = activeModelTexture;
+		tileTexture.activeTexture = activeModelTexture;
+
+		for (int i = 0; i < sizeof(arrayOfTexture) / sizeof(arrayOfTexture[0]); i++) {
+			arrayOfTexture[i].activeTexture = activeModelTexture;
+		}
 		grid.drawGrid();
 		// Unbinds VAO
-
 		glBindVertexArray(0);
+		
 		//activeModel = initModel;
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
@@ -920,57 +934,52 @@ int main()
 	return 0;
 }
 
-void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength)
-{
-	GLfloat halfSide = edgeLength * 0.5f;
+void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture){
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
+	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
+	alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
 
-	GLfloat vertices[] =
-	{
-		// front face
-		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left
-		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // top right
-		centerX + halfSide, centerY - halfSide, centerZ + halfSide, // bottom right
-		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // bottom left
+	//model_L_shader.Bind();
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
+	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
+	leCherngModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
 
-		// back face
-		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top left
-		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // top right
-		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
-		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // bottom left
+	//model_La_shader.Bind();
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
+	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
+	laginModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
 
-		// left face
-		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left
-		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top right
-		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
-		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // bottom left
+	//model_D_shader.Bind();
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
+	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
+	danModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	if (time(0) - start == n) {
+		if (currentIndex == (sizeof(arrayOfTexture) / sizeof(arrayOfTexture[0]) - 1)) {
+			currentIndex = 0;
+		}
+		else {
+			currentIndex++;
+		}
+		start = start + n;
+	}
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Screen_matrix));
+	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 0, 0)));
+	screen.drawModel(renderingMode, &arrayOfTexture[currentIndex]);
 
-		// right face
-		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // top left
-		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // top right
-		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
-		centerX + halfSide, centerY - halfSide, centerZ + halfSide, // bottom left
+	//model_Stage_shader Bind()
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Stage_matrix));
+	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
+	stage.drawModel(renderingMode, stage_texture);
 
-		// top face
-		centerX - halfSide, centerY + halfSide, centerZ + halfSide, // top left
-		centerX - halfSide, centerY + halfSide, centerZ - halfSide, // top right
-		centerX + halfSide, centerY + halfSide, centerZ - halfSide, // bottom right
-		centerX + halfSide, centerY + halfSide, centerZ + halfSide, // bottom left
-
-		// top face
-		centerX - halfSide, centerY - halfSide, centerZ + halfSide, // top left
-		centerX - halfSide, centerY - halfSide, centerZ - halfSide, // top right
-		centerX + halfSide, centerY - halfSide, centerZ - halfSide, // bottom right
-		centerX + halfSide, centerY - halfSide, centerZ + halfSide  // bottom left
-	};
-
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//glColor3f( colour[0], colour[1], colour[2] );
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-
-	glDrawArrays(GL_QUADS, 0, 24);
-
-	glDisableClientState(GL_VERTEX_ARRAY);
-
+	// Ground
+	glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(ground_matrix));
+	ground.drawGround(tileTexture);
 }
+
+
+
 
