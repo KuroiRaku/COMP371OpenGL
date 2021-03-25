@@ -34,9 +34,6 @@
     <ClCompile Include="dependencies\windows\glad\src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\Font.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="engine\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -79,9 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Shader.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="engine\Font.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="engine\GLDebugMessageCallback.h">

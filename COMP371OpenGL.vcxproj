@@ -149,7 +149,6 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DannModel.cpp" />
     <ClCompile Include="dependencies\windows\glad\src\glad.c" />
-    <ClCompile Include="engine\Font.cpp" />
     <ClCompile Include="engine\main.cpp" />
     <ClCompile Include="engine\Shader.cpp" />
     <ClCompile Include="grid.cpp" />
@@ -166,7 +165,6 @@
     <ClInclude Include="AlessandroModel.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="DannModel.h" />
-    <ClInclude Include="engine\Font.h" />
     <ClInclude Include="engine\GLDebugMessageCallback.h" />
     <ClInclude Include="engine\ObjLoaderIndex.h" />
     <ClInclude Include="engine\Shader.h" />
