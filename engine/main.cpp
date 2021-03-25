@@ -275,7 +275,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 
 	//full reset
-	if (key == GLFW_KEY_SPACE)
+	if (key == GLFW_KEY_0)
 	{
 		model_active = glm::mat4(1.0f);
 		model_active_move = glm::vec3(0, 2, -10); //to apply translational transformations
@@ -302,6 +302,39 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		shearY = 0;
 	}
 
+	if (key == GLFW_KEY_SPACE)
+	{
+		int randomXPosition = -15 + (std::rand() % (15 + 15 + 1));
+		int randomZPosition = -15 + (std::rand() % (15 + 15 + 1));
+		model_active = glm::mat4(1.0f);
+		model_active_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
+
+		//Alessandro
+		randomXPosition = -15 + (std::rand() % (15 + 15 + 1));
+		randomZPosition = -15 + (std::rand() % (15 + 15 + 1));
+		model_A = glm::mat4(1.0f);
+		model_A_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
+
+		//Le Cherng
+		randomXPosition = -15 + (std::rand() % (15 + 15 + 1));
+		randomZPosition = -15 + (std::rand() % (15 + 15 + 1));
+		model_L = glm::mat4(1.0f);
+		model_L_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
+
+		//Dan
+		randomXPosition = -15 + (std::rand() % (15 + 15 + 1));
+		randomZPosition = -15 + (std::rand() % (15 + 15 + 1));
+		model_D = glm::mat4(1.0f);
+		model_D_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
+
+	   //LaginHo
+		randomXPosition = -15 + (std::rand() % (15 + 15 + 1));
+		randomZPosition = -15 + (std::rand() % (15 + 15 + 1));
+		model_La = glm::mat4(1.0f);
+		model_La_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
+		 
+	}
+	
 	if (!worldOrientationKeyPressed) {
 		//WASD buttons to move the model
 		if (!leftShiftPressed) {
