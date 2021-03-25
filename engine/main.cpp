@@ -47,14 +47,14 @@ std::vector<glm::vec3> normals;
 std::vector<glm::vec2> UVs;
 
 //camera settings
-glm::vec3 cam_pos = glm::vec3(0, 2, 90);
+glm::vec3 cam_pos = glm::vec3(0, 2, 30);
 glm::vec3 cam_dir = glm::vec3(0, 0, -1); //direction means what the camera is looking at
 glm::vec3 temp_cam_dir = glm::vec3(0, 0, 1); //use this for the cross product or else when cam_dir and cam_up overlap, the cross product will be 0 (bad!)
 glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera is directing towards
 
 //model settings
 glm::mat4 model_active = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, 1, 0)); //active model
-glm::vec3 model_active_move = glm::vec3(0, 2, -10); //to apply translational transformations
+glm::vec3 model_active_move = glm::vec3(-10, 2, -6); //to apply translational transformations
 
 glm::mat4 model_general = glm::mat4(1.0f); //active model
 glm::vec3 model_general_move = glm::vec3(0, 2, -10); //to apply translational transformations
@@ -78,16 +78,16 @@ GLuint colour_id ;
 
 //Alessandro
 glm::mat4 model_A = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, 1, 0));
-glm::vec3 model_A_move = glm::vec3(0, 2, -10); //to apply translational transformations
+glm::vec3 model_A_move = glm::vec3(-10, 2, -6); //to apply translational transformations
 //Le Cherng
-glm::mat4 model_L = glm::rotate(glm::mat4(1.0f), glm::radians(120.f), glm::vec3(0, 1, 0));
-glm::vec3 model_L_move = glm::vec3(0, 2, 10); //to apply translational transformations
+glm::mat4 model_L = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, 1, 0));
+glm::vec3 model_L_move = glm::vec3(12, 2, 10); //to apply translational transformations
 //Dan
-glm::mat4 model_D = glm::mat4(1.0f);
-glm::vec3 model_D_move = glm::vec3(10, 2, 0); //to apply translational transformations
+glm::mat4 model_D = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, -1, 0));
+glm::vec3 model_D_move = glm::vec3(12, 2, -5); //to apply translational transformations
 //LaginHo
-glm::mat4 model_La = glm::mat4(1.0f);
-glm::vec3 model_La_move = glm::vec3(-10, 2, 0); //to apply translational transformations
+glm::mat4 model_La = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, -1, 0));
+glm::vec3 model_La_move = glm::vec3(-10, 2, 10); //to apply translational transformations
 //LaginHo
 glm::mat4 model_grid = glm::mat4(1.0f);
 glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
@@ -97,10 +97,10 @@ glm::mat4 model_world = glm::mat4(1.0f);
 glm::vec3 model_world_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 glm::mat4 model_Stage = glm::mat4(1.0f);
-glm::vec3 model_Stage_move = glm::vec3(0, 0, -5); //to apply translational transformations
+glm::vec3 model_Stage_move = glm::vec3(-10, 0, -25); //to apply translational transformations
 
 glm::mat4 model_Screen = glm::mat4(1.0f);
-glm::vec3 model_Screen_move = glm::vec3(0, 0, -10); //to apply translational transformations
+glm::vec3 model_Screen_move = glm::vec3(-10, 0, -25); //to apply translational transformations
 
 
 glm::mat4 model_A_matrix ;
