@@ -53,7 +53,7 @@ glm::vec3 temp_cam_dir = glm::vec3(0, 0, 1); //use this for the cross product or
 glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera is directing towards
 
 //model settings
-glm::mat4 model_active = glm::mat4(1.0f); //active model
+glm::mat4 model_active = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, 1, 0)); //active model
 glm::vec3 model_active_move = glm::vec3(0, 2, -10); //to apply translational transformations
 
 glm::mat4 model_general = glm::mat4(1.0f); //active model
@@ -77,10 +77,10 @@ GLuint colour_id ;
 
 
 //Alessandro
-glm::mat4 model_A = glm::mat4(1.0f);
+glm::mat4 model_A = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, 1, 0));
 glm::vec3 model_A_move = glm::vec3(0, 2, -10); //to apply translational transformations
 //Le Cherng
-glm::mat4 model_L = glm::mat4(1.0f);
+glm::mat4 model_L = glm::rotate(glm::mat4(1.0f), glm::radians(120.f), glm::vec3(0, 1, 0));
 glm::vec3 model_L_move = glm::vec3(0, 2, 10); //to apply translational transformations
 //Dan
 glm::mat4 model_D = glm::mat4(1.0f);
@@ -153,13 +153,6 @@ int activeModel = 0;
 int previousActiveModel = 0;
 int initModel = activeModel;
 //glm::vec3 object_color = glm::vec3(0.5, 0.5, 0.5);
-
-
-
-
-
-
-void DrawCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeSize);
 
 void resetToPreviousModel(int previousActiveModel) {
 	switch (previousActiveModel)
@@ -717,17 +710,17 @@ int main()
 	//other model matrix
 
 	//Alessandro
-model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
+	model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 	//Le Cherng
 	model_L_matrix = glm::translate(glm::mat4(1.f), model_L_move);
 	//Dan
 	model_D_matrix = glm::translate(glm::mat4(1.f), model_D_move);
 	//LaginHo
- model_La_matrix = glm::translate(glm::mat4(1.f), model_La_move);
+	model_La_matrix = glm::translate(glm::mat4(1.f), model_La_move);
 
- model_Stage_matrix = glm::translate(glm::mat4(1.f), model_Stage_move);
+	model_Stage_matrix = glm::translate(glm::mat4(1.f), model_Stage_move);
 
- model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
+	model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
 
 	 grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
      ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
