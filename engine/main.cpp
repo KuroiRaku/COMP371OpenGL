@@ -110,12 +110,8 @@ glm::mat4 model_L_matrix ;
 glm::mat4 model_D_matrix ;
 //LaginHo
 glm::mat4 model_La_matrix ;
-
 glm::mat4 model_Stage_matrix ;
-
 glm::mat4 model_Screen_matrix;
-
-
 glm::mat4 grid_matrix ;
 glm::mat4 ground_matrix ;
 glm::mat4 line_matrix;
@@ -698,8 +694,6 @@ int main()
 	// Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 	glBindVertexArray(0);
 
-	//model loading sort of
-	 
 
 	//shader set up
 	shader.Bind();
@@ -710,7 +704,7 @@ int main()
 	//other model matrix
 
 	//Alessandro
-	model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
+model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 	//Le Cherng
 	model_L_matrix = glm::translate(glm::mat4(1.f), model_L_move);
 	//Dan
@@ -721,6 +715,7 @@ int main()
 	model_Stage_matrix = glm::translate(glm::mat4(1.f), model_Stage_move);
 
 	model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
+
 
 	 grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
      ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
@@ -755,10 +750,6 @@ int main()
 	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
-
-	
-	
-
 
 	Texture boxTexture("resources/textures/boxtexture.jpg");
 	Texture metalTexture("resources/textures/metaltexture.jpg");
@@ -892,7 +883,6 @@ int main()
 			model_L_matrix = model_world * translator_L * model_L;
 			model_Stage_matrix = model_world * translator_Stage * model_Stage;
 			model_Screen_matrix = model_world * translator_Screen * model_Screen;
-
 			break;
 		}
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
