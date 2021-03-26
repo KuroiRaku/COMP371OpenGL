@@ -238,24 +238,25 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if (key == GLFW_KEY_F) { //A moves left
 			cam_pos += glm::cross(cam_up, cam_dir);
 		}
+		if (worldOrientationKeyPressed)
+		{
+			//Left and Right key rotate camera
+			if (key == GLFW_KEY_RIGHT) { //left arrow rotates the camera left about the right vector
+				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(0, 1, 0));
+			}
+			if (key == GLFW_KEY_DOWN) { //left arrow rotates the camera left about the down vector
+				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(-1, 0, 0));
+			}
+			if (key == GLFW_KEY_UP) { //left arrow rotates the camera left about the up vector
+				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(1, 0, 0));
+			}
+			if (key == GLFW_KEY_LEFT) { //left arrow rotates the camera left about the left vector
+				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(0, -1, 0));
+			}
+		}
 	}
 
-	if (worldOrientationKeyPressed)
-	{
-		//Left and Right key rotate camera
-		if (key == GLFW_KEY_RIGHT) { //left arrow rotates the camera left about the right vector
-			model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(0, 1, 0));
-		}
-		if (key == GLFW_KEY_DOWN) { //left arrow rotates the camera left about the down vector
-			model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(-1, 0, 0));
-		}
-		if (key == GLFW_KEY_UP) { //left arrow rotates the camera left about the up vector
-			model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(1, 0, 0));
-		}
-		if (key == GLFW_KEY_LEFT) { //left arrow rotates the camera left about the left vector
-			model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(0, -1, 0));
-		}
-	}
+	
 
 	//reset to initial position
 	if (key == GLFW_KEY_HOME)
@@ -392,16 +393,32 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 			// For rotating the models
 			if (key == GLFW_KEY_UP) { //W rotates the object about the +X axis
-				model_general = glm::rotate(model_general, glm::radians(5.f), glm::vec3(1, 0, 0));
+				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(1, 0, 0));
+				model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(1, 0, 0));
+				model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(1, 0, 0));
+				model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(1, 0, 0));
+				model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(1, 0, 0));
 			}
 			if (key == GLFW_KEY_DOWN) { //S rotates the object about the -X axis
-				model_general = glm::rotate(model_general, glm::radians(5.f), glm::vec3(-1, 0, 0));
+				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(-1, 0, 0));
+				model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(-1, 0, 0));
+				model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(-1, 0, 0));
+				model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(-1, 0, 0));
+				model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(-1, 0, 0));
 			}
 			if (key == GLFW_KEY_LEFT) { //N rotates the object about the Y axis,
-				model_general = glm::rotate(model_general, glm::radians(5.f), glm::vec3(0, 1, 0));
+				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(0, 1, 0));
+				model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(0, 1, 0));
+				model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(0, 1, 0));
+				model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(0, 1, 0));
+				model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(0, 1, 0));
 			}
 			if (key == GLFW_KEY_RIGHT) { //N rotates the object about the -Y axis,
-				model_general = glm::rotate(model_general, glm::radians(5.f), glm::vec3(0, -1, 0));
+				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(0, -1, 0));
+				model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(0, -1, 0));
+				model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(0, -1, 0));
+				model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(0, -1, 0));
+				model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(0, -1, 0));
 			}
 		}
 
@@ -704,7 +721,7 @@ int main()
 	//other model matrix
 
 	//Alessandro
-model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
+	model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 	//Le Cherng
 	model_L_matrix = glm::translate(glm::mat4(1.f), model_L_move);
 	//Dan
@@ -717,9 +734,9 @@ model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 	model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
 
 
-	 grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-     ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-	 line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+	grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+    ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+	line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 
 	 vm_loc = shader.GetUniformLocation("vm");
 	 pm_loc = shader.GetUniformLocation("pm");
@@ -828,12 +845,12 @@ model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 			model_A = model_active;
 			model_A_move = model_active_move;
 
-			grid_matrix = model_world * translator_grid * model_grid;
+			grid_matrix = model_world  * translator_grid * model_grid;
 			model_La_matrix = model_world * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
-			model_Stage_matrix = model_world * translator_Stage * model_Stage;
-			model_Screen_matrix = model_world * translator_Screen * model_Screen;
+			model_Stage_matrix = model_world  * translator_Stage * model_Stage;
+			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
 			break;
 		case 1:
 			model_La_matrix = model_world * translator * model_active;
@@ -841,7 +858,7 @@ model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 			model_La_move = model_active_move;
 
 			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world * translator_grid * model_grid;
+			grid_matrix = model_world  * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
@@ -859,30 +876,30 @@ model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 			model_La_matrix = model_world * translator_La * model_La;
 			model_L_matrix = model_world * translator_L * model_L;
 			model_Stage_matrix = model_world * translator_Stage * model_Stage;
-			model_Screen_matrix = model_world * translator_Screen * model_Screen;
+			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
 			break;
 		case 3:
-			model_L_matrix = model_world * translator * model_active;
+			model_L_matrix = model_world  * translator * model_active;
 			model_L = model_active;
 			model_L_move = model_active_move;
 
 			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world * translator_grid * model_grid;
+			grid_matrix = model_world  * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
-			model_La_matrix = model_world * translator_La * model_La;
+			model_La_matrix = model_world  * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_Stage_matrix = model_world * translator_Stage * model_Stage;
 			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 4:
 			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world * translator_grid * model_grid;
+			grid_matrix = model_world  * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
 			model_La_matrix = model_world * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
-			model_Stage_matrix = model_world * translator_Stage * model_Stage;
-			model_Screen_matrix = model_world * translator_Screen * model_Screen;
+			model_Stage_matrix = model_world  * translator_Stage * model_Stage;
+			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
 			break;
 		}
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
@@ -900,11 +917,6 @@ model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 		// Clear the colorbuffer
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		// Draws cube
-		
-
-		
 
 		// Draws Models
 		//model_A_shader.Bind();
