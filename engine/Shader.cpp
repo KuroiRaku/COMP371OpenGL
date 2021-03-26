@@ -20,6 +20,11 @@ Shader::~Shader()
     GLCall(glDeleteProgram(m_RendererID));
 }
 
+void Shader::SetUniform(const std::string& name, const glm::mat4& matrix) {
+    GLint loc = glGetUniformLocation(m_RendererID, name.c_str());
+    glUniformMatrix4fv(loc, 1, GL_FALSE, &matrix[0][0]);
+}
+
 ShaderProgramSource Shader:: ParseShader(const std::string& vertexFilepath, const std::string& fragmentFilepath)
 {
     std::ifstream VertexShaderStream(vertexFilepath);

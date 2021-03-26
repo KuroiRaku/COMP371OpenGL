@@ -73,6 +73,9 @@
     <ClCompile Include="GroundPlain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FrameBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Shader.h">
@@ -115,6 +118,9 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="GroundPlain.h" />
+    <ClInclude Include="FrameBuffer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">

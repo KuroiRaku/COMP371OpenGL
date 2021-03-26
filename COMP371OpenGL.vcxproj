@@ -151,6 +151,7 @@
     <ClCompile Include="dependencies\windows\glad\src\glad.c" />
     <ClCompile Include="engine\main.cpp" />
     <ClCompile Include="engine\Shader.cpp" />
+    <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="GroundPlain.cpp" />
     <ClCompile Include="Laginho.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="engine\ObjLoaderIndex.h" />
     <ClInclude Include="engine\Shader.h" />
     <ClInclude Include="engine\Shaderloader.h" />
+    <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="GroundPlain.h" />
     <ClInclude Include="Laginho.h" />
     <ClInclude Include="LeCherngModel.h" />

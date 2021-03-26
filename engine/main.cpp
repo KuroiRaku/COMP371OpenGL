@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include "../FrameBuffer.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -36,7 +37,7 @@ using namespace std;
 // Window dimensions
 const GLuint WIDTH = 1024, HEIGHT = 768;
 
-void renderScene(GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture);
+void renderScene(Shader& shader, GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture);
 glm::mat4 model_matrix;
 glm::mat4 view_matrix;
 glm::mat4 proj_matrix;
@@ -47,14 +48,14 @@ std::vector<glm::vec3> normals;
 std::vector<glm::vec2> UVs;
 
 //camera settings
-glm::vec3 cam_pos = glm::vec3(0, 2, 30);
+glm::vec3 cam_pos = glm::vec3(0, 2, 90);
 glm::vec3 cam_dir = glm::vec3(0, 0, -1); //direction means what the camera is looking at
 glm::vec3 temp_cam_dir = glm::vec3(0, 0, 1); //use this for the cross product or else when cam_dir and cam_up overlap, the cross product will be 0 (bad!)
 glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera is directing towards
 
 //model settings
 glm::mat4 model_active = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, 1, 0)); //active model
-glm::vec3 model_active_move = glm::vec3(-10, 2, -6); //to apply translational transformations
+glm::vec3 model_active_move = glm::vec3(0, 2, -10); //to apply translational transformations
 
 glm::mat4 model_general = glm::mat4(1.0f); //active model
 glm::vec3 model_general_move = glm::vec3(0, 2, -10); //to apply translational transformations
@@ -78,16 +79,16 @@ GLuint colour_id ;
 
 //Alessandro
 glm::mat4 model_A = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, 1, 0));
-glm::vec3 model_A_move = glm::vec3(-10, 2, -6); //to apply translational transformations
+glm::vec3 model_A_move = glm::vec3(0, 2, -10); //to apply translational transformations
 //Le Cherng
-glm::mat4 model_L = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, 1, 0));
-glm::vec3 model_L_move = glm::vec3(12, 2, 10); //to apply translational transformations
+glm::mat4 model_L = glm::rotate(glm::mat4(1.0f), glm::radians(120.f), glm::vec3(0, 1, 0));
+glm::vec3 model_L_move = glm::vec3(0, 2, 10); //to apply translational transformations
 //Dan
-glm::mat4 model_D = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, -1, 0));
-glm::vec3 model_D_move = glm::vec3(12, 2, -5); //to apply translational transformations
+glm::mat4 model_D = glm::mat4(1.0f);
+glm::vec3 model_D_move = glm::vec3(10, 2, 0); //to apply translational transformations
 //LaginHo
-glm::mat4 model_La = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, -1, 0));
-glm::vec3 model_La_move = glm::vec3(-10, 2, 10); //to apply translational transformations
+glm::mat4 model_La = glm::mat4(1.0f);
+glm::vec3 model_La_move = glm::vec3(-10, 2, 0); //to apply translational transformations
 //LaginHo
 glm::mat4 model_grid = glm::mat4(1.0f);
 glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
@@ -97,10 +98,10 @@ glm::mat4 model_world = glm::mat4(1.0f);
 glm::vec3 model_world_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 glm::mat4 model_Stage = glm::mat4(1.0f);
-glm::vec3 model_Stage_move = glm::vec3(-10, 0, -25); //to apply translational transformations
+glm::vec3 model_Stage_move = glm::vec3(0, 0, -5); //to apply translational transformations
 
 glm::mat4 model_Screen = glm::mat4(1.0f);
-glm::vec3 model_Screen_move = glm::vec3(-10, 0, -25); //to apply translational transformations
+glm::vec3 model_Screen_move = glm::vec3(0, 0, -10); //to apply translational transformations
 
 
 glm::mat4 model_A_matrix ;
@@ -110,8 +111,12 @@ glm::mat4 model_L_matrix ;
 glm::mat4 model_D_matrix ;
 //LaginHo
 glm::mat4 model_La_matrix ;
+
 glm::mat4 model_Stage_matrix ;
+
 glm::mat4 model_Screen_matrix;
+
+
 glm::mat4 grid_matrix ;
 glm::mat4 ground_matrix ;
 glm::mat4 line_matrix;
@@ -657,6 +662,7 @@ int main()
 
 	// Build and compile our shader program
 	Shader shader("resources/shaders/vertex.shader", "resources/shaders/fragment.shader");
+	Shader shadowShader("resources/shaders/shadow_vertex.shader", "resources/shaders/shadow_fragment.shader");
 
 	//lines
 	Shader lines3dShader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
@@ -694,6 +700,8 @@ int main()
 	// Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 	glBindVertexArray(0);
 
+	//model loading sort of
+	 
 
 	//shader set up
 	shader.Bind();
@@ -704,7 +712,7 @@ int main()
 	//other model matrix
 
 	//Alessandro
-model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
+	model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 	//Le Cherng
 	model_L_matrix = glm::translate(glm::mat4(1.f), model_L_move);
 	//Dan
@@ -715,7 +723,6 @@ model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 	model_Stage_matrix = glm::translate(glm::mat4(1.f), model_Stage_move);
 
 	model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
-
 
 	 grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
      ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
@@ -750,6 +757,10 @@ model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
+
+	
+	
+
 
 	Texture boxTexture("resources/textures/boxtexture.jpg");
 	Texture metalTexture("resources/textures/metaltexture.jpg");
@@ -795,7 +806,9 @@ model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 	LaginhoModel laginModel = LaginhoModel();
 	Stage stage = Stage();
 	Screen screen = Screen();
+	FrameBuffer buffer;
 
+	buffer.create();
 
 
 	while (!glfwWindowShouldClose(window))
@@ -883,6 +896,7 @@ model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 			model_L_matrix = model_world * translator_L * model_L;
 			model_Stage_matrix = model_world * translator_Stage * model_Stage;
 			model_Screen_matrix = model_world * translator_Screen * model_Screen;
+
 			break;
 		}
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
@@ -910,15 +924,37 @@ model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 		//model_A_shader.Bind();
 		
 		glBindVertexArray(VAO);
+		//Depth Pass
+		buffer.bind();
+		shadowShader.Bind();
+		renderScene(shadowShader, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
+		shadowShader.Unbind();
+		buffer.unbind();
+
+		//Normal Rendering
+		shader.Bind();
 		shader.SetUniform1i("u_Texture", 0);
-		renderScene(ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
+		shader.SetUniform1i("depthMap", 1);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, buffer.getTextureID());
+
+		glActiveTexture(GL_TEXTURE0);
+		
+		renderScene(shader, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
+		
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
 
 		// Draws line
 		lines3dShader.Bind();
 		glLineWidth(1.0f);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
-		lines3dObject.drawLines();
+		//lines3dObject.drawLines();
 
 		// Draws grid
 		glLineWidth(0.5f);
@@ -936,7 +972,7 @@ model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 		for (int i = 0; i < sizeof(arrayOfTexture) / sizeof(arrayOfTexture[0]); i++) {
 			arrayOfTexture[i].activeTexture = activeModelTexture;
 		}
-		grid.drawGrid();
+		//grid.drawGrid();
 		// Unbinds VAO
 		glBindVertexArray(0);
 		
@@ -950,26 +986,28 @@ model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
 	return 0;
 }
 
-void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture){
+
+
+void renderScene(Shader& shader, GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture){
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-	glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
+	shader.SetUniform("vm", view_matrix);
+	shader.SetUniform("mm", model_A_matrix);
+
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
 
 	//model_L_shader.Bind();
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
+	shader.SetUniform("mm", model_L_matrix);
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	leCherngModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
 
 	//model_La_shader.Bind();
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
+	shader.SetUniform("mm", model_La_matrix);
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	laginModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
 
 	//model_D_shader.Bind();
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
+	shader.SetUniform("mm", model_D_matrix);
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	danModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
 	if (time(0) - start == n) {
@@ -981,18 +1019,17 @@ void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngM
 		}
 		start = start + n;
 	}
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Screen_matrix));
+	shader.SetUniform("mm", model_Screen_matrix);
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 0, 0)));
 	screen.drawModel(renderingMode, &arrayOfTexture[currentIndex]);
 
 	//model_Stage_shader Bind()
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Stage_matrix));
+	shader.SetUniform("mm", model_Stage_matrix);
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	stage.drawModel(renderingMode, stage_texture);
 
 	// Ground
-	glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(ground_matrix));
+	shader.SetUniform("mm", ground_matrix);
 	ground.drawGround(tileTexture);
 }
 
