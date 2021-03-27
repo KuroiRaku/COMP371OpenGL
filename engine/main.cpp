@@ -196,8 +196,8 @@ void resetToPreviousModel(int previousActiveModel) {
 	activeModel = previousActiveModel;
 }
 
-// Rotate around a point 
-// Note: This function is not in used, because assignment doesn't require it. But we will still keep it if we want to play around :D 
+// Rotate around a point
+// Note: This function is not in used, because assignment doesn't require it. But we will still keep it if we want to play around :D
 void rotateAround(glm::vec3& moveVec, glm::mat4& matrix, glm::vec3 rotation) {
 	activeModel = 4;
 
@@ -276,7 +276,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 	}
 
-	
+
 
 	//reset to initial position
 	if (key == GLFW_KEY_HOME)
@@ -342,9 +342,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		randomZPosition = -15 + (std::rand() % (15 + 15 + 1));
 		model_La = glm::mat4(1.0f);
 		model_La_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
-		 
+
 	}
-	
+
 	if (!worldOrientationKeyPressed) {
 		//WASD buttons to move the model
 		if (!leftShiftPressed) {
@@ -620,7 +620,7 @@ void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 	if (m_button_pressed) {
 		glm::mat4 rotation_matrix(1);
 		glm::vec3 rotate_around_x = glm::cross(cam_up, cam_dir); //cross product
-		if (last_y_pos - ypos > 0) { //mouse going up, camera moves backward	
+		if (last_y_pos - ypos > 0) { //mouse going up, camera moves backward
 			rotation_matrix = glm::rotate(rotation_matrix, -(0.01f), rotate_around_x);
 			cam_dir = glm::mat3(rotation_matrix) * cam_dir;
 			cam_up = glm::mat3(rotation_matrix) * cam_up;
@@ -699,7 +699,7 @@ int main()
 	//lines
 	Shader lines3dShader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
 
-	
+
 	loadOBJ("resources/objects/cube.obj", indices, vertices, normals, UVs);
 
 	// This is for beginners if they have no idea what's the deal with VAO and VBO.
@@ -733,7 +733,7 @@ int main()
 	// Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 	glBindVertexArray(0);
 
-	// load texture 
+	// load texture
 	Texture boxTexture("resources/textures/boxtexture.jpg");
 	Texture metalTexture("resources/textures/metaltexture.jpg");
 	Texture evilDann("resources/textures/evilDann.png");
@@ -816,7 +816,7 @@ int main()
 	grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
     ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 	line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-	
+
 	model_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 2, 0));
 	view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
 	proj_matrix = glm::perspective(glm::radians(45.f), 1.f, 0.1f, 200.f); //perspective view. Third parameter should be > 0, or else errors
@@ -863,7 +863,7 @@ int main()
 	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
-	
+
 	start = time(0);
 
 	Lines3d lines3dObject = Lines3d();
@@ -888,13 +888,13 @@ int main()
 		glClearColor(1.f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// lighting 
+		// lighting
 		glm::mat4 lightProjectionMatrix = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, lightNearPlane, lightFarPlane);
 		//perspective(20.0f, (float)DEPTH_MAP_TEXTURE_SIZE / (float)DEPTH_MAP_TEXTURE_SIZE, lightNearPlane, lightFarPlane);
 		glm::mat4 lightViewMatrix = glm::lookAt(lightPosition, lightFocus, glm::vec3(0.0f, 1.0f, 0.0f));
 		glm::mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
 
-		
+
 		shaderShadow.Bind();
 		glUniformMatrix4fv(shaderShadow.GetUniformLocation("light_view_proj_matrix"), 1, 0, glm::value_ptr(lightSpaceMatrix));
 
@@ -906,14 +906,14 @@ int main()
 		renderScene(shaderShadow, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
 		// Unbind the framebuffer
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		
+
 
 		// render for the scene
 		shader.Bind();
 		// reset viewport
 		glClearColor(1.f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
+
 		view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
 		glm::mat4 projection = glm::perspective(glm::radians(45.f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
@@ -1006,7 +1006,7 @@ int main()
 			model_Stage_matrix = model_world  * translator_Stage * model_Stage;
 			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
 			break;
-		}	
+		}
 
 		// Draws Models
 		//model_A_shader.Bind();
@@ -1049,7 +1049,7 @@ int main()
 		grid.drawGrid();
 		// Unbinds VAO
 		glBindVertexArray(0);
-		
+
 		//activeModel = initModel;
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
@@ -1061,7 +1061,7 @@ int main()
 }
 
 void renderScene(Shader &shader, GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture){
-	
+
 	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_A_matrix));
 	alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
 
@@ -1102,7 +1102,3 @@ void renderScene(Shader &shader, GroundPlain ground, AlessandroModel alessandroM
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(ground_matrix));
 	ground.drawGround(tileTexture);
 }
-
-
-
-
