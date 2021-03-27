@@ -9,11 +9,12 @@ using namespace std;
 class Texture
 {
 private:
-	unsigned int m_RendererID;
+	
 	string m_FilePath;
 	unsigned char* m_LocalBuffer;
 	int m_Width, m_Height, m_BPP;
 public:
+	unsigned int m_RendererID;
 	Texture(const string& path);
 	~Texture();
 	Texture();

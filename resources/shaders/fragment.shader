@@ -5,7 +5,7 @@ const float PI = 3.1415926535897932384626433832795;
 uniform vec3 light_color;
 uniform vec3 light_position;
 uniform vec3 light_direction;
-
+uniform vec3 view_position;
 uniform vec3 object_color;
 
 const float shading_ambient_strength = 0.25;
@@ -16,8 +16,6 @@ uniform float light_cutoff_outer;
 uniform float light_cutoff_inner;
 uniform float light_near_plane;
 uniform float light_far_plane;
-
-uniform vec3 view_position;
 
 uniform sampler2D shadow_map;
 
@@ -54,9 +52,30 @@ float shadow_scalar() {
 	float closest_depth = texture(shadow_map, normalized_device_coordinates.xy).r;
 	// get depth of current fragment from light's perspective
 	float current_depth = normalized_device_coordinates.z;
+	// calculate bias (based on depth map resolution and slope)
+	vec3 normal = normalize(fragment_normal);
+	vec3 lightDir = normalize(light_position - fragment_position);
+	float bias = max(0.05 * (1.0 - dot(normal, light_direction)), 0.005);
 	// check whether current frag pos is in shadow
-	float bias = 0;  // bias applied in depth map: see shadow_vertex.glsl
-	return ((current_depth - bias) < closest_depth) ? 1.0 : 0.0;
+	// float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+	// PCF
+	float shadow = 0.0;
+	vec2 texelSize = 1.0 / textureSize(shadow_map, 0);
+	for (int x = -1; x <= 1; ++x)
+	{
+		for (int y = -1; y <= 1; ++y)
+		{
+			float pcfDepth = texture(shadow_map, normalized_device_coordinates.xy + vec2(x, y) * texelSize).r;
+			shadow += current_depth - bias > pcfDepth ? 1.0 : 0.0;
+		}
+	}
+	shadow /= 9.0;
+
+	// keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+	if (normalized_device_coordinates.z > 1.0)
+		shadow = 0.0;
+
+	return shadow;
 }
 
 float spotlight_scalar() {

@@ -66,7 +66,7 @@ float shearX = 0.f;
 float shearY = 0.f;
 
 // lights settings
-glm::vec3 lightColour = glm::vec3(1.0, 1.0, 1.0);
+glm::vec3 lightColour = glm::vec3(0.0, 1.0, 1.0);
 glm::vec3 lightPosition = glm::vec3(0.6f, 50.0f, 5.0f);
 glm::vec3 lightFocus(0.0, 0.0, -1.0);
 glm::vec3 lightDirection = glm::normalize(lightFocus - lightPosition);
@@ -733,15 +733,51 @@ int main()
 	// Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 	glBindVertexArray(0);
 
+	// load texture 
+	Texture boxTexture("resources/textures/boxtexture.jpg");
+	Texture metalTexture("resources/textures/metaltexture.jpg");
+	Texture evilDann("resources/textures/evilDann.png");
+	Texture dio("resources/textures/dio.jpg");
+	Texture texture_AL_1("resources/textures/allesandro1.jpg");
+	Texture texture_AL_2("resources/textures/allesandro2.jpg");
+	Texture texture_LA_1("resources/textures/laginho1.jpg");
+	Texture texture_LA_2("resources/textures/laginho2.jpg");
+	Texture bonus1("resources/textures/bonusTexture1.jpg");
+	Texture bonus2("resources/textures/bonusTexture2.jpg");
+	Texture tileTexture("resources/textures/tiletexture.jpg");
+	Texture modelAllesandroTexture("resources/textures/ModelAllesandro.png");
+	Texture modelDanielTexture("resources/textures/ModelDaniel.png");
+	Texture modelLaginhoTexture("resources/textures/ModelLaginho.png");
+	Texture modelLeCherngTexture("resources/textures/ModelLeCherng.png");
+	Texture stage_texture("resources/textures/stage_texture.jpg");
+
+
+	arrayOfTexture[0] = modelAllesandroTexture;
+	arrayOfTexture[1] = modelDanielTexture;
+	arrayOfTexture[2] = modelLaginhoTexture;
+	arrayOfTexture[3] = modelLeCherngTexture;
+	arrayOfTexture[4] = boxTexture;
+	arrayOfTexture[5] = metalTexture;
+	arrayOfTexture[6] = evilDann;
+	arrayOfTexture[7] = dio;
+	arrayOfTexture[8] = texture_AL_1;
+	arrayOfTexture[9] = texture_AL_2;
+	arrayOfTexture[10] = texture_LA_1;
+	arrayOfTexture[11] = texture_LA_2;
+	arrayOfTexture[12] = bonus1;
+	arrayOfTexture[13] = bonus2;
+
+
+	// Configure depth map FBO
 	// Variable storing index to texture used for shadow mapping
+	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	GLuint depth_map_texture;
 	// Get the texture
 	glGenTextures(1, &depth_map_texture);
 	// Bind the texture so the next glTex calls affect it
 	glBindTexture(GL_TEXTURE_2D, depth_map_texture);
 	// Create the texture and specify it's attributes, including widthn height, components (only depth is stored, no color information)
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, DEPTH_MAP_TEXTURE_SIZE, DEPTH_MAP_TEXTURE_SIZE, 0, GL_DEPTH_COMPONENT, GL_FLOAT,
-		NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	// Set texture sampler parameters.
 	// The two calls below tell the texture sampler inside the shader how to upsample and downsample the texture. Here we choose the nearest filtering option, which means we just use the value of the closest pixel to the chosen image coordinate.
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -757,10 +793,10 @@ int main()
 	// Bind the framebuffer so the next glFramebuffer calls affect it
 	glBindFramebuffer(GL_FRAMEBUFFER, depth_map_fbo);
 	// Attach the depth map texture to the depth map framebuffer
-	//glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, depth_map_texture, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depth_map_texture, 0);
 	glDrawBuffer(GL_NONE); //disable rendering colors, only write depth values
-	
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
 	//setting up other models other model matrix
@@ -777,13 +813,10 @@ int main()
 
 	model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
 
-
 	grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
     ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 	line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-
-	//shader set up
-	shader.Bind();
+	
 	model_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 2, 0));
 	view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
 	proj_matrix = glm::perspective(glm::radians(45.f), 1.f, 0.1f, 200.f); //perspective view. Third parameter should be > 0, or else errors
@@ -792,9 +825,14 @@ int main()
 	float lightAngleInner = 20.0;
 	float lightNearPlane = 1.0f;
 	float lightFarPlane = 180.0f;
+
+	// Shader set up
+	shader.Bind();
 	// Set light cutoff angles on scene shader
 	SetUniform1Value(shader.m_RendererID, "light_cutoff_inner", cos(glm::radians(lightAngleInner)));
 	SetUniform1Value(shader.m_RendererID, "light_cutoff_outer", cos(glm::radians(lightAngleOuter)));
+	SetUniform1Value(shader.m_RendererID, "shadow_map",1 );
+	SetUniform1Value(shader.m_RendererID, "u_Texture", 0);
 
 	 vm_loc = shader.GetUniformLocation("vm");
 	 pm_loc = shader.GetUniformLocation("pm");
@@ -806,8 +844,6 @@ int main()
 	 green_id = shader.GetUniformLocation("green");
      blue_id = shader.GetUniformLocation("blue");
 	 colour_id = shader.GetUniformLocation("colour");
-
-	GLuint mm_shadow = shaderShadow.GetUniformLocation("mm");
 
 	//glUniformMatrix4fv(vm_loc, 1, GL_FALSE, &view_matrix[0][0]); OR
 	glUniformMatrix4fv(vm_loc, 1, GL_FALSE, glm::value_ptr(view_matrix));
@@ -827,39 +863,6 @@ int main()
 	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
-
-	Texture boxTexture("resources/textures/boxtexture.jpg");
-	Texture metalTexture("resources/textures/metaltexture.jpg");
-	Texture evilDann("resources/textures/evilDann.png");
-	Texture dio("resources/textures/dio.jpg");
-	Texture texture_AL_1("resources/textures/allesandro1.jpg");
-	Texture texture_AL_2("resources/textures/allesandro2.jpg");
-	Texture texture_LA_1("resources/textures/laginho1.jpg");
-	Texture texture_LA_2("resources/textures/laginho2.jpg");
-	Texture bonus1("resources/textures/bonusTexture1.jpg");
-	Texture bonus2("resources/textures/bonusTexture2.jpg");
-	Texture tileTexture("resources/textures/tiletexture.jpg");
-	Texture modelAllesandroTexture("resources/textures/ModelAllesandro.png");
-	Texture modelDanielTexture("resources/textures/ModelDaniel.png");
-	Texture modelLaginhoTexture("resources/textures/ModelLaginho.png");
-	Texture modelLeCherngTexture("resources/textures/ModelLeCherng.png");
-	Texture stage_texture("resources/textures/stage_texture.jpg");
-	
-	arrayOfTexture[0] = modelAllesandroTexture;
-	arrayOfTexture[1] = modelDanielTexture;
-	arrayOfTexture[2] = modelLaginhoTexture;
-	arrayOfTexture[3] = modelLeCherngTexture;
-	arrayOfTexture[4] = boxTexture;
-	arrayOfTexture[5] = metalTexture;
-	arrayOfTexture[6] = evilDann;
-	arrayOfTexture[7] = dio;
-	arrayOfTexture[8] = texture_AL_1;
-	arrayOfTexture[9] = texture_AL_2;
-	arrayOfTexture[10] = texture_LA_1;
-	arrayOfTexture[11] = texture_LA_2;
-	arrayOfTexture[12] = bonus1;
-	arrayOfTexture[13] = bonus2;
-
 	
 	start = time(0);
 
@@ -880,45 +883,52 @@ int main()
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwPollEvents();
 
-		shader.Bind();
-		shader.SetUniform1i("u_Texture", 0);
-		view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
-		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
+		// --- Render ---
+		// Clear the colorbuffer
+		glClearColor(1.f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// lighting 
-		glm::mat4 lightProjectionMatrix = glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, lightNearPlane, lightFarPlane);
+		glm::mat4 lightProjectionMatrix = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, lightNearPlane, lightFarPlane);
 		//perspective(20.0f, (float)DEPTH_MAP_TEXTURE_SIZE / (float)DEPTH_MAP_TEXTURE_SIZE, lightNearPlane, lightFarPlane);
 		glm::mat4 lightViewMatrix = glm::lookAt(lightPosition, lightFocus, glm::vec3(0.0f, 1.0f, 0.0f));
 		glm::mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
 
-		glUniformMatrix4fv(shader.GetUniformLocation("light_view_proj_matrix"), 1, 0, glm::value_ptr(lightSpaceMatrix));
+		
 		shaderShadow.Bind();
 		glUniformMatrix4fv(shaderShadow.GetUniformLocation("light_view_proj_matrix"), 1, 0, glm::value_ptr(lightSpaceMatrix));
 
-		glViewport(0, 0, DEPTH_MAP_TEXTURE_SIZE, DEPTH_MAP_TEXTURE_SIZE);
+		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		glBindFramebuffer(GL_FRAMEBUFFER, depth_map_fbo);
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, boxTexture.m_RendererID);
 		renderScene(shaderShadow, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
-		// Unbind geometry
-		glBindVertexArray(0);
+		// Unbind the framebuffer
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		
 
 		// render for the scene
-		int width, height;
 		shader.Bind();
-		// Set light far and near planes on scene shader
-		glfwGetFramebufferSize(window, &width, &height);
-		glViewport(0, 0, width, height);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+		// reset viewport
+		glClearColor(1.f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
+		glm::mat4 projection = glm::perspective(glm::radians(45.f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(pm_loc, 1, 0, glm::value_ptr(projection));
+		glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(cam_pos));
+		glUniformMatrix4fv(shader.GetUniformLocation("light_view_proj_matrix"), 1, 0, glm::value_ptr(lightSpaceMatrix));
+		// Light.
 		SetUniform1Value(shader.m_RendererID, "light_near_plane", lightNearPlane);
 		SetUniform1Value(shader.m_RendererID, "light_far_plane", lightFarPlane);
-
 		glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(lightPosition));
 		glUniform3fv(shader.GetUniformLocation("light_direction"), 1, glm::value_ptr(lightDirection));
-
 		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, depth_map_fbo);
 
 		glm::mat4 translator_A = glm::translate(glm::mat4(1.0f), model_A_move);
 		glm::mat4 translator_La = glm::translate(glm::mat4(1.0f), model_La_move);
@@ -932,6 +942,7 @@ int main()
 		glm::mat4 ground_rotatation = glm::rotate(model_grid, 4.71239f, glm::vec3(1, 0, 0));
 		ground_matrix = model_world * model_grid * ground_rotatation;
 
+		// Calculation of matrices
 		switch (activeModel) {
 		case 0:
 			model_matrix = model_world * translator * model_active;
@@ -995,18 +1006,13 @@ int main()
 			model_Stage_matrix = model_world  * translator_Stage * model_Stage;
 			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
 			break;
-		}
-
-		// --- Render ---
-		// Clear the colorbuffer
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		}	
 
 		// Draws Models
 		//model_A_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
 		glBindVertexArray(VAO);
-		
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 		renderScene(shader, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
 
 		glUniform1i(lights_id, lights);
@@ -1055,8 +1061,6 @@ int main()
 }
 
 void renderScene(Shader &shader, GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture){
-	
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	
 	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_A_matrix));
 	alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);

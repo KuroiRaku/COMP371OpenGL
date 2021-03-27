@@ -31,7 +31,7 @@ Texture::Texture() {
 
 void Texture::Bind(unsigned int slot) const {
 	if (activeTexture) {
-		glActiveTexture(GL_TEXTURE0 + slot);
+		glActiveTexture(GL_TEXTURE1 + slot);
 		glBindTexture(GL_TEXTURE_2D, m_RendererID);
 	}
 	else {
