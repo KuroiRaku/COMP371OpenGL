@@ -66,7 +66,7 @@ float shearX = 0.f;
 float shearY = 0.f;
 
 // lights settings
-glm::vec3 lightColour = glm::vec3(0.0, 1.0, 1.0);
+glm::vec3 lightColour = glm::vec3(1.0, 1.0, 1.0);
 glm::vec3 lightPosition = glm::vec3(0.6f, 50.0f, 5.0f);
 glm::vec3 lightFocus(0.0, 0.0, -1.0);
 glm::vec3 lightDirection = glm::normalize(lightFocus - lightPosition);
@@ -160,7 +160,7 @@ int initModel = activeModel;
 
 #pragma endregion IntializationValues
 
-void renderScene(Shader& shader, GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture);
+void renderScene(Shader& shader, GroundPlain &ground, AlessandroModel& alessandroModel, LeCherngModel& leCherngModel, DannModel& danModel, LaginhoModel& laginModel, Stage& stage, Screen& screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture);
 
 template <class T>
 void SetUniform1Value(GLuint shader_id, const char* uniform_name, T uniform_value)
@@ -699,7 +699,7 @@ int main()
 	//lines
 	Shader lines3dShader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
 
-
+	// loading a cube
 	loadOBJ("resources/objects/cube.obj", indices, vertices, normals, UVs);
 
 	// This is for beginners if they have no idea what's the deal with VAO and VBO.
@@ -750,7 +750,6 @@ int main()
 	Texture modelLaginhoTexture("resources/textures/ModelLaginho.png");
 	Texture modelLeCherngTexture("resources/textures/ModelLeCherng.png");
 	Texture stage_texture("resources/textures/stage_texture.jpg");
-
 
 	arrayOfTexture[0] = modelAllesandroTexture;
 	arrayOfTexture[1] = modelDanielTexture;
@@ -821,6 +820,16 @@ int main()
 	view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
 	proj_matrix = glm::perspective(glm::radians(45.f), 1.f, 0.1f, 200.f); //perspective view. Third parameter should be > 0, or else errors
 
+	Lines3d lines3dObject = Lines3d();
+	Grid grid = Grid();
+	GroundPlain ground = GroundPlain();
+	AlessandroModel alessandroModel = AlessandroModel();
+	LeCherngModel leCherngModel = LeCherngModel();
+	DannModel danModel = DannModel();
+	LaginhoModel laginModel = LaginhoModel();
+	Stage stage = Stage();
+	Screen screen = Screen();
+
 	float lightAngleOuter = 30.0;
 	float lightAngleInner = 20.0;
 	float lightNearPlane = 1.0f;
@@ -829,10 +838,10 @@ int main()
 	// Shader set up
 	shader.Bind();
 	// Set light cutoff angles on scene shader
-	SetUniform1Value(shader.m_RendererID, "light_cutoff_inner", cos(glm::radians(lightAngleInner)));
-	SetUniform1Value(shader.m_RendererID, "light_cutoff_outer", cos(glm::radians(lightAngleOuter)));
-	SetUniform1Value(shader.m_RendererID, "shadow_map",1 );
-	SetUniform1Value(shader.m_RendererID, "u_Texture", 0);
+	glUniform1i(shader.GetUniformLocation("light_cutoff_inner"), cos(glm::radians(lightAngleInner)));
+	glUniform1i(shader.GetUniformLocation("light_cutoff_outer"), cos(glm::radians(lightAngleOuter)));
+	glUniform1i(shader.GetUniformLocation("shadow_map"), 1);
+	glUniform1i(shader.GetUniformLocation("u_Texture"), 0);
 
 	 vm_loc = shader.GetUniformLocation("vm");
 	 pm_loc = shader.GetUniformLocation("pm");
@@ -865,18 +874,6 @@ int main()
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
 
 	start = time(0);
-
-	Lines3d lines3dObject = Lines3d();
-	Grid grid = Grid();
-	GroundPlain ground = GroundPlain();
-	AlessandroModel alessandroModel = AlessandroModel();
-	LeCherngModel leCherngModel = LeCherngModel();
-	DannModel danModel = DannModel();
-	LaginhoModel laginModel = LaginhoModel();
-	Stage stage = Stage();
-	Screen screen = Screen();
-
-
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -915,14 +912,13 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
-		glm::mat4 projection = glm::perspective(glm::radians(45.f), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(pm_loc, 1, 0, glm::value_ptr(projection));
+		glUniformMatrix4fv(pm_loc, 1, 0, glm::value_ptr(proj_matrix));
 		glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(cam_pos));
 		glUniformMatrix4fv(shader.GetUniformLocation("light_view_proj_matrix"), 1, 0, glm::value_ptr(lightSpaceMatrix));
 		// Light.
-		SetUniform1Value(shader.m_RendererID, "light_near_plane", lightNearPlane);
-		SetUniform1Value(shader.m_RendererID, "light_far_plane", lightFarPlane);
+		glUniform1i(shader.GetUniformLocation("light_near_plane"),lightNearPlane);
+		glUniform1i(shader.GetUniformLocation("light_far_plane"), lightFarPlane);
 		glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(lightPosition));
 		glUniform3fv(shader.GetUniformLocation("light_direction"), 1, glm::value_ptr(lightDirection));
 		glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
@@ -1011,10 +1007,6 @@ int main()
 		// Draws Models
 		//model_A_shader.Bind();
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-		renderScene(shader, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
-
 		glUniform1i(lights_id, lights);
 		glUniform1i(normalcol_id, normalcol);
 		glUniform1i(greyscale_id, greyscale);
@@ -1022,6 +1014,17 @@ int main()
 		glUniform1i(green_id, green);
 		glUniform1i(blue_id, blue);
 		glUniform1i(colour_id, colour);
+		glUniform1i(shader.GetUniformLocation("u_Texture"), 0);
+
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+		renderScene(shader, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
 		// Draws line
 		lines3dShader.Bind();
@@ -1060,7 +1063,7 @@ int main()
 	return 0;
 }
 
-void renderScene(Shader &shader, GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture){
+void renderScene(Shader &shader, GroundPlain &ground, AlessandroModel &alessandroModel, LeCherngModel &leCherngModel, DannModel &danModel, LaginhoModel &laginModel, Stage &stage, Screen &screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture){
 
 	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_A_matrix));
 	alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
@@ -1099,6 +1102,5 @@ void renderScene(Shader &shader, GroundPlain ground, AlessandroModel alessandroM
 
 	// Ground
 	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(ground_matrix));
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(ground_matrix));
 	ground.drawGround(tileTexture);
 }
