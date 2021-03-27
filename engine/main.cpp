@@ -71,17 +71,17 @@ glm::vec3 lightPosition = glm::vec3(0.6f, 50.0f, 5.0f);
 glm::vec3 lightFocus(0.0, 0.0, -1.0);
 glm::vec3 lightDirection = glm::normalize(lightFocus - lightPosition);
 
-GLuint vm_loc ;
-GLuint pm_loc ;
+GLuint vm_loc;
+GLuint pm_loc;
 GLuint mm_loc;
-GLuint flag_id ;
-GLuint lights_id ;
-GLuint normalcol_id ;
-GLuint greyscale_id ;
-GLuint red_id ;
-GLuint green_id ;
-GLuint blue_id ;
-GLuint colour_id ;
+GLuint flag_id;
+GLuint lights_id;
+GLuint normalcol_id;
+GLuint greyscale_id;
+GLuint red_id;
+GLuint green_id;
+GLuint blue_id;
+GLuint colour_id;
 GLuint light_view_project_matrix_vertex_id;
 GLuint light_view_project_matrix_fragment_id;
 
@@ -114,17 +114,17 @@ glm::mat4 model_Screen = glm::mat4(1.0f);
 glm::vec3 model_Screen_move = glm::vec3(-10, 0, -25); //to apply translational transformations
 
 
-glm::mat4 model_A_matrix ;
+glm::mat4 model_A_matrix;
 //Le Cherng
-glm::mat4 model_L_matrix ;
+glm::mat4 model_L_matrix;
 //Dan
-glm::mat4 model_D_matrix ;
+glm::mat4 model_D_matrix;
 //LaginHo
-glm::mat4 model_La_matrix ;
-glm::mat4 model_Stage_matrix ;
+glm::mat4 model_La_matrix;
+glm::mat4 model_Stage_matrix;
 glm::mat4 model_Screen_matrix;
-glm::mat4 grid_matrix ;
-glm::mat4 ground_matrix ;
+glm::mat4 grid_matrix;
+glm::mat4 ground_matrix;
 glm::mat4 line_matrix;
 
 Texture arrayOfTexture[14];
@@ -798,6 +798,7 @@ int main()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
+
 	//setting up other models other model matrix
 	//Alessandro
 	model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
@@ -813,7 +814,7 @@ int main()
 	model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
 
 	grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-    ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+	ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 	line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 
 	model_matrix = glm::translate(glm::mat4(1.f), glm::vec3(3, 2, 0));
@@ -843,16 +844,16 @@ int main()
 	glUniform1i(shader.GetUniformLocation("shadow_map"), 1);
 	glUniform1i(shader.GetUniformLocation("u_Texture"), 0);
 
-	 vm_loc = shader.GetUniformLocation("vm");
-	 pm_loc = shader.GetUniformLocation("pm");
-     mm_loc = shader.GetUniformLocation("mm");
-     lights_id = shader.GetUniformLocation("lights");
-	 normalcol_id = shader.GetUniformLocation("normalcol");
-	 greyscale_id = shader.GetUniformLocation("greyscale");
-	 red_id = shader.GetUniformLocation("red");
-	 green_id = shader.GetUniformLocation("green");
-     blue_id = shader.GetUniformLocation("blue");
-	 colour_id = shader.GetUniformLocation("colour");
+	vm_loc = shader.GetUniformLocation("vm");
+	pm_loc = shader.GetUniformLocation("pm");
+	mm_loc = shader.GetUniformLocation("mm");
+	lights_id = shader.GetUniformLocation("lights");
+	normalcol_id = shader.GetUniformLocation("normalcol");
+	greyscale_id = shader.GetUniformLocation("greyscale");
+	red_id = shader.GetUniformLocation("red");
+	green_id = shader.GetUniformLocation("green");
+	blue_id = shader.GetUniformLocation("blue");
+	colour_id = shader.GetUniformLocation("colour");
 
 	//glUniformMatrix4fv(vm_loc, 1, GL_FALSE, &view_matrix[0][0]); OR
 	glUniformMatrix4fv(vm_loc, 1, GL_FALSE, glm::value_ptr(view_matrix));
@@ -866,9 +867,9 @@ int main()
 
 	// 3D Lines Shader camera projection setup
 	lines3dShader.Bind();
-	 vm_loc_lines_3d = lines3dShader.GetUniformLocation("vm");
-	 pm_loc_lines_3d = lines3dShader.GetUniformLocation("pm");
-	 mm_loc_lines_3d = lines3dShader.GetUniformLocation("mm");
+	vm_loc_lines_3d = lines3dShader.GetUniformLocation("vm");
+	pm_loc_lines_3d = lines3dShader.GetUniformLocation("pm");
+	mm_loc_lines_3d = lines3dShader.GetUniformLocation("mm");
 	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
@@ -946,12 +947,12 @@ int main()
 			model_A = model_active;
 			model_A_move = model_active_move;
 
-			grid_matrix = model_world  * translator_grid * model_grid;
+			grid_matrix = model_world * translator_grid * model_grid;
 			model_La_matrix = model_world * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
-			model_Stage_matrix = model_world  * translator_Stage * model_Stage;
-			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
+			model_Stage_matrix = model_world * translator_Stage * model_Stage;
+			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 1:
 			model_La_matrix = model_world * translator * model_active;
@@ -959,7 +960,7 @@ int main()
 			model_La_move = model_active_move;
 
 			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world  * translator_grid * model_grid;
+			grid_matrix = model_world * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
@@ -977,30 +978,30 @@ int main()
 			model_La_matrix = model_world * translator_La * model_La;
 			model_L_matrix = model_world * translator_L * model_L;
 			model_Stage_matrix = model_world * translator_Stage * model_Stage;
-			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
+			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 3:
-			model_L_matrix = model_world  * translator * model_active;
+			model_L_matrix = model_world * translator * model_active;
 			model_L = model_active;
 			model_L_move = model_active_move;
 
 			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world  * translator_grid * model_grid;
+			grid_matrix = model_world * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
-			model_La_matrix = model_world  * translator_La * model_La;
+			model_La_matrix = model_world * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_Stage_matrix = model_world * translator_Stage * model_Stage;
 			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 4:
 			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world  * translator_grid * model_grid;
+			grid_matrix = model_world * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
 			model_La_matrix = model_world * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
-			model_Stage_matrix = model_world  * translator_Stage * model_Stage;
-			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
+			model_Stage_matrix = model_world * translator_Stage * model_Stage;
+			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		}
 
