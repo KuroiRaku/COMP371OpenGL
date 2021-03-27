@@ -13,13 +13,15 @@ class Shader
 
 private:
 	
-	unsigned int m_RendererID;
+	
 	std::unordered_map<std::string, int>m_UniformLocationCache;
 	//caching for uniforms
 
 public:
 	Shader(const std::string& vertexFilepath, const std::string& fragmentFilepath);
 	~Shader();
+
+	unsigned int m_RendererID;
 
 	void Bind()const;
 	void Unbind() const;
