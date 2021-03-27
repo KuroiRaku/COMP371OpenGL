@@ -827,7 +827,7 @@ int main()
 	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
-
+	shader.Bind();
 	Texture boxTexture("resources/textures/boxtexture.jpg");
 	Texture metalTexture("resources/textures/metaltexture.jpg");
 	Texture evilDann("resources/textures/evilDann.png");
