@@ -30,8 +30,11 @@ GroundPlain::GroundPlain() {
 	glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), vertices_lines, GL_STATIC_DRAW);
 
 	// position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);  //3*sizeof(GLfloat) is the offset of 3 float numbers
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+	glEnableVertexAttribArray(1);
 
 
 	GLuint EBO;
