@@ -7,7 +7,7 @@ Arshia Hamidi (40068250)<br />
 Our project started with 5 members, but one of the members dropped the class, that’s why there are only 4 models
 
 ## Project Overview
-This project shows each member character model that consist of their first letter and last letter of their name as well as first number and last number of their student ID.<br /> This project allow user to rotate the models, moving the camera like in fps as well as rotating the world.<br /> There are some basic shaders code that changes models' colour as well as a little bit of lighting code and is just an extra work that we done.<br /> There's also an objectLoader and we loaded a cube with it as well as a font code which we did not use in the project as of right now. <br />
+This project shows each member character model that consist of their first letter and last letter of their name as well as first number and last number of their student ID.<br /> This project allow user to rotate the models, moving the camera like in fps as well as rotating the world.<br /> There are some basic shaders code that changes models' colour as well as a little bit of lighting code and is just an extra work that we done.<br /> There's also an objectLoader and we loaded a cube with it as well as a font code which we did not use in the project as of right now. The screen model will change texture every 10 seconds. The shadow didn't work properly as intended but we have implemented the two pass algorithm correctly.<br />
 
 ## Project Dependencies
 This project uses GLAD and GLFW libraries to run the OpenGL version 4.6 application.<br />
@@ -21,7 +21,8 @@ The grid is made up of a series of lines 128 x 128 with equal length spreading a
 The lines are made in the length of 7 grid units apart going in the x,y,z axis\ We binded a separate shader to achieve the different colors of each line.
 
 ## The Models
-We only have 4 team members now so we made 4 models. We used the Vertex Array method of creating the models and modelled them using triangle primitives. Each team members model was placed in a separate class for ease of separation.
+We only have 4 team members now so we made 4 models. We used the Vertex Array method of creating the models and modelled them using triangle primitives. Each team members model was placed in a separate class for ease of separation.\
+The stage model and screen model are made up of cubes\
 
 ## The Camera
 We used the Model View Projection approach to modelling the 3d world with the camera position changing the values\ These are the camera controls:\
@@ -35,6 +36,8 @@ You can select each of the model through the keys 1,2,3,4. From there here are t
 ‘J’: to decrease the scale\
 ‘WASD’: to move the model up, left, down, right respectively\
 ‘SHIFT + WASDQE’: to rotate the model in pitch, yaw, roll direction respectively by 5 degrees respectively\
+‘SHIFT + TFGH’: to allow all models except ground and world to turn left and right\
+‘SHIFT + UP DOWN LEFT RIGHT’: to allow shear transformation for each model\
 ‘P’: to render model with points\
 ‘L’: to render model with lines\
 ’T’: to render model with triangles\
@@ -42,7 +45,10 @@ You can select each of the model through the keys 1,2,3,4. From there here are t
 'left arrow button': To rotate the world model to -y axis\
 'up arrow button': To rotate the world to +x axis\
 'down arrow button': To rotate the world to -x axis\
-'home button': Reset all the world matrix to its original position
+'home button': Reset all the world matrix to its original position\
+'Spacebar': Let all models to shift their position to random locations\
+'B': To enable or disable lighting\
+'X': To disable texture\
 '0': Reset every model to its original position
 
 ## Code Reference
