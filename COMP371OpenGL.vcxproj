@@ -149,17 +149,17 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DannModel.cpp" />
     <ClCompile Include="dependencies\windows\glad\src\glad.c" />
-    <ClCompile Include="engine\main.cpp" />
     <ClCompile Include="engine\Shader.cpp" />
+    <ClCompile Include="engine\stb_image.cpp" />
+    <ClCompile Include="engine\Texture.cpp" />
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="GroundPlain.cpp" />
     <ClCompile Include="Laginho.cpp" />
     <ClCompile Include="LeCherngModel.cpp" />
     <ClCompile Include="lines3d.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Stage.cpp" />
-    <ClCompile Include="stb_image.cpp" />
-    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlessandroModel.h" />
@@ -169,6 +169,8 @@
     <ClInclude Include="engine\ObjLoaderIndex.h" />
     <ClInclude Include="engine\Shader.h" />
     <ClInclude Include="engine\Shaderloader.h" />
+    <ClInclude Include="engine\stb_image.h" />
+    <ClInclude Include="engine\Texture.h" />
     <ClInclude Include="GroundPlain.h" />
     <ClInclude Include="Laginho.h" />
     <ClInclude Include="LeCherngModel.h" />
@@ -176,8 +178,6 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Stage.h" />
-    <ClInclude Include="stb_image.h" />
-    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3.1.3.shadow_mapping.fs" />

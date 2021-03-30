@@ -29,7 +29,7 @@
 #include "../DannModel.h"
 #include "../Stage.h"
 #include "../Screen.h"
-#include "../Texture.h";
+#include "Texture.h";
 
 using namespace std;
 
@@ -276,8 +276,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 	}
 
-
-
 	//reset to initial position
 	if (key == GLFW_KEY_HOME)
 	{
@@ -522,7 +520,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				flag = false;
 		}
 
-		if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
+		if (key == GLFW_KEY_B && action == GLFW_PRESS) {
 			if (lights == false)
 				lights = true;
 			else
