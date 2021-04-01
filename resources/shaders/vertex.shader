@@ -1,28 +1,27 @@
 #version 330 core
+layout(location = 0) in vec3 aPos;
+layout(location = 1) in vec3 aNormal;
+layout(location = 2) in vec2 aTexCoords;
 
-layout(location = 0) in vec3 position;
-layout(location = 1) in vec3 normals;
+out vec2 TexCoords;
 
-uniform mat4 vm;
-uniform mat4 pm;
-uniform mat4 mm;
-uniform mat4 light_view_proj_matrix;
+out VS_OUT{
+    vec3 FragPos;
+    vec3 Normal;
+    vec2 TexCoords;
+    vec4 FragPosLightSpace;
+} vs_out;
 
-out vec3 fragment_position;
-out vec3 fragment_normal;
-out vec4 fragment_position_light_space;
-
-//Texture
-out vec2 v_TexCoord;
+uniform mat4 projection;
+uniform mat4 view;
+uniform mat4 model;
+uniform mat4 lightSpaceMatrix;
 
 void main()
 {
-	fragment_normal = mat3(transpose(inverse(mm))) * normals;
-	fragment_position = vec3(mm * vec4(position, 1.0f));
-	fragment_position_light_space = light_view_proj_matrix * vec4(fragment_position, 1.0);
-	gl_Position = pm * vm * mm * vec4(position, 1.0);
-
-	//Texture
-	v_TexCoord = vec2(position);
-
+    vs_out.FragPos = vec3(model * vec4(aPos, 1.0));
+    vs_out.Normal = transpose(inverse(mat3(model))) * aNormal;
+    vs_out.TexCoords = aTexCoords;
+    vs_out.FragPosLightSpace = lightSpaceMatrix * vec4(vs_out.FragPos, 1.0);
+    gl_Position = projection * view * model * vec4(aPos, 1.0);
 }

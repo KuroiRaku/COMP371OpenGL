@@ -841,33 +841,8 @@ int main()
 	float lightFarPlane = 180.0f;
 
 	// Shader set up
-	shader.Bind();
+	shader.Bind(); 
 	// Set light cutoff angles on scene shader
-	glUniform1i(shader.GetUniformLocation("light_cutoff_inner"), cos(glm::radians(lightAngleInner)));
-	glUniform1i(shader.GetUniformLocation("light_cutoff_outer"), cos(glm::radians(lightAngleOuter)));
-	glUniform1i(shader.GetUniformLocation("shadow_map"), 1);
-	glUniform1i(shader.GetUniformLocation("u_Texture"), 0);
-
-	vm_loc = shader.GetUniformLocation("vm");
-	pm_loc = shader.GetUniformLocation("pm");
-	mm_loc = shader.GetUniformLocation("mm");
-	lights_id = shader.GetUniformLocation("lights");
-	normalcol_id = shader.GetUniformLocation("normalcol");
-	greyscale_id = shader.GetUniformLocation("greyscale");
-	red_id = shader.GetUniformLocation("red");
-	green_id = shader.GetUniformLocation("green");
-	blue_id = shader.GetUniformLocation("blue");
-	colour_id = shader.GetUniformLocation("colour");
-
-	//glUniformMatrix4fv(vm_loc, 1, GL_FALSE, &view_matrix[0][0]); OR
-	glUniformMatrix4fv(vm_loc, 1, GL_FALSE, glm::value_ptr(view_matrix));
-	glUniformMatrix4fv(pm_loc, 1, GL_FALSE, glm::value_ptr(proj_matrix));
-	glUniformMatrix4fv(mm_loc, 1, GL_FALSE, glm::value_ptr(model_matrix));
-
-	glUniform3fv(shader.GetUniformLocation("light_color"), 1, glm::value_ptr(lightColour));
-	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(lightPosition));
-	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 
 	// 3D Lines Shader camera projection setup
 	lines3dShader.Bind();
@@ -905,7 +880,11 @@ int main()
 		glClear(GL_DEPTH_BUFFER_BIT);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, boxTexture.m_RendererID);
-		renderScene(shaderShadow, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
+
+		glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_matrix));
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+		//renderScene(shaderShadow, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
 		// Unbind the framebuffer
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -913,7 +892,7 @@ int main()
 		// render for the scene
 		shader.Bind();
 		// reset viewport
-		glClearColor(1.f, 0.1f, 0.1f, 1.0f);
+		glClearColor(1.f, 1.f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
@@ -1011,19 +990,11 @@ int main()
 
 		// Draws Models
 		//model_A_shader.Bind();
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
-		glUniform1i(lights_id, lights);
-		glUniform1i(normalcol_id, normalcol);
-		glUniform1i(greyscale_id, greyscale);
-		glUniform1i(red_id, red);
-		glUniform1i(green_id, green);
-		glUniform1i(blue_id, blue);
-		glUniform1i(colour_id, colour);
-		glUniform1i(shader.GetUniformLocation("u_Texture"), 0);
+
 
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-		renderScene(shader, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
+		//renderScene(shader, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
 
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -1071,18 +1042,10 @@ int main()
 void renderScene(Shader &shader, GroundPlain &ground, AlessandroModel &alessandroModel, LeCherngModel &leCherngModel, DannModel &danModel, LaginhoModel &laginModel, Stage &stage, Screen &screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture){
 
 	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_A_matrix));
-	glUniform3fv(shader.GetUniformLocation("light_color"), 1, glm::value_ptr(lightColour));
-	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(lightPosition));
-	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 	alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, shearTransformation);
 
 	//model_L_shader.Bind();
 	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_L_matrix));
-	glUniform3fv(shader.GetUniformLocation("light_color"), 1, glm::value_ptr(lightColour));
-	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(lightPosition));
-	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	leCherngModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, shearTransformation);
 
@@ -1117,3 +1080,4 @@ void renderScene(Shader &shader, GroundPlain &ground, AlessandroModel &alessandr
 	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(ground_matrix));
 	ground.drawGround(tileTexture);
 }
+
