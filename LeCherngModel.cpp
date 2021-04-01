@@ -131,6 +131,9 @@ void LeCherngModel::setLetterL(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
 
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+	glEnableVertexAttribArray(1);
+
 	indiciesL = (sizeof(indicies) / sizeof(indicies[0]));
 	GLuint EBO;
 	glGenBuffers(1, &EBO);

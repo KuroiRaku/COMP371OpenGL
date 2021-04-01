@@ -135,10 +135,6 @@ int n = 10;
 int milli_seconds = n * 1000;
 time_t start, end;
 
-GLuint vm_loc_lines_3d;
-GLuint pm_loc_lines_3d;
-GLuint mm_loc_lines_3d;
-
 //color settings
 bool flag = false;
 bool lights = true;
@@ -737,6 +733,35 @@ int main()
 	// Unbind VAO (it's always a good thing to unbind any buffer/array to prevent strange bugs), remember: do NOT unbind the EBO, keep it bound to this VAO
 	glBindVertexArray(0);
 
+	// set up vertex data (and buffer(s)) and configure vertex attributes
+   // ------------------------------------------------------------------
+	float planeVertices[] = {
+		// positions            // normals         // texcoords
+		 25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
+		-25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,
+		-25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
+
+		 25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
+		-25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
+		 25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,  25.0f, 25.0f
+	};
+	// plane VAO
+	unsigned int planeVAO;
+	unsigned int planeVBO;
+	glGenVertexArrays(1, &planeVAO);
+	glGenBuffers(1, &planeVBO);
+	glBindVertexArray(planeVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glBindVertexArray(0);
+
+	//
 	// load texture
 	Texture boxTexture("resources/textures/boxtexture.jpg");
 	Texture metalTexture("resources/textures/metaltexture.jpg");
@@ -842,16 +867,13 @@ int main()
 
 	// Shader set up
 	shader.Bind(); 
+	vm_loc= lines3dShader.GetUniformLocation("vm");
+	pm_loc = lines3dShader.GetUniformLocation("pm");
+	mm_loc = lines3dShader.GetUniformLocation("mm");
 	// Set light cutoff angles on scene shader
 
 	// 3D Lines Shader camera projection setup
 	lines3dShader.Bind();
-	vm_loc_lines_3d = lines3dShader.GetUniformLocation("vm");
-	pm_loc_lines_3d = lines3dShader.GetUniformLocation("pm");
-	mm_loc_lines_3d = lines3dShader.GetUniformLocation("mm");
-	glUniformMatrix4fv(vm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(view_matrix));
-	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
-	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
 
 	start = time(0);
 
@@ -881,7 +903,7 @@ int main()
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, boxTexture.m_RendererID);
 
-		glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_matrix));
+		glUniformMatrix4fv(shaderShadow.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_matrix));
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 		//renderScene(shaderShadow, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
@@ -1002,17 +1024,14 @@ int main()
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		// Draws line
-		lines3dShader.Bind();
+		// Draws line;
 		glLineWidth(1.0f);
-		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 		lines3dObject.drawLines();
 
 		// Draws grid
 		glLineWidth(0.5f);
-		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(grid_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(grid_matrix));
 		boxTexture.activeTexture = activeModelTexture;
 		metalTexture.activeTexture = activeModelTexture;
 		evilDann.activeTexture = activeModelTexture;
