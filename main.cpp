@@ -149,6 +149,7 @@ bool green = false;
 bool blue = false;
 bool colour = false;
 bool activeModelTexture = true;
+bool shearTransformation = false;
 
 //0 for points, 1 for lines, 2 for triangle
 int renderingMode = 2;
@@ -229,6 +230,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE) {
 		leftShiftPressed = false;
+		shearTransformation = false;
 	}
 
 	if ((key == GLFW_KEY_LEFT || key == GLFW_KEY_RIGHT || key == GLFW_KEY_UP || key == GLFW_KEY_DOWN) && action == GLFW_PRESS) {
@@ -395,18 +397,22 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			// For moving the models?
 			if (key == GLFW_KEY_T) { //I moves the object along the +Y axis
 				shearY += 0.1;
+				shearTransformation = true;
 			}
 
 			if (key == GLFW_KEY_G) { //K moves the object along the -Y
 				shearY -= 0.1;
+				shearTransformation = true;
 			}
 
 			if (key == GLFW_KEY_F) { //J moves the object along the +X axis
 				shearX -= 0.1;
+				shearTransformation = true;
 			}
 
 			if (key == GLFW_KEY_H) { //L moves the object along the -X axis
 				shearX += 0.1;
+				shearTransformation = true;
 			}
 
 			// For rotating the models
@@ -1069,7 +1075,7 @@ void renderScene(Shader &shader, GroundPlain &ground, AlessandroModel &alessandr
 	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(lightPosition));
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
-	alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, shearTransformation);
 
 	//model_L_shader.Bind();
 	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_L_matrix));
@@ -1078,17 +1084,17 @@ void renderScene(Shader &shader, GroundPlain &ground, AlessandroModel &alessandr
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	leCherngModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	leCherngModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, shearTransformation);
 
 	//model_La_shader.Bind();
 	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_La_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	laginModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	laginModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, shearTransformation);
 
 	//model_D_shader.Bind();
 	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_D_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	danModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	danModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, shearTransformation);
 	if (time(0) - start == n) {
 		if (currentIndex == (sizeof(arrayOfTexture) / sizeof(arrayOfTexture[0]) - 1)) {
 			currentIndex = 0;

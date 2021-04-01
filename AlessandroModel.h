@@ -9,7 +9,7 @@ class AlessandroModel
 
 public:
 	AlessandroModel();
-	void drawModel(int drawMode, Texture * boxTexture, Texture * metalTexture, float shearX, float shearY);
+	void drawModel(int drawMode, Texture * boxTexture, Texture * metalTexture, float shearX, float shearY, bool shearTransformation);
 
 private:
 	void setLetterO(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY);

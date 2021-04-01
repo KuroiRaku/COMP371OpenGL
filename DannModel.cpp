@@ -20,7 +20,7 @@ DannModel::DannModel() {
 	mode = GL_TRIANGLES;
 }
 
-void DannModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture, float shearX, float shearY)
+void DannModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture, float shearX, float shearY, bool shearTransformation)
 {
 
 	if (drawMode == 0) {
@@ -41,12 +41,16 @@ void DannModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTextu
 	boxTexture->Bind();
 	
 	//D Model
-	setLetterD(0 - (3 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setLetterD(0 - (3 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_D);
 	glDrawElements(mode, indiciesD, GL_UNSIGNED_INT, NULL);
 
 	//N Model
-	setLetterN(0 - (1 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setLetterN(0 - (1 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_N);
 	glDrawElements(mode, indiciesN, GL_UNSIGNED_INT, NULL);
 
@@ -54,12 +58,16 @@ void DannModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTextu
 	metalTexture->Bind();
 
 	//7 Model
-	setNumber7(0 + (1 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setNumber7(0 + (1 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_7);
 	glDrawElements(mode, indicies7, GL_UNSIGNED_INT, NULL);
 
 	//4 Model
-	setNumber4(0 + (3 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setNumber4(0 + (3 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_4);
 	glDrawElements(mode, indicies4, GL_UNSIGNED_INT, NULL);
 

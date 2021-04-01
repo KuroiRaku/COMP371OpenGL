@@ -17,7 +17,7 @@ LaginhoModel::LaginhoModel() {
 	mode = GL_TRIANGLES;
 }
 
-void LaginhoModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture, float shearX, float shearY)
+void LaginhoModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture, float shearX, float shearY, bool shearTransformation)
 {
 
 	if (drawMode == 0) {
@@ -38,12 +38,16 @@ void LaginhoModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTe
 	boxTexture->Bind();
 
 	//H Model
-	setLetterH(0 - (3 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setLetterH(0 - (3 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_H);
 	glDrawElements(mode, 200, GL_UNSIGNED_INT, NULL);
 
 	//A Model
-	setLetterA(0 - (1 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setLetterA(0 - (1 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_A);
 	glDrawElements(mode, 144, GL_UNSIGNED_INT, NULL);
 
@@ -51,12 +55,16 @@ void LaginhoModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTe
 	metalTexture->Bind();
 
 	//O Model
-	setNumber0(0 + (1 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setNumber0(0 + (1 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_0);
 	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
 	//4 Model
-	setNumber4(0 + (3 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setNumber4(0 + (3 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_4);
 	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 

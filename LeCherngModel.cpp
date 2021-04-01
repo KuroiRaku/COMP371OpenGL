@@ -17,7 +17,7 @@ LeCherngModel::LeCherngModel() {
 	mode = GL_TRIANGLES;
 }
 
-void LeCherngModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture, float shearX, float shearY)
+void LeCherngModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture, float shearX, float shearY, bool shearTransformation)
 {
 	
 	if (drawMode == 0) {
@@ -37,12 +37,16 @@ void LeCherngModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalT
 
 	boxTexture->Bind();
 	//G Model
-	setLetterG(0 - (1 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setLetterG(0 - (1 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_G);
 	glDrawElements(mode, indiciesG, GL_UNSIGNED_INT, NULL);
 
 	//L Model
-	setLetterL(0 - (3 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setLetterL(0 - (3 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_L);
 	glDrawElements(mode, indiciesL, GL_UNSIGNED_INT, NULL);
 
@@ -50,12 +54,16 @@ void LeCherngModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalT
 	metalTexture->Bind();
 
 	//4 Model
-	setNumber4(0 + (1 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setNumber4(0 + (1 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_4);
 	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
 	//the second 4 Model
-	setNumber4_2(0 + (3 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setNumber4_2(0 + (3 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_4_2);
 	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 

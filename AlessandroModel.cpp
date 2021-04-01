@@ -18,7 +18,7 @@ AlessandroModel::AlessandroModel() {
 	mode = GL_TRIANGLES;
 }
 
-void AlessandroModel::drawModel(int drawMode, Texture * boxTexture, Texture * metalTexture, float shearX, float shearY)
+void AlessandroModel::drawModel(int drawMode, Texture * boxTexture, Texture * metalTexture, float shearX, float shearY, bool shearTransformation)
 {
 
 	if (drawMode == 0) {
@@ -39,12 +39,16 @@ void AlessandroModel::drawModel(int drawMode, Texture * boxTexture, Texture * me
 	boxTexture->Bind();
 
 	//A Model
-	setLetterA(0 - (3 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setLetterA(0 - (3 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_A);
 	glDrawElements(mode, 144, GL_UNSIGNED_INT, NULL);
 
 	//O Model
-	setLetterO(0 - (1* distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setLetterO(0 - (1 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_O);
 	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
@@ -52,17 +56,20 @@ void AlessandroModel::drawModel(int drawMode, Texture * boxTexture, Texture * me
 	metalTexture->Bind();
 
 	//1 Model
-	setNumber1(0 + (1 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setNumber1(0 + (1 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_1);
 	glDrawElements(mode, 60, GL_UNSIGNED_INT, NULL);
 
 	//4 Model
-	setNumber4(0 + (3 * distance), 0, 0, shearX, shearY);
+	if (shearTransformation) {
+		setNumber4(0 + (3 * distance), 0, 0, shearX, shearY);
+	}
 	glBindVertexArray(this->vao_4);
 	glDrawElements(mode, 96, GL_UNSIGNED_INT, NULL);
 
 	metalTexture->Unbind();
-
 }
 
 void AlessandroModel::setLetterA(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY)

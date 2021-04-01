@@ -9,7 +9,7 @@ class DannModel
 
 public:
 	DannModel();
-	void drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture, float shearX, float shearY);
+	void drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture, float shearX, float shearY, bool shearTransformation);
 
 private:
 	void setLetterD(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY);
