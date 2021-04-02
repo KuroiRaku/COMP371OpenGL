@@ -69,7 +69,7 @@ float shadow_scalar() {
 			shadow += current_depth - bias > pcfDepth ? 1.0 : 0.0;
 		}
 	}
-	shadow /= 9.0;
+	
 
 	// keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
 	if (normalized_device_coordinates.z > 1.0)
@@ -78,24 +78,10 @@ float shadow_scalar() {
 	return shadow;
 }
 
-float spotlight_scalar() {
-	float theta = dot(normalize(fragment_position - light_position), light_direction);
-
-	if (theta > light_cutoff_inner) {
-		return 1.0;
-	}
-	else if (theta > light_cutoff_outer) {
-		return (1.0 - cos(PI * (theta - light_cutoff_outer) / (light_cutoff_inner - light_cutoff_outer))) / 2.0;
-	}
-	else {
-		return 0.0;
-	}
-}
-
 void main()
 {
 	//scalar 
-	float scalar = shadow_scalar() * spotlight_scalar();
+	float scalar = shadow_scalar();
 
 	//ambient
 	vec3 ambient = shading_ambient_strength * light_color;
