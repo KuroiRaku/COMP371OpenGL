@@ -2,6 +2,9 @@
 #include <glfw/glfw3.h>	// include GLFW helper library
 #include <iostream>
 #include "Texture.h"
+#include "Cube.h"
+#include "sphere.h"
+#include "Shader.h"
 
 #pragma once
 class DannModel
@@ -9,7 +12,7 @@ class DannModel
 
 public:
 	DannModel();
-	void drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture, float shearX, float shearY);
+	void drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture, float shearX, float shearY, Shader* shader, glm::mat4 objectMatrix);
 
 private:
 	void setLetterD(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin, float shearX, float shearY);

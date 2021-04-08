@@ -36,7 +36,7 @@ using namespace std;
 // Window dimensions
 const GLuint WIDTH = 1024, HEIGHT = 768;
 
-void renderScene(GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture);
+void renderScene(GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader);
 glm::mat4 model_matrix;
 glm::mat4 view_matrix;
 glm::mat4 proj_matrix;
@@ -75,32 +75,32 @@ GLuint green_id ;
 GLuint blue_id ;
 GLuint colour_id ;
 
-
 //Alessandro
-glm::mat4 model_A = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, 1, 0));
-glm::vec3 model_A_move = glm::vec3(-10, 2, -6); //to apply translational transformations
+glm::mat4 model_A = glm::mat4(1.0f);//Model of letter A
+glm::vec3 model_A_move = glm::vec3(0.5, 23 - 0.5, -25); //to apply translational transformations
 //Le Cherng
-glm::mat4 model_L = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, 1, 0));
-glm::vec3 model_L_move = glm::vec3(12, 2, 10); //to apply translational transformations
+glm::mat4 model_L = glm::mat4(1.0f);//Model of letter U
+glm::vec3 model_L_move = glm::vec3(0.5, 13 - 0.5, -25); //to apply translational transformations
 //Dan
-glm::mat4 model_D = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, -1, 0));
-glm::vec3 model_D_move = glm::vec3(12, 2, -5); //to apply translational transformations
+glm::mat4 model_D = glm::mat4(1.0f);//Model of letter K
+glm::vec3 model_D_move = glm::vec3(-0.5, 28 - 0.5, -25); //to apply translational transformations
 //LaginHo
-glm::mat4 model_La = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, -1, 0));
-glm::vec3 model_La_move = glm::vec3(-10, 2, 10); //to apply translational transformations
+glm::mat4 model_La = glm::mat4(1.0f);//Model of letter O
+glm::vec3 model_La_move = glm::vec3(0.5, 18 - 0.5, -25); //to apply translational transformations
 //LaginHo
 glm::mat4 model_grid = glm::mat4(1.0f);
 glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
+
 
 //World Matrix
 glm::mat4 model_world = glm::mat4(1.0f);
 glm::vec3 model_world_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 glm::mat4 model_Stage = glm::mat4(1.0f);
-glm::vec3 model_Stage_move = glm::vec3(-10, 0, -25); //to apply translational transformations
+glm::vec3 model_Stage_move = glm::vec3(-10, 0, 25); //to apply translational transformations
 
 glm::mat4 model_Screen = glm::mat4(1.0f);
-glm::vec3 model_Screen_move = glm::vec3(-10, 0, -25); //to apply translational transformations
+glm::vec3 model_Screen_move = glm::vec3(-10, 0, 25); //to apply translational transformations
 
 
 glm::mat4 model_A_matrix ;
@@ -540,6 +540,25 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_T && action == GLFW_PRESS) {
 		renderingMode = 2;
 	}
+	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
+		//fps
+
+
+
+	}
+	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
+		//back fps
+	}
+	if (key == GLFW_KEY_R && action == GLFW_PRESS) {
+		//Back to base camera
+
+	}
+
+
+
+	if (key == GLFW_KEY_S && action == GLFW_PRESS) {
+		//Camera at light source and toggle on and of the light
+	}
 }
 
 double last_y_pos = 0;
@@ -926,7 +945,7 @@ int main()
 		shader.SetUniform1i("u_Texture", 0);
 		//shader.SetUniform4f("light_position", 0.0, 30.0, 5.0, 1);
 		//shader.SetVec3("light_position", glm::vec3(0.0, 30.0, 5.0));
-		renderScene(ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
+		renderScene(ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture, &shader);
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
@@ -968,7 +987,7 @@ int main()
 	return 0;
 }
 
-void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture){
+void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader){
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
@@ -989,7 +1008,7 @@ void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngM
 	//model_D_shader.Bind();
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	danModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	danModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, shader, model_D_matrix);
 	if (time(0) - start == n) {
 		if (currentIndex == (sizeof(arrayOfTexture) / sizeof(arrayOfTexture[0]) - 1)) {
 			currentIndex = 0;

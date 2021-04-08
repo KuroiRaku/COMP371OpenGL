@@ -157,6 +157,7 @@
     <ClCompile Include="LeCherngModel.cpp" />
     <ClCompile Include="lines3d.cpp" />
     <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="sphere.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="lines3d.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Screen.h" />
+    <ClInclude Include="sphere.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Texture.h" />
