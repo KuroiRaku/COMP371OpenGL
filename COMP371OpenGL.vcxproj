@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="AlessandroModel.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Cube2.cpp" />
     <ClCompile Include="DannModel.cpp" />
     <ClCompile Include="dependencies\windows\glad\src\glad.c" />
     <ClCompile Include="engine\Shader.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="Laginho.cpp" />
     <ClCompile Include="LeCherngModel.cpp" />
     <ClCompile Include="lines3d.cpp" />
+    <ClCompile Include="LoadedCube.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Stage.cpp" />
@@ -164,6 +166,7 @@
   <ItemGroup>
     <ClInclude Include="AlessandroModel.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Cube2.h" />
     <ClInclude Include="DannModel.h" />
     <ClInclude Include="engine\GLDebugMessageCallback.h" />
     <ClInclude Include="engine\ObjLoaderIndex.h" />
@@ -175,6 +178,7 @@
     <ClInclude Include="Laginho.h" />
     <ClInclude Include="LeCherngModel.h" />
     <ClInclude Include="lines3d.h" />
+    <ClInclude Include="LoadedCube.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="Stage.h" />

@@ -73,6 +73,12 @@
     <ClCompile Include="engine\Texture.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="LoadedCube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Shader.h">
@@ -121,6 +127,8 @@
     <ClInclude Include="GroundPlain.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="LoadedCube.h" />
+    <ClInclude Include="Cube2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">

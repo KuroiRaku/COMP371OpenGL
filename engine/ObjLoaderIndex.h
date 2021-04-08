@@ -5,8 +5,9 @@
 #include <string>
 #include <stdlib.h>
 #include <glm/glm.hpp>
+#include <iostream>
 
-bool loadOBJ(
+inline bool loadOBJ(
 	const char* path,
 	std::vector<int>& vertexIndices,
 	std::vector<glm::vec3>& temp_vertices,
