@@ -67,9 +67,14 @@ float shearY = 0.f;
 
 // lights settings
 glm::vec3 lightColour = glm::vec3(1.0, 1.0, 1.0);
-glm::vec3 lightPosition = glm::vec3(0.6f, 30.0f, 5.0f);
+glm::vec3 lightPosition = glm::vec3(0.6f, 30.0f, -10.0f);
 glm::vec3 lightFocus(0.0, 1.0, 0.0);
 glm::vec3 lightDirection = glm::normalize(lightFocus - lightPosition);
+
+float lightAngleOuter = 30.0;
+float lightAngleInner = 10.0;
+float lightNearPlane = 1.0f;
+float lightFarPlane = 180.0f;
 
 GLuint vm_loc;
 GLuint pm_loc;
@@ -159,10 +164,7 @@ int previousActiveModel = 0;
 int initModel = activeModel;
 //glm::vec3 object_color = glm::vec3(0.5, 0.5, 0.5);
 
-float lightAngleOuter = 30.0;
-float lightAngleInner = 10.0;
-float lightNearPlane = 1.0f;
-float lightFarPlane = 180.0f;
+
 
 #pragma endregion IntializationValues
 
