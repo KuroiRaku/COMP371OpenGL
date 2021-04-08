@@ -104,7 +104,7 @@ void Cube::SetCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat ed
 	GLfloat vertices_norms[SIZE_OF_NEW_ARRAY];
 
 	// this for loop takes the values of our initial verticies and puts them together in a new array with our norms
-	for (int i = 0; i < 72; i += ORIGINAL_STRIDE) {
+	for (int i = 0; i < NUMBER_OF_VERTICIES; i += ORIGINAL_STRIDE) {
 		int norms_row = i / ORIGINAL_STRIDE;
 		vertices_norms[i*2] = vertices[i];
 		vertices_norms[(i*2)+1] = vertices[i+1];
