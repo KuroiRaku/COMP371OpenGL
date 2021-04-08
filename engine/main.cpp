@@ -29,7 +29,8 @@
 #include "../DannModel.h"
 #include "../Stage.h"
 #include "../Screen.h"
-#include "../Texture.h";
+#include "../Texture.h"
+#include "../SModel.h"
 
 using namespace std;
 
@@ -61,6 +62,15 @@ glm::vec3 model_general_move = glm::vec3(0, 2, -10); //to apply translational tr
 
 float shearX = 0.f;
 float shearY = 0.f;
+
+glm::vec3 cam_pos_back = glm::vec3(0, 3, -28);
+glm::vec3 cam_dir_back = glm::vec3(0, 0, -1);
+glm::vec3 cam_up_back = glm::vec3(0, 1, 0);
+
+glm::vec3 cam_pos_front = glm::vec3(0, 3, -23);
+glm::vec3 cam_dir_front = glm::vec3(0, 0, 1);
+glm::vec3 cam_up_front = glm::vec3(0, 1, 0);
+
 
 
 GLuint vm_loc ;
@@ -102,6 +112,12 @@ glm::vec3 model_Stage_move = glm::vec3(-10, 0, 25); //to apply translational tra
 glm::mat4 model_Screen = glm::mat4(1.0f);
 glm::vec3 model_Screen_move = glm::vec3(-10, 0, 25); //to apply translational transformations
 
+glm::mat4 model_S1 = glm::mat4(1.0f);////Model of first letter S
+glm::vec3 model_S1_move = glm::vec3(0, 0.5, -25); //to apply translational transformations
+
+glm::mat4 model_S2 = glm::mat4(1.0f);///Model of second letter S
+glm::vec3 model_S2_move = glm::vec3(0, 7 - 0.5, -25); //to apply translational transformations
+
 
 glm::mat4 model_A_matrix ;
 //Le Cherng
@@ -116,8 +132,14 @@ glm::mat4 grid_matrix ;
 glm::mat4 ground_matrix ;
 glm::mat4 line_matrix;
 
+glm::mat4 model_S1_matrix;
+
+glm::mat4 model_S2_matrix;
 
 
+
+SModel sModel1;
+SModel sModel2;
 
 Texture arrayOfTexture[14];
 
@@ -148,6 +170,7 @@ int renderingMode = 2;
 int activeModel = 0;
 int previousActiveModel = 0;
 int initModel = activeModel;
+int currentCam=0; 
 //glm::vec3 object_color = glm::vec3(0.5, 0.5, 0.5);
 
 void resetToPreviousModel(int previousActiveModel) {
@@ -170,7 +193,13 @@ void resetToPreviousModel(int previousActiveModel) {
 		model_active_move = model_L_move;
 		break;
 	case 4:
-		cout << "Error Occured" << endl;
+		model_active = model_S1;
+		model_active_move = model_S1_move;
+		break;
+
+	case 5:
+		model_active = model_S2;
+		model_active_move = model_S2_move;
 		break;
 	}
 	activeModel = previousActiveModel;
@@ -542,15 +571,17 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
 		//fps
-
+		currentCam = 1;
 
 
 	}
 	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
 		//back fps
+		currentCam = 2;
+		
 	}
 	if (key == GLFW_KEY_R && action == GLFW_PRESS) {
-		//Back to base camera
+		currentCam = 0;
 
 	}
 
@@ -752,6 +783,15 @@ int main()
 
 	model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
 
+model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
+
+ model_S2_matrix = glm::translate(glm::mat4(1.f), model_S2_move);
+
+
+ sModel1 = SModel();
+ sModel2 = SModel();
+
+
 
 	grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
     ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
@@ -841,9 +881,22 @@ int main()
 		glfwPollEvents();
 
 		shader.Bind();
-
-		view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
-		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
+		switch (currentCam) {
+		case 0:
+			view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
+			break;
+		case 1:
+			view_matrix = glm::lookAt(cam_pos_front, cam_pos_front + cam_dir_front, cam_up_front);
+			break;
+		case 2:
+			view_matrix = glm::lookAt(cam_pos_back, cam_pos_back + cam_dir_back, cam_up_back);
+			break;
+		case 4:
+			view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
+			break;
+		
+		}
+	
 
 
 		glm::mat4 translator_A = glm::translate(glm::mat4(1.0f), model_A_move);
@@ -1004,6 +1057,12 @@ void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngM
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	laginModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S1_matrix));
+	sModel1.drawModel(renderingMode, boxTexture);
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S2_matrix));
+	sModel2.drawModel(renderingMode, boxTexture);
+
 
 	//model_D_shader.Bind();
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
