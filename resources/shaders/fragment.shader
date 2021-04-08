@@ -47,7 +47,7 @@ void main()
 
 	//Texture
 	vec4 texColor = texture(u_Texture, v_TexCoord);
-	result_color = texColor;
+	//result_color = texColor;
 
 
 	
@@ -172,5 +172,7 @@ void main()
 			}
 		}
 	}
-	result_color = result_color + texColor;
+
+
+	result_color = vec4(color, 1.0f) + texColor;
 }

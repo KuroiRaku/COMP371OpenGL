@@ -132,8 +132,8 @@ GLuint pm_loc_lines_3d;
 GLuint mm_loc_lines_3d;
 
 //color settings
-bool flag = false;
-bool lights = true;
+bool flag = true;//false;
+bool lights = false;// true;
 bool normalcol = false;
 bool greyscale = false;
 bool red = false;
@@ -755,8 +755,8 @@ int main()
 	glUniformMatrix4fv(pm_loc, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc, 1, GL_FALSE, glm::value_ptr(model_matrix));
 
-	glUniform3fv(shader.GetUniformLocation("light_color"), 1, glm::value_ptr(glm::vec3(1.0, 1.0, 1.0)));
-	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(glm::vec3(0.0, 30.0, 5.0)));
+	glUniform3fv(shader.GetUniformLocation("light_color"), 1, glm::value_ptr(glm::vec3(1.0, 0.5, 1.0)));
+	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(glm::vec3(1.2f, 5.0f, 2.0f)));
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 	// 3D Lines Shader camera projection setup
@@ -813,6 +813,7 @@ int main()
 	Stage stage = Stage();
 	Screen screen = Screen();
 
+	Cube cube = Cube(1, 1, 1, 2, 2, 2);
 
 
 	while (!glfwWindowShouldClose(window))
@@ -923,8 +924,10 @@ int main()
 		
 		glBindVertexArray(VAO);
 		shader.SetUniform1i("u_Texture", 0);
+		//shader.SetUniform4f("light_position", 0.0, 30.0, 5.0, 1);
+		//shader.SetVec3("light_position", glm::vec3(0.0, 30.0, 5.0));
 		renderScene(ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
-
+		cube.drawModel();
 		// Draws line
 		lines3dShader.Bind();
 		glLineWidth(1.0f);
