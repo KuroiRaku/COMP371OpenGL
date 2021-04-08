@@ -690,16 +690,16 @@ int main()
 	GLuint vertices_VBO;
 	glGenBuffers(1, &vertices_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices.front(), GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);  //3*sizeof(GLfloat) is the offset of 3 float numbers
-	glEnableVertexAttribArray(0);
+	//glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices.front(), GL_STATIC_DRAW);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);  //3*sizeof(GLfloat) is the offset of 3 float numbers
+	//glEnableVertexAttribArray(0);
 
 	GLuint normals_VBO;
 	glGenBuffers(1, &normals_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, normals_VBO);
-	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals.front(), GL_STATIC_DRAW);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);  //3*sizeof(GLfloat) is the offset of 3 float numbers
-	glEnableVertexAttribArray(1);
+	//glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals.front(), GL_STATIC_DRAW);
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);  //3*sizeof(GLfloat) is the offset of 3 float numbers
+	//glEnableVertexAttribArray(1);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -927,6 +927,9 @@ int main()
 		//shader.SetUniform4f("light_position", 0.0, 30.0, 5.0, 1);
 		//shader.SetVec3("light_position", glm::vec3(0.0, 30.0, 5.0));
 		renderScene(ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
+		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
 		cube.drawModel();
 		// Draws line
 		lines3dShader.Bind();
@@ -971,7 +974,7 @@ void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngM
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	//alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
 
 	//model_L_shader.Bind();
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
