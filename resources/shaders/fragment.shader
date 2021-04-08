@@ -8,9 +8,9 @@ uniform vec3 light_direction;
 uniform vec3 view_position;
 uniform vec3 object_color;
 
-const float shading_ambient_strength = 0.25;
-const float shading_diffuse_strength = 0.75;
-const float shading_specular_strength = 0.3;
+const float shading_ambient_strength = 0.1;
+const float shading_diffuse_strength = 0.2;
+const float shading_specular_strength = 0.1;
 
 uniform float light_cutoff_outer;
 uniform float light_cutoff_inner;
