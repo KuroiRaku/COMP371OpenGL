@@ -128,14 +128,10 @@
     <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\GLDebugMessageCallback.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\ObjLoaderIndex.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Shaderloader.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="SModel.h" />
-    <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="SkyBox.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">

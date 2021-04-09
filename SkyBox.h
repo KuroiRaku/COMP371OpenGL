@@ -28,6 +28,13 @@ private:
 	int indiciesN;
 	int indicies4;
 	int indicies7;
+
+	Cube cube1;
+	Cube cube2;
+	Cube cube3;
+	Cube cube4;
+	Cube cube5;
+	Cube cube6;
 };
 
 

@@ -166,8 +166,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\GLDebugMessageCallback.h" />
-    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\ObjLoaderIndex.h" />
-    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Shaderloader.h" />
     <ClInclude Include="AlessandroModel.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="DannModel.h" />

@@ -12,8 +12,12 @@ SkyBox::SkyBox() {
 
 	distance = 2.5f;
 
-
-
+	cube1 = Cube(0, 0, 0, 2, 75, 75);
+	cube2 = Cube(0, 0, 0, 75, 0, 75);
+	cube3 = Cube(75, 0, 0, 75, 0, 75);
+	cube4 = Cube(0, 75, 0, 2, 75, 75);
+	cube5 = Cube(0, 0, 75, 75, 75, 0);
+	cube6 = Cube(0, 0, 0, 75, 75, 0);
 
 	mode = GL_TRIANGLES;
 }
@@ -37,17 +41,18 @@ void SkyBox::drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture,
 	}
 
 	boxTexture->Bind();
-	Cube cube = Cube(0, 0, 0, 2, 75, 75);
-	cube.drawModel();
-	 cube = Cube(0, 75, 0, 2, 75, 75);
-	cube.drawModel();
-	 cube = Cube(0, 0, 0, 75, 0, 75);
-	cube.drawModel();
-	cube = Cube(75, 0, 0, 75, 0, 75);
-	cube.drawModel();
-	cube = Cube(0, 0, 75, 75, 75, 0);
-	cube.drawModel();
-	cube = Cube(0, 0, 0, 75, 75, 0);
-	cube.drawModel();
-	metalTexture->Unbind();
+	
+	cube1.drawModel();
+	 
+	cube2.drawModel();
+	 
+	cube3.drawModel();
+	
+	cube4.drawModel();
+	
+	cube5.drawModel();
+	
+	cube6.drawModel();
+
+	boxTexture->Unbind();
 }

@@ -47,8 +47,7 @@ GroundPlain::GroundPlain() {
 void GroundPlain::drawGround(Texture * tileTexture) {
 	tileTexture->Bind();
 
-	glBindVertexArray(this->vao_ground);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);// num = indicies
+	plane.drawModel();
 
 	tileTexture->Unbind();
 }

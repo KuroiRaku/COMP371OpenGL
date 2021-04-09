@@ -35,10 +35,13 @@
 
 using namespace std;
 
+#pragma region Initialization
+
 // Window dimensions
 const GLuint WIDTH = 1024, HEIGHT = 768;
 
-void renderScene(GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader);
+void renderScene(GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, SModel sModel1, SModel sModel2, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader);
+
 glm::mat4 model_matrix;
 glm::mat4 view_matrix;
 glm::mat4 proj_matrix;
@@ -72,13 +75,12 @@ glm::vec3 cam_pos_front = glm::vec3(0, 3, -23);
 glm::vec3 cam_dir_front = glm::vec3(0, 0, 1);
 glm::vec3 cam_up_front = glm::vec3(0, 1, 0);
 
-
-
 GLuint vm_loc ;
 GLuint pm_loc ;
 GLuint mm_loc;
 GLuint flag_id ;
 GLuint lights_id ;
+GLuint spotlight_id;
 GLuint normalcol_id ;
 GLuint greyscale_id ;
 GLuint red_id ;
@@ -142,12 +144,6 @@ glm::mat4 model_S1_matrix;
 
 glm::mat4 model_S2_matrix;
 
-
-
-SModel sModel1;
-SModel sModel2;
-SkyBox skyBox;
-
 Texture arrayOfTexture[14];
 
 int currentIndex = 0;
@@ -162,7 +158,8 @@ GLuint mm_loc_lines_3d;
 
 //color settings
 bool flag = true;//false;
-bool lights = false;// true;
+bool lights = true;// true;
+bool spotlight = false;
 bool normalcol = false;
 bool greyscale = false;
 bool red = false;
@@ -177,8 +174,28 @@ int renderingMode = 2;
 int activeModel = 0;
 int previousActiveModel = 0;
 int initModel = activeModel;
-int currentCam=0; 
+int currentCam=0;
+
+// lighting settings
+
+// Point Light
+glm::vec3 lightColor = glm::vec3(1.0, 0.5, 1.0);
+glm::vec3 lightPosition = glm::vec3(1.2f, 5.0f, 2.0f);
+
+// Spotlight
+glm::vec3 spotlightColor = glm::vec3(1.0, 1.0, 1.0);
+glm::vec3 spotlightPosition = glm::vec3(0, 3, -23);
+glm::vec3 spotlightDirection = glm::vec3(0.0f, 0.0f, 1);
+
+float spotlightCutoff = glm::cos(glm::radians(12.5f));
+float spotlightOuterCutoff = glm::cos(glm::radians(15.0f));
+float spotlightConstant = 1.0f;
+float spotlightLinear = 0.09;
+float spotlightQuadratic = 0.032;
+
 //glm::vec3 object_color = glm::vec3(0.5, 0.5, 0.5);
+
+#pragma endregion Initialization 
 
 void resetToPreviousModel(int previousActiveModel) {
 	switch (previousActiveModel)
@@ -545,6 +562,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				lights = false;
 		}
 
+		if (key == GLFW_KEY_7 && action == GLFW_PRESS) {
+			if (spotlight == false)
+				spotlight = true;
+			else
+				spotlight = false;
+		}
+
 		if (key == GLFW_KEY_X && action == GLFW_PRESS) {
 			activeModelTexture = !activeModelTexture;
 		}
@@ -576,20 +600,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_T && action == GLFW_PRESS) {
 		renderingMode = 2;
 	}
+
+	// Camera
 	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
 		//fps
 		currentCam = 1;
-
+		spotlight = true;
 
 	}
 	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
 		//back fps
 		currentCam = 2;
+		spotlight = false;
 		
 	}
 	if (key == GLFW_KEY_R && action == GLFW_PRESS) {
 		currentCam = 0;
-
+		spotlight = false;
 	}
 
 
@@ -790,15 +817,12 @@ int main()
 
 	model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
 
-model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
+	model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
 
- model_S2_matrix = glm::translate(glm::mat4(1.f), model_S2_move);
- model_Sky_matrix = glm::translate(glm::mat4(1.f), model_Sky_move);
+	model_S2_matrix = glm::translate(glm::mat4(1.f), model_S2_move);
+	 model_Sky_matrix = glm::translate(glm::mat4(1.f), model_Sky_move);
 
-
- sModel1 = SModel();
- sModel2 = SModel();
- skyBox = SkyBox();
+	
 
 
 
@@ -811,6 +835,7 @@ model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
      mm_loc = shader.GetUniformLocation("mm");
      flag_id = shader.GetUniformLocation("flag");
      lights_id = shader.GetUniformLocation("lights");
+	 spotlight_id = shader.GetUniformLocation("spotlight_on");
 	 normalcol_id = shader.GetUniformLocation("normalcol");
 	 greyscale_id = shader.GetUniformLocation("greyscale");
 	 red_id = shader.GetUniformLocation("red");
@@ -823,8 +848,20 @@ model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
 	glUniformMatrix4fv(pm_loc, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc, 1, GL_FALSE, glm::value_ptr(model_matrix));
 
-	glUniform3fv(shader.GetUniformLocation("light_color"), 1, glm::value_ptr(glm::vec3(1.0, 0.5, 1.0)));
-	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(glm::vec3(1.2f, 5.0f, 2.0f)));
+	// point light
+	glUniform3fv(shader.GetUniformLocation("light_color"), 1, glm::value_ptr(lightColor));
+	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(lightPosition));
+
+	// Spotlight. 
+	glUniform3fv(shader.GetUniformLocation("spotlight_color"), 1, glm::value_ptr(spotlightColor));
+	glUniform3fv(shader.GetUniformLocation("spotlight_position"), 1, glm::value_ptr(spotlightPosition));
+	glUniform3fv(shader.GetUniformLocation("spotlight_direction"), 1, glm::value_ptr(spotlightDirection));
+	glUniform1f(shader.GetUniformLocation("spotlight_cutoff"), spotlightCutoff);
+	glUniform1f(shader.GetUniformLocation("spotlight_outer_cutoff"), spotlightOuterCutoff);
+	glUniform1f(shader.GetUniformLocation("spotlight_constant"), spotlightConstant);
+	glUniform1f(shader.GetUniformLocation("spotlight_linear"), spotlightLinear);
+	glUniform1f(shader.GetUniformLocation("spotlight_quadratic"), spotlightQuadratic);
+
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
 	// 3D Lines Shader camera projection setup
@@ -880,6 +917,9 @@ model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
 	LaginhoModel laginModel = LaginhoModel();
 	Stage stage = Stage();
 	Screen screen = Screen();
+	SModel sModel1 = SModel();
+	SModel sModel2 = SModel();
+	SkyBox skyBox = SkyBox();
 
 	Cube cube = Cube(1, 1, 1, 2, 2, 2);
 
@@ -988,6 +1028,7 @@ model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
 
 		glUniform1i(flag_id, flag);
 		glUniform1i(lights_id, lights);
+		glUniform1i(spotlight_id, spotlight);
 		glUniform1i(normalcol_id, normalcol);
 		glUniform1i(greyscale_id, greyscale);
 		glUniform1i(red_id, red);
@@ -1007,7 +1048,7 @@ model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
 		shader.SetUniform1i("u_Texture", 0);
 		//shader.SetUniform4f("light_position", 0.0, 30.0, 5.0, 1);
 		//shader.SetVec3("light_position", glm::vec3(0.0, 30.0, 5.0));
-		renderScene(ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture, &shader);
+		renderScene(ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, sModel1, sModel2, skyBox, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture, &shader);
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
@@ -1049,7 +1090,7 @@ model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
 	return 0;
 }
 
-void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader){
+void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, SModel sModel1, SModel sModel2, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader){
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
@@ -1060,12 +1101,12 @@ void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngM
 	//model_L_shader.Bind();
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	leCherngModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	//leCherngModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
 
 	//model_La_shader.Bind();
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	laginModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	//laginModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
 
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S1_matrix));
 	sModel1.drawModel(renderingMode, boxTexture);
