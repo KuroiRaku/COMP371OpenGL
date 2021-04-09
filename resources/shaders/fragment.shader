@@ -199,7 +199,7 @@ void main()
 	}
 
 	if (spotlight_on) {
-		result_color = vec4(color, 1.0f) + vec4(spotlight, 1.0f) + texColor;
+		result_color = vec4(color, 1.0f) + vec4(spotlight, 1.0f)* texColor;
 	}
 	else {
 		result_color = vec4(color, 1.0f) + texColor;
@@ -210,21 +210,21 @@ void main()
 
 vec3 calculate_spotlight()
 {
-	vec3 lightDir = normalize(spotlight_position - fragment_position);
+	vec3 light_direction = normalize(spotlight_position - fragment_position);
 	vec3 view_direction = normalize(view_position - fragment_position);
-	vec3 reflect_direction = reflect(-spotlight_direction, normal);
+	vec3 reflect_direction = reflect(-light_direction, normal);
 
 	// attenuation
 	float distance = length(spotlight_position - fragment_position);
 	float attenuation = 1.0 / (spotlight_constant + spotlight_linear * distance + spotlight_quadratic * (distance * distance));
 	// spotlight intensity
-	float theta = dot(spotlight_direction, normalize(-spotlight_direction));
+	float theta = dot(light_direction, normalize(-spotlight_direction));
 	float epsilon = spotlight_cutoff - spotlight_outer_cutoff;
 	float intensity = clamp((theta - spotlight_outer_cutoff) / epsilon, 0.0, 1.0);
 
 	// combine results
 	vec3 ambient = ambient_strength * spotlight_color;
-	vec3 diffuse = diffuse_strength * max(dot(normal, spotlight_direction), 0.0) * spotlight_color;
+	vec3 diffuse = diffuse_strength * max(dot(normal, light_direction), 0.0) * spotlight_color;
 	vec3 specular = specular_strength * pow(max(dot(view_direction, reflect_direction), 0.0), 32) * spotlight_color;
 
 	ambient *= ambient_strength * attenuation * intensity;

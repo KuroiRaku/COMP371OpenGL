@@ -185,7 +185,8 @@ glm::vec3 lightPosition = glm::vec3(1.2f, 5.0f, 2.0f);
 // Spotlight
 glm::vec3 spotlightColor = glm::vec3(1.0, 1.0, 1.0);
 glm::vec3 spotlightPosition = glm::vec3(0, 3, -23);
-glm::vec3 spotlightDirection = glm::vec3(0.0f, 0.0f, 1);
+glm::vec3 spotlightFocus = glm::vec3(0.0, 0.0, 1.0);
+glm::vec3 spotlightDirection = glm::normalize(spotlightFocus - lightPosition);
 
 float spotlightCutoff = glm::cos(glm::radians(12.5f));
 float spotlightOuterCutoff = glm::cos(glm::radians(15.0f));
