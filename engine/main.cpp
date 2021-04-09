@@ -42,7 +42,7 @@ using namespace std;
 // Window dimensions
 const GLuint WIDTH = 1024, HEIGHT = 768;
 
-void renderScene(GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, SModel sModel1, SModel sModel2, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader);
+void renderScene(GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, SModel sModel1, SModel sModel2, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader, Texture * sky_texture);
 
 glm::mat4 model_matrix;
 glm::mat4 view_matrix;
@@ -898,6 +898,7 @@ int main()
 	Texture modelLaginhoTexture("resources/textures/ModelLaginho.png");
 	Texture modelLeCherngTexture("resources/textures/ModelLeCherng.png");
 	Texture stage_texture("resources/textures/stage_texture.jpg");
+	Texture sky_texture("resources/textures/cat.jpg");
 	
 	arrayOfTexture[0] = modelAllesandroTexture;
 	arrayOfTexture[1] = modelDanielTexture;
@@ -1064,7 +1065,7 @@ int main()
 		shader.SetUniform1i("u_Texture", 0);
 		//shader.SetUniform4f("light_position", 0.0, 30.0, 5.0, 1);
 		//shader.SetVec3("light_position", glm::vec3(0.0, 30.0, 5.0));
-		renderScene(ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, sModel1, sModel2, skyBox, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture, &shader);
+		renderScene(ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, sModel1, sModel2, skyBox, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture, &shader, &sky_texture);
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 
@@ -1109,7 +1110,7 @@ int main()
 	return 0;
 }
 
-void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, SModel sModel1, SModel sModel2, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader){
+void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, SModel sModel1, SModel sModel2, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader, Texture * sky_texture){
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
@@ -1135,7 +1136,7 @@ void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngM
 
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Sky_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-     skyBox.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, shader, model_Sky_matrix);
+     skyBox.drawModel(renderingMode, sky_texture, metalTexture, shearX, shearY, shader, model_Sky_matrix);
 
 	//model_D_shader.Bind();
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
