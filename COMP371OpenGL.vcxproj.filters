@@ -76,6 +76,18 @@
     <ClCompile Include="sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Shader.h">
@@ -119,6 +131,23 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="GroundPlain.h" />
     <ClInclude Include="sphere.h" />
+    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Font.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\GLDebugMessageCallback.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\ObjLoaderIndex.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Shader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Shaderloader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SModel.h" />
+    <ClInclude Include="SkyBox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">

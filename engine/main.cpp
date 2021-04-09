@@ -31,6 +31,7 @@
 #include "../Screen.h"
 #include "../Texture.h"
 #include "../SModel.h"
+#include "../SkyBox.h"
 
 using namespace std;
 
@@ -101,6 +102,9 @@ glm::vec3 model_La_move = glm::vec3(0.5, 18 - 0.5, -25); //to apply translationa
 glm::mat4 model_grid = glm::mat4(1.0f);
 glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
+glm::mat4 model_Sky = glm::mat4(1.0f);//Model of letter O
+glm::vec3 model_Sky_move = glm::vec3(-25, -25, -29); //to apply translational transformations
+
 
 //World Matrix
 glm::mat4 model_world = glm::mat4(1.0f);
@@ -120,6 +124,8 @@ glm::vec3 model_S2_move = glm::vec3(0, 7 - 0.5, -25); //to apply translational t
 
 
 glm::mat4 model_A_matrix ;
+
+glm::mat4 model_Sky_matrix;
 //Le Cherng
 glm::mat4 model_L_matrix ;
 //Dan
@@ -140,6 +146,7 @@ glm::mat4 model_S2_matrix;
 
 SModel sModel1;
 SModel sModel2;
+SkyBox skyBox;
 
 Texture arrayOfTexture[14];
 
@@ -786,10 +793,12 @@ int main()
 model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
 
  model_S2_matrix = glm::translate(glm::mat4(1.f), model_S2_move);
+ model_Sky_matrix = glm::translate(glm::mat4(1.f), model_Sky_move);
 
 
  sModel1 = SModel();
  sModel2 = SModel();
+ skyBox = SkyBox();
 
 
 
@@ -1063,6 +1072,10 @@ void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngM
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S2_matrix));
 	sModel2.drawModel(renderingMode, boxTexture);
 
+
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Sky_matrix));
+	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
+     skyBox.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, shader, model_Sky_matrix);
 
 	//model_D_shader.Bind();
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));

@@ -145,6 +145,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Font.cpp" />
+    <ClCompile Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Shader.cpp" />
     <ClCompile Include="AlessandroModel.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DannModel.cpp" />
@@ -157,12 +159,19 @@
     <ClCompile Include="LeCherngModel.cpp" />
     <ClCompile Include="lines3d.cpp" />
     <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="SkyBox.cpp" />
+    <ClCompile Include="SModel.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Font.h" />
+    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\GLDebugMessageCallback.h" />
+    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\ObjLoaderIndex.h" />
+    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Shader.h" />
+    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Shaderloader.h" />
     <ClInclude Include="AlessandroModel.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="DannModel.h" />
@@ -176,6 +185,8 @@
     <ClInclude Include="lines3d.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Screen.h" />
+    <ClInclude Include="SkyBox.h" />
+    <ClInclude Include="SModel.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="stb_image.h" />
