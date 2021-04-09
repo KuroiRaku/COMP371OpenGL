@@ -31,7 +31,7 @@ void QuizModelsAlessandro::setLetterL(GLfloat xOrigin, GLfloat yOrigin, GLfloat 
 	Cube bottomLeft = Cube(-1.0f * lineSize + xOrigin, -1.5f * lineSize + yOrigin, zOrigin);
 	Cube bottomMiddle = Cube(xOrigin, -1.5f * lineSize + yOrigin, zOrigin);
 	Cube bottomRight = Cube(1.0f * lineSize + xOrigin, -1.5f * lineSize + yOrigin, zOrigin);
-	Sphere body = Sphere(xOrigin - 7.0f * lineSize, yOrigin / 2, zOrigin, 2.0f);
+	Sphere body = Sphere(xOrigin - 0 * lineSize, yOrigin / 2, zOrigin, 2.0f);
 
 	bottomLeft.drawModel();
 	bottomMiddle.drawModel();
@@ -48,7 +48,7 @@ void QuizModelsAlessandro::setLetterE(GLfloat xOrigin, GLfloat yOrigin, GLfloat 
 	Cube bottomRight = Cube(1.0f * lineSize + xOrigin, -1.5f * lineSize + yOrigin, zOrigin);
 	Cube middleLeft = Cube(-1.0f * lineSize + xOrigin, yOrigin, zOrigin);
 	Cube middleMiddle = Cube(xOrigin, yOrigin, zOrigin);
-	Sphere body = Sphere(xOrigin - 5, yOrigin, zOrigin, 1);
+	Sphere body = Sphere(xOrigin - 1, yOrigin, zOrigin, 1);
 	topLeft.drawModel();
 	topMiddle.drawModel();
 	topRight.drawModel();
@@ -72,9 +72,9 @@ void QuizModelsAlessandro::setLetterS(GLfloat xOrigin, GLfloat yOrigin, GLfloat 
 	Cube middleRight = Cube(1.0f * lineSize + xOrigin, yOrigin, zOrigin);
 
 
-	Sphere topLeftCol = Sphere(xOrigin - 5.0f * lineSize, yOrigin * 1.5, zOrigin, 0.7);
+	Sphere topLeftCol = Sphere(xOrigin - 1.0f * lineSize, yOrigin * 1.5, zOrigin, 0.7);
 	topLeftCol.draw();
-	Sphere bottomRightCol = Sphere(xOrigin + 5.0f * lineSize, (yOrigin - 1.3) * 1.5, zOrigin, 0.7);
+	Sphere bottomRightCol = Sphere(xOrigin + 1.0f * lineSize, (yOrigin - 1.3) * 1.5, zOrigin, 0.7);
 	bottomRightCol.draw();
 
 	topLeft.drawModel();
@@ -96,11 +96,11 @@ void QuizModelsAlessandro::setLetterR(GLfloat xOrigin, GLfloat yOrigin, GLfloat 
 	Cube middleMiddle = Cube(xOrigin, yOrigin, zOrigin);
 	Cube middleRight = Cube(1.0f * lineSize + xOrigin, yOrigin, zOrigin);
 
-	Sphere leftCol = Sphere(xOrigin - 6.0f, yOrigin - 1.0f, zOrigin, 1.5);
+	Sphere leftCol = Sphere(xOrigin - 0.0f, yOrigin - 1.0f, zOrigin, 1.5);
 	leftCol.draw();
-	Sphere middleCol = Sphere(xOrigin, yOrigin + 5.0f * lineSize, zOrigin, 0.5f);
+	Sphere middleCol = Sphere(xOrigin, yOrigin + 1.0f * lineSize, zOrigin, 0.5f);
 	middleCol.draw();
-	Sphere bottomRightCol = Sphere(xOrigin + 5.0f * lineSize, yOrigin - 0.0f * lineSize, zOrigin, 0.8f);
+	Sphere bottomRightCol = Sphere(xOrigin + 1.0f * lineSize, yOrigin - 0.0f * lineSize, zOrigin, 0.8f);
 	bottomRightCol.draw();
 
 	middleLeft.drawModel();
@@ -116,10 +116,10 @@ void QuizModelsAlessandro::setLetterK(GLfloat xOrigin, GLfloat yOrigin, GLfloat 
 	Cube topRight = Cube(1 * lineSize + xOrigin, 1.5 * lineSize + yOrigin, zOrigin);
 	Cube bottomRight = Cube(1.0f * lineSize + xOrigin, -1.5f * lineSize + yOrigin, zOrigin);
 
-	Sphere leftCol = Sphere(xOrigin - 7.0f * lineSize, yOrigin, zOrigin, 1.5);
+	Sphere leftCol = Sphere(xOrigin - 1.0f * lineSize, yOrigin, zOrigin, 1.5);
 	leftCol.draw();
 
-	Sphere rightCol = Sphere(xOrigin + 3.0f * lineSize, yOrigin, zOrigin, 1.5);
+	Sphere rightCol = Sphere(xOrigin + 1.0f * lineSize, yOrigin, zOrigin, 1.5);
 	rightCol.draw();
 
 	middleLeft.drawModel();

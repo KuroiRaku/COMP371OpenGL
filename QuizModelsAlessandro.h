@@ -23,8 +23,6 @@ public:
 	void setLetterI(GLfloat xOrigin, GLfloat yOrigin, GLfloat zOrigin);
 
 private:
-
-
 	GLfloat lineSize;
 };
 

@@ -91,24 +91,37 @@ GLuint green_id ;
 GLuint blue_id ;
 GLuint colour_id ;
 
+double camera_rotation = 0;
+
+int stage_distance = -10;
+int height = 4;
+
 //Alessandro
 glm::mat4 model_A = glm::mat4(1.0f);//Model of letter A
-glm::vec3 model_A_move = glm::vec3(0.5, 23 - 0.5, -25); //to apply translational transformations
+glm::vec3 model_A_move = glm::vec3(-15, height, stage_distance); //to apply translational transformations
 //Le Cherng
 glm::mat4 model_L = glm::mat4(1.0f);//Model of letter U
-glm::vec3 model_L_move = glm::vec3(0.5, 13 - 0.5, -25); //to apply translational transformations
+glm::vec3 model_L_move = glm::vec3(-10, height, stage_distance); //to apply translational transformations
 //Dan
 glm::mat4 model_D = glm::mat4(1.0f);//Model of letter K
-glm::vec3 model_D_move = glm::vec3(-0.5, 28 - 0.5, -25); //to apply translational transformations
+glm::vec3 model_D_move = glm::vec3(5, height, stage_distance); //to apply translational transformations
 //LaginHo
 glm::mat4 model_La = glm::mat4(1.0f);//Model of letter O
-glm::vec3 model_La_move = glm::vec3(0.5, 18 - 0.5, -25); //to apply translational transformations
-//LaginHo
+glm::vec3 model_La_move = glm::vec3(5, height, stage_distance); //to apply translational transformations
+
+glm::mat4 model_S1 = glm::mat4(1.0f);////Model of first letter S
+glm::vec3 model_S1_move = glm::vec3(10, height, stage_distance); //to apply translational transformations
+
+glm::mat4 model_S2 = glm::mat4(1.0f);///Model of second letter S
+glm::vec3 model_S2_move = glm::vec3(15, height, stage_distance); //to apply translational transformations
+
 glm::mat4 model_grid = glm::mat4(1.0f);
 glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 glm::mat4 model_Sky = glm::mat4(1.0f);//Model of letter O
 glm::vec3 model_Sky_move = glm::vec3(0, 0, 0); //to apply translational transformations
+
+
 
 
 //World Matrix
@@ -124,11 +137,6 @@ glm::vec3 model_Screen_move = glm::vec3(-10, 0, 25); //to apply translational tr
 glm::mat4 model_spot_light = glm::mat4(1.0f);
 glm::vec3 model_spot_light_move = glm::vec3(0, 24, -25); //to apply translational transformations
 
-glm::mat4 model_S1 = glm::mat4(1.0f);////Model of first letter S
-glm::vec3 model_S1_move = glm::vec3(0, 0.5, -25); //to apply translational transformations
-
-glm::mat4 model_S2 = glm::mat4(1.0f);///Model of second letter S
-glm::vec3 model_S2_move = glm::vec3(0, 7 - 0.5, -25); //to apply translational transformations
 
 
 glm::mat4 model_A_matrix ;
@@ -303,7 +311,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			//Left and Right key rotate camera
 			if (key == GLFW_KEY_RIGHT) { //left arrow rotates the camera left about the right vector
-				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(0, 1, 0));
+				camera_rotation = camera_rotation + 0.05;
+				//model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(0, 1, 0));
 			}
 			if (key == GLFW_KEY_DOWN) { //left arrow rotates the camera left about the down vector
 				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(-1, 0, 0));
@@ -312,7 +321,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(1, 0, 0));
 			}
 			if (key == GLFW_KEY_LEFT) { //left arrow rotates the camera left about the left vector
-				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(0, -1, 0));
+				camera_rotation = camera_rotation + 0.05;
+				//model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(0, -1, 0));
 			}
 		}
 	}
@@ -621,7 +631,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_R && action == GLFW_PRESS) {
 		currentCam = 0;
 	}
-
+	if (key == GLFW_KEY_N && action == GLFW_PRESS) {
+		currentCam = 4;
+	}
 
 
 	if (key == GLFW_KEY_S && action == GLFW_PRESS) {
@@ -934,6 +946,10 @@ int main()
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwPollEvents();
 
+		const float radius = 25.0f;
+		float camX = sin(camera_rotation) * radius;
+		float camZ = cos(camera_rotation) * radius;
+
 		shader.Bind();
 		switch (currentCam) {
 		case 0:
@@ -946,13 +962,11 @@ int main()
 			view_matrix = glm::lookAt(cam_pos_back, cam_pos_back + cam_dir_back, cam_up_back);
 			break;
 		case 4:
-			view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
+			view_matrix = glm::lookAt(glm::vec3(camX, 20, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
 			break;
 		
 		}
 	
-
-
 		glm::mat4 translator_A = glm::translate(glm::mat4(1.0f), model_A_move);
 		glm::mat4 translator_La = glm::translate(glm::mat4(1.0f), model_La_move);
 		glm::mat4 translator_D = glm::translate(glm::mat4(1.0f), model_D_move);
@@ -968,7 +982,9 @@ int main()
 
 		glm::mat4 light_rotatation = glm::rotate(model_grid, -4.71239f, glm::vec3(1, 0, 0));
 		model_spot_light_matrix = model_world * translator_Spot_Light * model_spot_light * light_rotatation;
+		model_Screen_matrix = model_world * translator_Stage * model_Screen;
 
+		grid_matrix = model_world * translator_grid * model_grid;
 		switch (activeModel) {
 		case 0:
 			model_matrix = model_world * translator * model_active;
@@ -981,58 +997,53 @@ int main()
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
 			model_Stage_matrix = model_world  * translator_Stage * model_Stage;
-			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
 			break;
 		case 1:
 			model_La_matrix = model_world * translator * model_active;
 			model_La = model_active;
 			model_La_move = model_active_move;
 
-			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world  * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
 			model_Stage_matrix = model_world * translator_Stage * model_Stage;
-			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 2:
 			model_D_matrix = model_world * translator * model_active;
 			model_D = model_active;
 			model_D_move = model_active_move;
 
-			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
 			model_La_matrix = model_world * translator_La * model_La;
 			model_L_matrix = model_world * translator_L * model_L;
 			model_Stage_matrix = model_world * translator_Stage * model_Stage;
-			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
 			break;
 		case 3:
 			model_L_matrix = model_world  * translator * model_active;
 			model_L = model_active;
 			model_L_move = model_active_move;
 
-			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world  * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
 			model_La_matrix = model_world  * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_Stage_matrix = model_world * translator_Stage * model_Stage;
-			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 4:
-			model_matrix = model_world * translator_A * model_A;
-			grid_matrix = model_world  * translator_grid * model_grid;
 			model_A_matrix = model_world * translator_A * model_A;
 			model_La_matrix = model_world * translator_La * model_La;
 			model_D_matrix = model_world * translator_D * model_D;
 			model_L_matrix = model_world * translator_L * model_L;
 			model_Stage_matrix = model_world  * translator_Stage * model_Stage;
-			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
+			break;
+		case 5:
+			model_A_matrix = model_world * translator_A * model_A;
+			model_La_matrix = model_world * translator_La * model_La;
+			model_D_matrix = model_world * translator_D * model_D;
+			model_L_matrix = model_world * translator_L * model_L;
+			model_Stage_matrix = model_world * translator_Stage * model_Stage;
 			break;
 		}
+		model_matrix = model_world * translator * model_active;
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
 
 		glUniform1i(flag_id, flag);
@@ -1069,41 +1080,38 @@ int main()
 		glLineWidth(1.0f);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
-		//cylinder.draw(&shader);
 
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
 		//cube.drawModel();
 		////////// QUIZ 1 MODELS
+		boxTexture.Bind();
 		QuizModelsAlessandro quizModels = QuizModelsAlessandro();
+		
 		//K
-		//SetColor(true, false, false, red_id, green_id, blue_id);
-		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_K_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
 		quizModels.setLetterK(0, 0, 0);
 
 		//R
-		//SetColor(false, true, false, red_id, green_id, blue_id);
-		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_R_matrix));
-		//quizModels.setLetterR(0, 3.0f, 0);
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
+		quizModels.setLetterR(0, 0, 0);
 
 		//E
-		//SetColor(false, false, true, red_id, green_id, blue_id);
-		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_E_matrix));
-		//quizModels.setLetterE(0, 9.0f, 0);
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
+		quizModels.setLetterE(0, 0, 0);
 
 		//S
-		//SetColor(true, false, true, red_id, green_id, blue_id);
-		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_S_matrix));
-		//quizModels.setLetterS(0, 12.0f, 0);
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
+		quizModels.setLetterS(0, 0, 0);
 
 		//L
-		//SetColor(true, true, false, red_id, green_id, blue_id);
-		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_L_matrix));
-		//quizModels.setLetterL(0, 15.0f, 0);
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S1_matrix));
+		quizModels.setLetterL(0, 0, 0);
 
 		//I
-		//SetColor(true, true, true, red_id, green_id, blue_id);
-		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_I_matrix));
-		//quizModels.setLetterI(0, 18.5f, 0);
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S2_matrix));
+		
+		quizModels.setLetterI(0, 0, 0);
+		boxTexture.Unbind();
 		/////////
 
 		// Draws grid
@@ -1142,42 +1150,10 @@ void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngM
 	glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
-	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	//alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
-
-	//model_L_shader.Bind();
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
-	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	//leCherngModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
-
-	//model_La_shader.Bind();
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
-	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	//laginModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
-
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S1_matrix));
-	sModel1.drawModel(renderingMode, boxTexture);
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S2_matrix));
-	sModel2.drawModel(renderingMode, boxTexture);
-
 
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Sky_matrix));
-	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-     skyBox.drawModel(renderingMode, sky_texture, metalTexture, shearX, shearY, shader, model_Sky_matrix);
-
-	//model_D_shader.Bind();
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
-	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	danModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, shader, model_D_matrix);
-	if (time(0) - start == n) {
-		if (currentIndex == (sizeof(arrayOfTexture) / sizeof(arrayOfTexture[0]) - 1)) {
-			currentIndex = 0;
-		}
-		else {
-			currentIndex++;
-		}
-		start = start + n;
-	}
+    skyBox.drawModel(renderingMode, sky_texture, metalTexture, shearX, shearY, shader, model_Sky_matrix);
+	
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Screen_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 0, 0)));
 	screen.drawModel(renderingMode, &arrayOfTexture[currentIndex]);
