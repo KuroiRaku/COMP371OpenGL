@@ -33,6 +33,7 @@
 #include "../Cylinder.h"
 #include "../SModel.h"
 #include "../SkyBox.h"
+#include "../SpotLightModel.h"
 
 using namespace std;
 
@@ -922,7 +923,9 @@ int main()
 	SModel sModel1 = SModel();
 	SModel sModel2 = SModel();
 	SkyBox skyBox = SkyBox();
+	SpotLightModel spotLight = SpotLightModel();
 	Cylinder cylinder = Cylinder(2.5f, 1.f, 0.125);
+
 
 	Cube cube = Cube(1, 1, 1, 2, 2, 2);
 
@@ -1055,15 +1058,15 @@ int main()
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
-		cube.drawModel();
+		//cube.drawModel();
 		
+		spotLight.drawModel(0,0,0);
 
 		// Draws line
-		
 		glLineWidth(1.0f);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
-		lines3dObject.drawLines(&shader, line_matrix);
+		//cylinder.draw(&shader);
 
 		// Draws grid
 		lines3dShader.Bind();
