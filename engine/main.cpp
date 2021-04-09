@@ -197,13 +197,13 @@ glm::vec3 lightPosition = glm::vec3(1.2f, 5.0f, 2.0f);
 
 // Spotlight
 glm::vec3 spotlightColor = glm::vec3(1.0, 1.0, 1.0);
-glm::vec3 spotlightPosition = glm::vec3(10, 3, 23);
-glm::vec3 spotlightFocus = glm::vec3(8, 2, 12);
-glm::vec3 spotlightDirection = glm::vec3(0, 1, 0);
+glm::vec3 spotlightPosition = glm::vec3(20, 30, 0);
+glm::vec3 spotlightFocus = glm::vec3(15, 0, 3);
+glm::vec3 spotlightDirection = glm::normalize(spotlightFocus - spotlightPosition);
 
-glm::vec3 spotlightColor2;
-glm::vec3 spotlightPosition2;
-glm::vec3 spotlightFocus2;
+glm::vec3 spotlightColor2 = glm::vec3(1.0, 1.0, 1.0);
+glm::vec3 spotlightPosition2 = glm::vec3(0, 30, 0);
+glm::vec3 spotlightFocus2 = glm::vec3(1.0, 0.0, 0.0);
 glm::vec3 spotlightDirection2 = glm::normalize(spotlightFocus2 - spotlightPosition2);
 
 float spotlightCutoff = glm::cos(glm::radians(12.5f));

@@ -216,7 +216,7 @@ void main()
 	
 	if (spotlight_on2 && spotlight_on) {
 
-		result_color = vec4(color * texColor.rgb, 1.0f) + vec4(spotlight2 * texColor.rgb, 1.0f) + vec4(spotlight * texColor.rgb, 1.0f);
+		result_color = vec4(color * texColor.rgb+ spotlight2 * texColor.rgb+ spotlight * texColor.rgb, 1.0f);
 	}
 	else if (spotlight_on) {
 
