@@ -18,6 +18,18 @@ uniform float spotlight_linear;
 uniform float spotlight_quadratic;
 uniform bool spotlight_on;
 
+// Spotlight Rotate
+uniform vec3 spotlight_color_rot;
+uniform vec3 spotlight_position_rot;
+uniform vec3 spotlight_direction_rot;
+
+uniform float spotlight_cutoff_rot;
+uniform float spotlight_outer_cutoff_rot;
+uniform float spotlight_constant_rot;
+uniform float spotlight_linear_rot;
+uniform float spotlight_quadratic_rot;
+uniform bool spotlight_rotate_on;
+
 // General Lighting.
 uniform vec3 object_color;
 uniform vec3 view_position;
@@ -47,6 +59,7 @@ const float specular_strength = 1.0f;
 
 // function declaration.
 vec3 calculate_spotlight();
+vec3 calculate_spotlight_rotation();
 
 void main()
 {
@@ -69,7 +82,7 @@ void main()
 	vec3 color = (specular + diffuse + ambient); //* object_color;
 
 	vec3 spotlight = calculate_spotlight();
-
+	vec3 spotlight_rotate = calculate_spotlight_rotation();
 
 	//Texture
 	vec4 texColor = texture(u_Texture, v_TexCoord);
@@ -198,9 +211,18 @@ void main()
 		}
 	}
 
-	if (spotlight_on) {
-		
-		result_color = vec4(color * texColor.rgb, 1.0f) + vec4(spotlight * texColor.rgb , 1.0f);
+	if (spotlight_rotate_on && spotlight_on) {
+
+		result_color = vec4(color * texColor.rgb, 1.0f) + vec4(spotlight_rotate * texColor.rgb, 1.0f) + vec4(spotlight * texColor.rgb, 1.0f);
+	}
+	else if (spotlight_on) {
+
+		result_color = vec4(color * texColor.rgb, 1.0f) + vec4(spotlight * texColor.rgb, 1.0f);
+
+	}
+	else if (spotlight_rotate_on) {
+		result_color = vec4(color * texColor.rgb, 1.0f) + vec4(spotlight_rotate * texColor.rgb, 1.0f);
+
 	}
 	else {
 		result_color = vec4(color, 1.0f) + texColor;
@@ -227,6 +249,32 @@ vec3 calculate_spotlight()
 	vec3 ambient = ambient_strength * spotlight_color;
 	vec3 diffuse = diffuse_strength * max(dot(normal, light_direction), 0.0) * spotlight_color;
 	vec3 specular = specular_strength * pow(max(dot(view_direction, reflect_direction), 0.0), 32) * spotlight_color;
+
+	ambient *= ambient_strength * attenuation * intensity;
+	diffuse *= diffuse_strength * attenuation * intensity;
+	specular *= specular_strength * attenuation * intensity;
+
+	return (ambient + diffuse + specular) * object_color;
+}
+
+vec3 calculate_spotlight_rotation()
+{
+	vec3 light_direction = normalize(spotlight_position_rot - fragment_position);
+	vec3 view_direction = normalize(view_position - fragment_position);
+	vec3 reflect_direction = reflect(-light_direction, normal);
+
+	// attenuation
+	float distance = length(spotlight_position - fragment_position);
+	float attenuation = 1.0 / (spotlight_constant_rot + spotlight_linear_rot * distance + spotlight_quadratic_rot * (distance * distance));
+	// spotlight intensity
+	float theta = dot(light_direction, normalize(-spotlight_direction_rot));
+	float epsilon = spotlight_cutoff_rot - spotlight_outer_cutoff_rot;
+	float intensity = clamp((theta - spotlight_outer_cutoff_rot) / epsilon, 0.0, 1.0);
+
+	// combine results
+	vec3 ambient = ambient_strength * spotlight_color_rot;
+	vec3 diffuse = diffuse_strength * max(dot(normal, light_direction), 0.0) * spotlight_color_rot;
+	vec3 specular = specular_strength * pow(max(dot(view_direction, reflect_direction), 0.0), 32) * spotlight_color_rot;
 
 	ambient *= ambient_strength * attenuation * intensity;
 	diffuse *= diffuse_strength * attenuation * intensity;

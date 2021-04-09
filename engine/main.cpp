@@ -84,6 +84,7 @@ GLuint mm_loc;
 GLuint flag_id ;
 GLuint lights_id ;
 GLuint spotlight_id;
+GLuint spotlight_rotate_id;
 GLuint normalcol_id ;
 GLuint greyscale_id ;
 GLuint red_id ;
@@ -175,6 +176,7 @@ GLuint mm_loc_lines_3d;
 bool flag = true;//false;
 bool lights = true;// true;
 bool spotlight = false;
+bool spotlight_rotate = false;
 bool normalcol = false;
 bool greyscale = false;
 bool red = false;
@@ -202,6 +204,12 @@ glm::vec3 spotlightColor = glm::vec3(1.0, 1.0, 1.0);
 glm::vec3 spotlightPosition = glm::vec3(0, 20, -25);
 glm::vec3 spotlightFocus = glm::vec3(0, 0, -23);
 glm::vec3 spotlightDirection = glm::normalize(spotlightFocus - spotlightPosition);
+
+// Rotating Spotlight
+glm::vec3 spotlightColor_rot;
+glm::vec3 spotlightPosition_rot;
+glm::vec3 spotlightFocus_rot;
+glm::vec3 spotlightDirection_rot = glm::normalize(spotlightFocus_rot - spotlightPosition_rot);
 
 float spotlightCutoff = glm::cos(glm::radians(12.5f));
 float spotlightOuterCutoff = glm::cos(glm::radians(15.0f));
@@ -587,6 +595,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				spotlight = false;
 		}
 
+		if (key == GLFW_KEY_V && action == GLFW_PRESS) {
+			std::cout << "hello";
+			spotlight_rotate = !spotlight_rotate;
+		}
+
 		if (key == GLFW_KEY_X && action == GLFW_PRESS) {
 			activeModelTexture = !activeModelTexture;
 		}
@@ -849,6 +862,7 @@ int main()
      flag_id = shader.GetUniformLocation("flag");
      lights_id = shader.GetUniformLocation("lights");
 	 spotlight_id = shader.GetUniformLocation("spotlight_on");
+	 spotlight_rotate_id = shader.GetUniformLocation("spotlight_rotate_on");
 	 normalcol_id = shader.GetUniformLocation("normalcol");
 	 greyscale_id = shader.GetUniformLocation("greyscale");
 	 red_id = shader.GetUniformLocation("red");
@@ -874,6 +888,16 @@ int main()
 	glUniform1f(shader.GetUniformLocation("spotlight_constant"), spotlightConstant);
 	glUniform1f(shader.GetUniformLocation("spotlight_linear"), spotlightLinear);
 	glUniform1f(shader.GetUniformLocation("spotlight_quadratic"), spotlightQuadratic);
+
+	// Spotlight rotate parameters
+	glUniform3fv(shader.GetUniformLocation("spotlight_color_rot"), 1, glm::value_ptr(spotlightColor_rot));
+	glUniform3fv(shader.GetUniformLocation("spotlight_position_rot"), 1, glm::value_ptr(spotlightPosition_rot));
+	glUniform3fv(shader.GetUniformLocation("spotlight_direction_rot"), 1, glm::value_ptr(spotlightDirection_rot));
+	glUniform1f(shader.GetUniformLocation("spotlight_cutoff_rot"), spotlightCutoff);
+	glUniform1f(shader.GetUniformLocation("spotlight_outer_cutoff_rot"), spotlightOuterCutoff);
+	glUniform1f(shader.GetUniformLocation("spotlight_constant_rot"), spotlightConstant);
+	glUniform1f(shader.GetUniformLocation("spotlight_linear_rot"), spotlightLinear);
+	glUniform1f(shader.GetUniformLocation("spotlight_quadratic_rot"), spotlightQuadratic);
 
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
@@ -962,7 +986,14 @@ int main()
 			view_matrix = glm::lookAt(cam_pos_back, cam_pos_back + cam_dir_back, cam_up_back);
 			break;
 		case 4:
-			view_matrix = glm::lookAt(glm::vec3(camX, 20, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+			spotlightColor_rot = glm::vec3(1.0, 0.4, 0.4);
+			spotlightPosition_rot = glm::vec3(camX, 30, camZ);
+			spotlightFocus_rot = glm::vec3(1.0, 0.0, 0.0);
+			spotlightDirection_rot = glm::normalize(spotlightFocus_rot - spotlightPosition_rot);
+			glUniform3fv(shader.GetUniformLocation("spotlight_color_rot"), 1, glm::value_ptr(spotlightColor_rot));
+			glUniform3fv(shader.GetUniformLocation("spotlight_position_rot"), 1, glm::value_ptr(spotlightPosition_rot));
+			glUniform3fv(shader.GetUniformLocation("spotlight_direction_rot"), 1, glm::value_ptr(spotlightDirection_rot));
+			view_matrix = glm::lookAt(glm::vec3(camX, 25, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
 			break;
 		
 		}
@@ -1049,6 +1080,7 @@ int main()
 		glUniform1i(flag_id, flag);
 		glUniform1i(lights_id, lights);
 		glUniform1i(spotlight_id, spotlight);
+		glUniform1i(spotlight_rotate_id, spotlight_rotate);
 		glUniform1i(normalcol_id, normalcol);
 		glUniform1i(greyscale_id, greyscale);
 		glUniform1i(red_id, red);
@@ -1080,6 +1112,7 @@ int main()
 		glLineWidth(1.0f);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
+		lines3dObject.drawLines(&shader, line_matrix);
 
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
 		//cube.drawModel();
