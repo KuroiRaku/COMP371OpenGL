@@ -351,6 +351,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	//full reset
 	if (key == GLFW_KEY_0)
 	{
+		/*
+		
 		model_active = glm::mat4(1.0f);
 		model_active_move = glm::vec3(0, 2, -10); //to apply translational transformations
 
@@ -371,9 +373,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 		model_world = glm::mat4(1.f);
+		
+		*/
+		
 
 		shearX = 0;
 		shearY = 0;
+		spotlight = false;
+		spotlight2 = false;
+		spotlight3 = false;
 	}
 
 	if (key == GLFW_KEY_SPACE)
