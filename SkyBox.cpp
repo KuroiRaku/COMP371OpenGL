@@ -12,12 +12,34 @@ SkyBox::SkyBox() {
 
 	distance = 2.5f;
 
-	cube1 = Cube(0, 0, 0, 2, 75, 75);
-	cube2 = Cube(0, 0, 0, 75, 0, 75);
-	cube3 = Cube(75, 0, 0, 75, 0, 75);
-	cube4 = Cube(0, 75, 0, 2, 75, 75);
-	cube5 = Cube(0, 0, 75, 75, 75, 0);
-	cube6 = Cube(0, 0, 0, 75, 75, 0);
+	GLfloat cubeSizing = (lineSize * 75); // div by 2 because each side
+	GLfloat cP = cubeSizing / 2.0f;
+
+	//(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat tallNess, GLfloat width, GLfloat length)
+	/*
+	cube1 = Cube(0, 0, -cubePositioning, 2, cubeSizing, cubeSizing); // bottom
+	cube2 = Cube(0, 0, 0, cubeSizing, 0, cubeSizing);
+	cube3 = Cube(cubeSizing, 0, 0, cubeSizing, 0, cubeSizing);
+	cube4 = Cube(0, cubePositioning, 0, 2, cubeSizing, cubeSizing); // top
+	cube5 = Cube(0, 0, cubeSizing, cubeSizing, cubeSizing, 0);
+	cube6 = Cube(0, 0, 0, cubeSizing, cubeSizing, 0); // side
+
+
+	cube1 = Cube(0, -1*cubePositioning, 0,		0.5, cubeSizing, cubeSizing);
+	cube2 = Cube(-1*cubePositioning, 0, 0,		cubeSizing, 0, cubeSizing);
+	cube3 = Cube(cubePositioning, 0, 0,			cubeSizing, 0, cubeSizing);
+	cube4 = Cube(0, cubePositioning, 0,			0.5, cubeSizing, cubeSizing);
+	cube5 = Cube(0, 0, cubePositioning,			cubeSizing, cubeSizing, 0); 
+	cube6 = Cube(0, 0, -1*cubePositioning,		cubeSizing, cubeSizing, 0); 
+		*/
+
+
+	cube1 = Cube(-cP, -cP, -cP,					2, cubeSizing, cubeSizing);		// bottom
+	cube2 = Cube(-cP, -cP, -cP,						cubeSizing, 0, cubeSizing);
+	cube3 = Cube(cP, -cP, -cP,						cubeSizing, 0, cubeSizing);
+	cube4 = Cube(-cP, cP, -cP,						2, cubeSizing, cubeSizing);	// top
+	cube5 = Cube(-cP, -cP, cP,						cubeSizing, cubeSizing, 0);
+	cube6 = Cube(-cP, -cP, -cP,						cubeSizing, cubeSizing, 0);
 
 	mode = GL_TRIANGLES;
 }

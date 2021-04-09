@@ -107,7 +107,7 @@ glm::mat4 model_grid = glm::mat4(1.0f);
 glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 glm::mat4 model_Sky = glm::mat4(1.0f);//Model of letter O
-glm::vec3 model_Sky_move = glm::vec3(-25, -25, -29); //to apply translational transformations
+glm::vec3 model_Sky_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 
 //World Matrix
