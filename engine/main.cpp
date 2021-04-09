@@ -61,7 +61,7 @@ glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera 
 
 //model settings
 glm::mat4 model_active = glm::rotate(glm::mat4(1.0f), glm::radians(0.f), glm::vec3(0, 1, 0)); //active model
-glm::vec3 model_active_move = glm::vec3(0.5, 23 - 0.5, -25); //to apply translational transformations
+glm::vec3 model_active_move = glm::vec3(0.5, 23 - 0.5, 25); //to apply translational transformations
 
 glm::mat4 model_general = glm::mat4(1.0f); //active model
 glm::vec3 model_general_move = glm::vec3(0, 2, -10); //to apply translational transformations
@@ -84,6 +84,7 @@ GLuint flag_id ;
 GLuint lights_id ;
 GLuint spotlight_id;
 GLuint spotlight2_id;
+GLuint spotlight3_id;
 GLuint normalcol_id ;
 GLuint greyscale_id ;
 GLuint red_id ;
@@ -97,16 +98,16 @@ double camRotation = 0;
 
 //Alessandro
 glm::mat4 model_A = glm::mat4(1.0f);//Model of letter A
-glm::vec3 model_A_move = glm::vec3(0.5, 23 - 0.5, -25); //to apply translational transformations
+glm::vec3 model_A_move = glm::vec3(0.5, 23 - 0.5, 25); //to apply translational transformations
 //Le Cherng
 glm::mat4 model_L = glm::mat4(1.0f);//Model of letter U
-glm::vec3 model_L_move = glm::vec3(0.5, 13 - 0.5, -25); //to apply translational transformations
+glm::vec3 model_L_move = glm::vec3(0.5, 13 - 0.5, 25); //to apply translational transformations
 //Dan
 glm::mat4 model_D = glm::mat4(1.0f);//Model of letter K
-glm::vec3 model_D_move = glm::vec3(-0.5, 28 - 0.5, -25); //to apply translational transformations
+glm::vec3 model_D_move = glm::vec3(-0.5, 28 - 0.5, 25); //to apply translational transformations
 //LaginHo
 glm::mat4 model_La = glm::mat4(1.0f);//Model of letter O
-glm::vec3 model_La_move = glm::vec3(0.5, 18 - 0.5, -25); //to apply translational transformations
+glm::vec3 model_La_move = glm::vec3(0.5, 18 - 0.5, 25); //to apply translational transformations
 //LaginHo
 glm::mat4 model_grid = glm::mat4(1.0f);
 glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
@@ -119,20 +120,21 @@ glm::vec3 model_Sky_move = glm::vec3(0, 0, 0); //to apply translational transfor
 glm::mat4 model_world = glm::mat4(1.0f);
 glm::vec3 model_world_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
-glm::mat4 model_Stage = glm::mat4(1.0f);
-glm::vec3 model_Stage_move = glm::vec3(-10, 0, 0); //to apply translational transformations
+glm::mat4 model_Stage = glm::rotate(glm::mat4(1.0f), glm::radians(0.f), glm::vec3(0, 1, 0)); //active model
+glm::vec3 model_Stage_move = glm::vec3(-10, 0, -25); //to apply translational transformations
 
-glm::mat4 model_Screen = glm::mat4(1.0f);
-glm::vec3 model_Screen_move = glm::vec3(-10, 0, 0); //to apply translational transformations
+
+glm::mat4 model_Screen = glm::rotate(glm::mat4(1.0f), glm::radians(0.f), glm::vec3(0, 1, 0)); //active model
+glm::vec3 model_Screen_move = glm::vec3(-10, 0, -25); //to apply translational transformations
 
 glm::mat4 model_S1 = glm::mat4(1.0f);////Model of first letter S
-glm::vec3 model_S1_move = glm::vec3(0, 0.5, -25); //to apply translational transformations
+glm::vec3 model_S1_move = glm::vec3(0, 0.5, 25); //to apply translational transformations
 
 glm::mat4 model_S2 = glm::mat4(1.0f);///Model of second letter S
-glm::vec3 model_S2_move = glm::vec3(0, 7 - 0.5, -25); //to apply translational transformations
+glm::vec3 model_S2_move = glm::vec3(0, 7 - 0.5, 25); //to apply translational transformations
 
-glm::mat4 model_Light = glm::mat4(1.0f);///Model of second letter S
-glm::vec3 model_Light_move = glm::vec3(0, 10, 20); //to apply translational transformations
+glm::mat4 model_Light = glm::mat4(1.0f);///Model of projector
+glm::vec3 model_Light_move = glm::vec3(0, 20, -25); //to apply translational transformations
 
 
 glm::mat4 model_A_matrix ;
@@ -173,6 +175,7 @@ bool flag = true;//false;
 bool lights = true;// true;
 bool spotlight = false;
 bool spotlight2 = false;
+bool spotlight3 = false;
 bool normalcol = false;
 bool greyscale = false;
 bool red = false;
@@ -197,14 +200,23 @@ glm::vec3 lightPosition = glm::vec3(1.2f, 5.0f, 2.0f);
 
 // Spotlight
 glm::vec3 spotlightColor = glm::vec3(1.0, 1.0, 1.0);
-glm::vec3 spotlightPosition = glm::vec3(0, 40, 0);
-glm::vec3 spotlightFocus = glm::vec3(0, 0, 3);
+glm::vec3 spotlightPosition = glm::vec3(0, 20, -25);
+glm::vec3 spotlightFocus = glm::vec3(0, 0, -23);
 glm::vec3 spotlightDirection = glm::normalize(spotlightFocus - spotlightPosition);
 
-glm::vec3 spotlightColor2 = glm::vec3(1.0, 1.0, 1.0);
+
+
+
+glm::vec3 spotlightColor2 = glm::vec3(0.0, 1.0, 0.0);
 glm::vec3 spotlightPosition2 = glm::vec3(0, 30, 0);
 glm::vec3 spotlightFocus2 = glm::vec3(1.0, 0.0, 0.0);
 glm::vec3 spotlightDirection2 = glm::normalize(spotlightFocus2 - spotlightPosition2);
+
+
+glm::vec3 spotlightColor3 = glm::vec3(1.0, 1.0, 1.0);
+glm::vec3 spotlightPosition3 = glm::vec3(0, 20, 35);
+glm::vec3 spotlightFocus3 = glm::vec3(0, 0, -15);
+glm::vec3 spotlightDirection3 = glm::normalize(spotlightFocus3 - spotlightPosition3);
 
 float spotlightCutoff = glm::cos(glm::radians(12.5f));
 float spotlightOuterCutoff = glm::cos(glm::radians(15.0f));
@@ -217,7 +229,7 @@ float lightFarPlane = 7.0f;
 
 //glm::vec3 object_color = glm::vec3(0.5, 0.5, 0.5);
 
-#pragma endregion Initialization 
+#pragma endregion Initialization
 
 void resetToPreviousModel(int previousActiveModel) {
 	switch (previousActiveModel)
@@ -251,8 +263,8 @@ void resetToPreviousModel(int previousActiveModel) {
 	activeModel = previousActiveModel;
 }
 
-// Rotate around a point 
-// Note: This function is not in used, because assignment doesn't require it. But we will still keep it if we want to play around :D 
+// Rotate around a point
+// Note: This function is not in used, because assignment doesn't require it. But we will still keep it if we want to play around :D
 void rotateAround(glm::vec3& moveVec, glm::mat4& matrix, glm::vec3 rotation) {
 	activeModel = 4;
 
@@ -331,7 +343,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 	}
 
-	
+
 
 	//reset to initial position
 	if (key == GLFW_KEY_HOME)
@@ -397,9 +409,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		randomZPosition = -15 + (std::rand() % (15 + 15 + 1));
 		model_La = glm::mat4(1.0f);
 		model_La_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
-		 
+
 	}
-	
+
 	if (!worldOrientationKeyPressed) {
 		//WASD buttons to move the model
 		if (!leftShiftPressed) {
@@ -585,10 +597,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 
 		if (key == GLFW_KEY_7 && action == GLFW_PRESS) {
-			if (spotlight == false)
-				spotlight = true;
-			else
-				spotlight = false;
+			spotlight = true;
+			spotlight2 = false;
+			spotlight3 = false;
 		}
 
 		if (key == GLFW_KEY_X && action == GLFW_PRESS) {
@@ -625,39 +636,40 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	// Camera
 	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
-		//fps
+
 		currentCam = 1;
-		spotlight = false;
+
 
 	}
 	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
-		//back fps
+
 		currentCam = 2;
-		spotlight = false;
-		
+
+
 	}
 	if (key == GLFW_KEY_R && action == GLFW_PRESS) {
 		currentCam = 0;
-		spotlight = false;
-	}
 
-
-
-	if (key == GLFW_KEY_K && action == GLFW_PRESS) {
-		if (!spotlight2) {
-			spotlight2 = true;
-
-		}
-		else {
-			spotlight2 = false;
-		}
-		
 	}
 
 	if (key == GLFW_KEY_N && action == GLFW_PRESS) {
 		//Rotation cam
 		currentCam = 4;
 	}
+
+
+	if (key == GLFW_KEY_K && action == GLFW_PRESS) {
+		spotlight2 = true;
+		spotlight = false;
+		spotlight3 = false;
+	}
+	if (key == GLFW_KEY_V && action == GLFW_PRESS) {
+		spotlight3 = true;
+		spotlight = false;
+		spotlight2 = false;
+	}
+
+
 }
 
 double last_y_pos = 0;
@@ -718,7 +730,7 @@ void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 	if (m_button_pressed) {
 		glm::mat4 rotation_matrix(1);
 		glm::vec3 rotate_around_x = glm::cross(cam_up, cam_dir); //cross product
-		if (last_y_pos - ypos > 0) { //mouse going up, camera moves backward	
+		if (last_y_pos - ypos > 0) { //mouse going up, camera moves backward
 			rotation_matrix = glm::rotate(rotation_matrix, -(0.01f), rotate_around_x);
 			cam_dir = glm::mat3(rotation_matrix) * cam_dir;
 			cam_up = glm::mat3(rotation_matrix) * cam_up;
@@ -797,7 +809,7 @@ int main()
 	//lines
 	Shader lines3dShader("resources/shaders/lines3d_vertex.shader", "resources/shaders/lines3d_fragment.shader");
 
-	
+
 	loadOBJ("resources/objects/cube.obj", indices, vertices, normals, UVs);
 
 	GLuint VAO;
@@ -859,7 +871,7 @@ int main()
 	model_Sky_matrix = glm::translate(glm::mat4(1.f), model_Sky_move);
 	model_Light_matrix = glm::translate(glm::mat4(1.f), model_Light_move);
 
-	
+
 
 
 
@@ -874,6 +886,7 @@ int main()
      lights_id = shader.GetUniformLocation("lights");
 	 spotlight_id = shader.GetUniformLocation("spotlight_on");
 	 spotlight2_id = shader.GetUniformLocation("spotlight_on2");
+	 spotlight3_id = shader.GetUniformLocation("spotlight_on3");
 	 normalcol_id = shader.GetUniformLocation("normalcol");
 	 greyscale_id = shader.GetUniformLocation("greyscale");
 	 red_id = shader.GetUniformLocation("red");
@@ -890,7 +903,7 @@ int main()
 	glUniform3fv(shader.GetUniformLocation("light_color"), 1, glm::value_ptr(lightColor));
 	glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(lightPosition));
 
-	// Spotlight. 
+	// Spotlight.
 	glUniform3fv(shader.GetUniformLocation("spotlight_color"), 1, glm::value_ptr(spotlightColor));
 	glUniform3fv(shader.GetUniformLocation("spotlight_position"), 1, glm::value_ptr(spotlightPosition));
 	glUniform3fv(shader.GetUniformLocation("spotlight_direction"), 1, glm::value_ptr(spotlightDirection));
@@ -908,6 +921,15 @@ int main()
 	glUniform1f(shader.GetUniformLocation("spotlight_constant2"), spotlightConstant);
 	glUniform1f(shader.GetUniformLocation("spotlight_linear2"), spotlightLinear);
 	glUniform1f(shader.GetUniformLocation("spotlight_quadratic2"), spotlightQuadratic);
+
+	glUniform3fv(shader.GetUniformLocation("spotlight_color3"), 1, glm::value_ptr(spotlightColor3));
+	glUniform3fv(shader.GetUniformLocation("spotlight_position3"), 1, glm::value_ptr(spotlightPosition3));
+	glUniform3fv(shader.GetUniformLocation("spotlight_direction3"), 1, glm::value_ptr(spotlightDirection3));
+	glUniform1f(shader.GetUniformLocation("spotlight_cutoff3"), spotlightCutoff);
+	glUniform1f(shader.GetUniformLocation("spotlight_outer_cutoff3"), spotlightOuterCutoff);
+	glUniform1f(shader.GetUniformLocation("spotlight_constant3"), spotlightConstant);
+	glUniform1f(shader.GetUniformLocation("spotlight_linear3"), spotlightLinear);
+	glUniform1f(shader.GetUniformLocation("spotlight_quadratic3"), spotlightQuadratic);
 
 
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
@@ -937,7 +959,7 @@ int main()
 	Texture modelLaginhoTexture("resources/textures/ModelLaginho.png");
 	Texture modelLeCherngTexture("resources/textures/ModelLeCherng.png");
 	Texture stage_texture("resources/textures/stage_texture.jpg");
-	
+
 	arrayOfTexture[0] = modelAllesandroTexture;
 	arrayOfTexture[1] = modelDanielTexture;
 	arrayOfTexture[2] = modelLaginhoTexture;
@@ -953,7 +975,7 @@ int main()
 	arrayOfTexture[12] = bonus1;
 	arrayOfTexture[13] = bonus2;
 
-	
+
 	// Configure depth map FBO
 	// Variable storing index to texture used for shadow mapping
 	const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
@@ -1009,8 +1031,8 @@ int main()
 	{
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwPollEvents();
-		
-	
+
+
 		// --- Render ---
 		// Clear the colorbuffer
 		glClearColor(1.f, 0.1f, 0.1f, 1.0f);
@@ -1043,8 +1065,7 @@ int main()
 		glm::mat4 translator_Stage = glm::translate(glm::mat4(1.0f), model_Stage_move);
 		glm::mat4 translator_Screen = glm::translate(glm::mat4(1.0f), model_Screen_move);
 
-		glm::mat4 ground_rotatation = glm::rotate(model_grid, 4.71239f, glm::vec3(1, 0, 0));
-		ground_matrix = model_world * model_grid * ground_rotatation;
+
 
 		switch (activeModel) {
 		case 0:
@@ -1112,7 +1133,7 @@ int main()
 		}
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
 
-		
+
 
 
 		const float radius = 30.0f;
@@ -1144,7 +1165,6 @@ int main()
 			spotlightPosition2 = glm::vec3(camX, 30, camZ);
 			spotlightFocus2 = glm::vec3(1.0, 0.0, 0.0);
 			spotlightDirection2 = glm::normalize(spotlightFocus2 - spotlightPosition2);
-			glUniform3fv(shader.GetUniformLocation("spotlight_color2"), 1, glm::value_ptr(spotlightColor2));
 			glUniform3fv(shader.GetUniformLocation("spotlight_position2"), 1, glm::value_ptr(spotlightPosition2));
 			glUniform3fv(shader.GetUniformLocation("spotlight_direction2"), 1, glm::value_ptr(spotlightDirection2));
 			view_matrix = glm::lookAt(glm::vec3(camX, 30, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
@@ -1155,6 +1175,7 @@ int main()
 		glUniform1i(lights_id, lights);
 		glUniform1i(spotlight_id, spotlight);
 		glUniform1i(spotlight2_id, spotlight2);
+		glUniform1i(spotlight3_id, spotlight3);
 		glUniform1i(normalcol_id, normalcol);
 		glUniform1i(greyscale_id, greyscale);
 		glUniform1i(red_id, red);
@@ -1168,7 +1189,7 @@ int main()
 
 		// Draws Models
 		//model_A_shader.Bind();
-		
+
 		glBindVertexArray(VAO);
 		shader.SetUniform1i("u_Texture", 0);
 		//shader.SetUniform4f("light_position", 0.0, 30.0, 5.0, 1);
@@ -1178,7 +1199,7 @@ int main()
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Light_matrix));
 		//cube.drawModel();
-		
+
 		spotLight.drawModel(0,0,0);
 
 		// Draws line
@@ -1204,10 +1225,10 @@ int main()
 		for (int i = 0; i < sizeof(arrayOfTexture) / sizeof(arrayOfTexture[0]); i++) {
 			arrayOfTexture[i].activeTexture = activeModelTexture;
 		}
-		grid.drawGrid();
+
 		// Unbinds VAO
 		glBindVertexArray(0);
-		
+
 		//activeModel = initModel;
 		// Swap the screen buffers
 		glfwSwapBuffers(window);
@@ -1219,7 +1240,7 @@ int main()
 }
 
 void renderScene(Shader& shader, GroundPlain& ground, AlessandroModel& alessandroModel, LeCherngModel& leCherngModel, DannModel& danModel, LaginhoModel& laginModel, Stage& stage, Screen& screen, SModel sModel1, SModel sModel2, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture){
-	
+
 	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_A_matrix));
 	alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
 
@@ -1247,7 +1268,7 @@ void renderScene(Shader& shader, GroundPlain& ground, AlessandroModel& alessandr
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Sky_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
      skyBox.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, &shader, model_Sky_matrix);
-	 
+
 
 
 	//model_D_shader.Bind();
@@ -1271,14 +1292,10 @@ void renderScene(Shader& shader, GroundPlain& ground, AlessandroModel& alessandr
 	//model_Stage_shader Bind()
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Stage_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	stage.drawModel(renderingMode, stage_texture);
+	stage.drawModel(renderingMode, stage_texture, &shader, model_Stage_matrix);
 
 	// Ground
 	glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(ground_matrix));
-	ground.drawGround(tileTexture);
+	ground.drawGround(stage_texture);
 }
-
-
-
-

@@ -13,6 +13,6 @@ public:
 
 private:
 	GLuint vao_ground;
-	Cube plane = Cube(-25, -25, -2, 75, 75, 1);
+	Cube plane = Cube(-25, -2, -25, 1, 75, 75);
 };
 
