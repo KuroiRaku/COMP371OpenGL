@@ -3,6 +3,9 @@
 Cube::Cube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat tallNess, GLfloat width, GLfloat length) {
 	SetCube(centerX, centerY, centerZ, 1, tallNess, width, length);
 }
+Cube::Cube(GLfloat centerX, GLfloat centerY, GLfloat centerZ) {
+	SetCube(centerX, centerY, centerZ, 1, 1.0f, 1.0f, 1.0f);
+}
 void Cube::SetCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength, GLfloat tallNess, GLfloat width, GLfloat length)
 {
 	GLfloat halfSide = edgeLength * 0.5f;

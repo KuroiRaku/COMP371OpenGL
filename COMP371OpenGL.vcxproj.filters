@@ -85,6 +85,12 @@
     <ClCompile Include="Cylinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpotLightModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QuizModelsAlessandro.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Shader.h">
@@ -138,6 +144,8 @@
     <ClInclude Include="Cylinder.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="SpotLightModel.h" />
+    <ClInclude Include="QuizModelsAlessandro.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">

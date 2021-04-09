@@ -157,6 +157,7 @@
     <ClCompile Include="Laginho.cpp" />
     <ClCompile Include="LeCherngModel.cpp" />
     <ClCompile Include="lines3d.cpp" />
+    <ClCompile Include="QuizModelsAlessandro.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="SModel.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Laginho.h" />
     <ClInclude Include="LeCherngModel.h" />
     <ClInclude Include="lines3d.h" />
+    <ClInclude Include="QuizModelsAlessandro.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="SkyBox.h" />

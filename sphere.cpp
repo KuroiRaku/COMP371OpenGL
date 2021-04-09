@@ -35,6 +35,18 @@ Sphere::Sphere(float x, float y, float z, float xLength, float yLength)
     init(x, y, z, xLength, yLength);
 }
 
+Sphere::Sphere(float x, float y, float z, float yLength)
+{
+
+    m_vao = 0;
+    m_vboVertex = 0;
+    m_vboIndex = 0;
+
+    lats = 40;
+    longs = 40;
+    init(x, y, z, 1.0f, yLength);
+}
+
 Sphere::~Sphere()
 {
 

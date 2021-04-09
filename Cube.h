@@ -12,6 +12,7 @@ public:
     GLuint vao_Cube;
     int indiciesC;
     void drawModel();
+    Cube(GLfloat centerX, GLfloat centerY, GLfloat centerZ);
     Cube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat tallNess, GLfloat width, GLfloat length);
     Cube() {};
     void SetCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat edgeLength, GLfloat tallNess, GLfloat width, GLfloat length);

@@ -34,6 +34,7 @@
 #include "../SModel.h"
 #include "../SkyBox.h"
 #include "../SpotLightModel.h"
+#include "../QuizModelsAlessandro.h"
 
 using namespace std;
 
@@ -826,10 +827,6 @@ int main()
 	model_S2_matrix = glm::translate(glm::mat4(1.f), model_S2_move);
 	model_Sky_matrix = glm::translate(glm::mat4(1.f), model_Sky_move);
 
-	
-
-
-
 	grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
     ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
 	line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
@@ -1075,7 +1072,39 @@ int main()
 		//cylinder.draw(&shader);
 
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
-		cube.drawModel();
+		//cube.drawModel();
+		////////// QUIZ 1 MODELS
+		QuizModelsAlessandro quizModels = QuizModelsAlessandro();
+		//K
+		//SetColor(true, false, false, red_id, green_id, blue_id);
+		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_K_matrix));
+		quizModels.setLetterK(0, 0, 0);
+
+		//R
+		//SetColor(false, true, false, red_id, green_id, blue_id);
+		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_R_matrix));
+		//quizModels.setLetterR(0, 3.0f, 0);
+
+		//E
+		//SetColor(false, false, true, red_id, green_id, blue_id);
+		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_E_matrix));
+		//quizModels.setLetterE(0, 9.0f, 0);
+
+		//S
+		//SetColor(true, false, true, red_id, green_id, blue_id);
+		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_S_matrix));
+		//quizModels.setLetterS(0, 12.0f, 0);
+
+		//L
+		//SetColor(true, true, false, red_id, green_id, blue_id);
+		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_L_matrix));
+		//quizModels.setLetterL(0, 15.0f, 0);
+
+		//I
+		//SetColor(true, true, true, red_id, green_id, blue_id);
+		//glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(letter_I_matrix));
+		//quizModels.setLetterI(0, 18.5f, 0);
+		/////////
 
 		// Draws grid
 		lines3dShader.Bind();

@@ -9,6 +9,7 @@ class Sphere
 {
 public:
     Sphere(float x, float y, float z, float xLength, float yLength);
+    Sphere(float x, float y, float z, float yLength);
     ~Sphere();
     void init(float x, float y, float z, float xLength, float yLength);
     void draw();
