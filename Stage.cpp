@@ -12,20 +12,17 @@ Stage::Stage()
 
 }
 
-void Stage::drawModel(int drawMode, Texture* texture)
+void Stage::drawModel(int drawMode, Texture* texture,  Shader* shader, glm::mat4 objectMatrix)
 {
 	texture->Bind();
-	drawStage(0, 0, 0);
+	drawStage(0, 0, 0, shader, objectMatrix);
 	texture->Unbind();
 }
 
-void Stage::drawStage(float x, float y, float z)
+void Stage::drawStage(float x, float y, float z, Shader* shader, glm::mat4 objectMatrix)
 {
 	Cube stageFloor = Cube(0, 2, 0,0, 20, 5);
 	stageFloor.drawModel();
-
-
-
 	Cube leg = Cube(0, 0, 0, 2, 0, 0);
 	leg.drawModel();
 	leg = Cube(0, 0, 5, 2, 0, 0);
