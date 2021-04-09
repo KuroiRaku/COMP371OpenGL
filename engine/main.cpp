@@ -69,11 +69,11 @@ glm::vec3 model_general_move = glm::vec3(0, 2, -10); //to apply translational tr
 float shearX = 0.f;
 float shearY = 0.f;
 
-glm::vec3 cam_pos_back = glm::vec3(0, 3, -28);
+glm::vec3 cam_pos_back = glm::vec3(0, 3, -25);
 glm::vec3 cam_dir_back = glm::vec3(0, 0, -1);
 glm::vec3 cam_up_back = glm::vec3(0, 1, 0);
 
-glm::vec3 cam_pos_front = glm::vec3(0, 3, -23);
+glm::vec3 cam_pos_front = glm::vec3(0, 5, -20);
 glm::vec3 cam_dir_front = glm::vec3(0, 0, 1);
 glm::vec3 cam_up_front = glm::vec3(0, 1, 0);
 
@@ -612,18 +612,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
 		//fps
 		currentCam = 1;
-		spotlight = true;
-
 	}
 	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
 		//back fps
 		currentCam = 2;
-		spotlight = false;
-		
 	}
 	if (key == GLFW_KEY_R && action == GLFW_PRESS) {
 		currentCam = 0;
-		spotlight = false;
 	}
 
 
@@ -1078,6 +1073,9 @@ int main()
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
 		//cylinder.draw(&shader);
+
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
+		cube.drawModel();
 
 		// Draws grid
 		lines3dShader.Bind();
