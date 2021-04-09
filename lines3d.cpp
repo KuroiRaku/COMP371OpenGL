@@ -2,64 +2,33 @@
 
 Lines3d::Lines3d() {
 
-	GLfloat lineSize = 0.4f * 7; // 7 times the size of 1 grid unit
+	cylinderX = Cylinder(2.5f, 1.f, 0.125);
+	cylinderY = Cylinder(2.5f, 1.f, 0.125);
+	cylinderZ = Cylinder(2.5f, 1.f, 0.125);
 
-	GLfloat vertices_lines[] =
-	{
-		// position		// color
-		0.0f,0.0f,0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f,lineSize,0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f,0.0f,0.0f, 0.0f, 1.0f, 0.0f,
-		lineSize,0.0f,0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f,0.0f,0.0f, 0.0f, 0.0f, 1.0f,
-		0.0f,0.0f,lineSize, 0.0f, 0.0f, 1.0f,
-	};
+	matrix_X = glm::mat4(1.f);
+	matrix_Y = glm::mat4(1.f);
+	matrix_Z = glm::mat4(1.f);
 
-	int indicies_lines[] =
-	{
-		0,1,
-		2,3,
-		3,4
-	};
-
-	glGenVertexArrays(1, &this->vao);
-	// Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-	glBindVertexArray(this->vao);
-
-	GLuint vertices_VBO_lines;
-	glGenBuffers(1, &vertices_VBO_lines);
-	glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO_lines);
-	glBufferData(GL_ARRAY_BUFFER, 36 * sizeof(float), vertices_lines, GL_STATIC_DRAW);
-	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);  //3*sizeof(GLfloat) is the offset of 3 float numbers
-	glEnableVertexAttribArray(0);
-
-	//color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	GLuint EBO_lines;
-	glGenBuffers(1, &EBO_lines);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_lines);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2 * sizeof(int), indicies_lines, GL_STATIC_DRAW);
-	glBindVertexArray(0);
+	matrix_X = glm::rotate(matrix_X, glm::radians(90.f), glm::vec3(0, 1, 0));
+	matrix_Y = glm::rotate(matrix_Y, glm::radians(90.f), glm::vec3(-1, 0, 0));
+	matrix_Z = glm::rotate(matrix_Z, glm::radians(0.f), glm::vec3(-1, 0, 0));
 }
 
-GLuint Lines3d::getVAO()
+void Lines3d::drawLines(Shader* shader, glm::mat4 objectMatrix)
 {
-	return this->vao;
-}
-
-int Lines3d::getIndicesSize()
-{
-	return 6;
-}
-
-void Lines3d::drawLines()
-{
-	glBindVertexArray(this->vao);
-	glDrawArrays(GL_LINES, 0, 6);
+	GLuint mm_loc = shader->GetUniformLocation("mm");
+	matrix_X = objectMatrix * matrix_X;
+	glUniform3fv(shader->GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(1, 0, 0)));
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(matrix_X));
+	cylinderX.draw(shader);
+	matrix_Y = objectMatrix * matrix_Y;
+	glUniform3fv(shader->GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 1, 0)));
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(matrix_Y));
+	cylinderY.draw(shader);
+	matrix_Z = objectMatrix * matrix_Z;
+	glUniform3fv(shader->GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 0, 1)));
+	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(matrix_Z));
+	cylinderZ.draw(shader);
 }
 

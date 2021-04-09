@@ -1063,7 +1063,7 @@ int main()
 		glLineWidth(1.0f);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
-		cylinder.draw(&shader);
+		lines3dObject.drawLines(&shader, line_matrix);
 
 		// Draws grid
 		lines3dShader.Bind();
