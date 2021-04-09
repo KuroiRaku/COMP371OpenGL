@@ -145,8 +145,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Font.cpp" />
-    <ClCompile Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Shader.cpp" />
     <ClCompile Include="AlessandroModel.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="DannModel.cpp" />
@@ -167,10 +165,8 @@
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Font.h" />
     <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\GLDebugMessageCallback.h" />
     <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\ObjLoaderIndex.h" />
-    <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Shader.h" />
     <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\Shaderloader.h" />
     <ClInclude Include="AlessandroModel.h" />
     <ClInclude Include="Cube.h" />
