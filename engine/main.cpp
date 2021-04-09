@@ -85,6 +85,7 @@ GLuint flag_id ;
 GLuint lights_id ;
 GLuint spotlight_id;
 GLuint spotlight_rotate_id;
+GLuint spotlight_models_id;
 GLuint normalcol_id ;
 GLuint greyscale_id ;
 GLuint red_id ;
@@ -177,6 +178,7 @@ bool flag = true;//false;
 bool lights = true;// true;
 bool spotlight = false;
 bool spotlight_rotate = false;
+bool spotlight_models = false;
 bool normalcol = false;
 bool greyscale = false;
 bool red = false;
@@ -210,6 +212,12 @@ glm::vec3 spotlightColor_rot;
 glm::vec3 spotlightPosition_rot;
 glm::vec3 spotlightFocus_rot;
 glm::vec3 spotlightDirection_rot = glm::normalize(spotlightFocus_rot - spotlightPosition_rot);
+
+// Spotlight Models
+glm::vec3 spotlightColor_mod = glm::vec3(1.0, 1.0, 1.0);
+glm::vec3 spotlightPosition_mod = glm::vec3(0, 25, 25);
+glm::vec3 spotlightFocus_mod = glm::vec3(0, 0, -15);
+glm::vec3 spotlightDirection_mod = glm::normalize(spotlightFocus_mod - spotlightPosition_mod);
 
 float spotlightCutoff = glm::cos(glm::radians(12.5f));
 float spotlightOuterCutoff = glm::cos(glm::radians(15.0f));
@@ -589,15 +597,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 
 		if (key == GLFW_KEY_7 && action == GLFW_PRESS) {
-			if (spotlight == false)
-				spotlight = true;
-			else
-				spotlight = false;
+			spotlight = !spotlight;
 		}
 
 		if (key == GLFW_KEY_V && action == GLFW_PRESS) {
 			std::cout << "hello";
 			spotlight_rotate = !spotlight_rotate;
+		}
+
+		if (key == GLFW_KEY_Z && action == GLFW_PRESS) {
+			spotlight_models = !spotlight_models;
 		}
 
 		if (key == GLFW_KEY_X && action == GLFW_PRESS) {
@@ -863,6 +872,7 @@ int main()
      lights_id = shader.GetUniformLocation("lights");
 	 spotlight_id = shader.GetUniformLocation("spotlight_on");
 	 spotlight_rotate_id = shader.GetUniformLocation("spotlight_rotate_on");
+	 spotlight_models_id = shader.GetUniformLocation("spotlight_models_on");
 	 normalcol_id = shader.GetUniformLocation("normalcol");
 	 greyscale_id = shader.GetUniformLocation("greyscale");
 	 red_id = shader.GetUniformLocation("red");
@@ -898,6 +908,16 @@ int main()
 	glUniform1f(shader.GetUniformLocation("spotlight_constant_rot"), spotlightConstant);
 	glUniform1f(shader.GetUniformLocation("spotlight_linear_rot"), spotlightLinear);
 	glUniform1f(shader.GetUniformLocation("spotlight_quadratic_rot"), spotlightQuadratic);
+
+	// Sheeesh
+	glUniform3fv(shader.GetUniformLocation("spotlight_color_mod"), 1, glm::value_ptr(spotlightColor_mod));
+	glUniform3fv(shader.GetUniformLocation("spotlight_position_mod"), 1, glm::value_ptr(spotlightPosition_mod));
+	glUniform3fv(shader.GetUniformLocation("spotlight_direction_mod"), 1, glm::value_ptr(spotlightDirection_mod));
+	glUniform1f(shader.GetUniformLocation("spotlight_cutoff_mod"), spotlightCutoff);
+	glUniform1f(shader.GetUniformLocation("spotlight_outer_cutoff_mod"), spotlightOuterCutoff);
+	glUniform1f(shader.GetUniformLocation("spotlight_constant_mod"), spotlightConstant);
+	glUniform1f(shader.GetUniformLocation("spotlight_linear_mod"), spotlightLinear);
+	glUniform1f(shader.GetUniformLocation("spotlight_quadratic_mod"), spotlightQuadratic);
 
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
@@ -1081,6 +1101,7 @@ int main()
 		glUniform1i(lights_id, lights);
 		glUniform1i(spotlight_id, spotlight);
 		glUniform1i(spotlight_rotate_id, spotlight_rotate);
+		glUniform1i(spotlight_models_id, spotlight_models);
 		glUniform1i(normalcol_id, normalcol);
 		glUniform1i(greyscale_id, greyscale);
 		glUniform1i(red_id, red);
