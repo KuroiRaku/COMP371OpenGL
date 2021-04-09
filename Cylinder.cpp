@@ -28,7 +28,7 @@ Cylinder::Cylinder(float Length, float size, float radius)
     const int NUMBER_OF_VERTICIES = 54;
     const int ORIGINAL_STRIDE = 3;
 
-    GLfloat vertices[] =
+    GLfloat vertices[54] =
     {
         // bottom circle
         0, 0, 0 , //origin
@@ -130,7 +130,7 @@ Cylinder::Cylinder(float Length, float size, float radius)
         norms[p3] = normal;
     }
     // This is the new array we use that includes the norms
-    const int SIZE_OF_NEW_ARRAY = 144;
+    const int SIZE_OF_NEW_ARRAY = NUMBER_OF_VERTICIES * 2;//144;
     GLfloat vertices_norms[SIZE_OF_NEW_ARRAY];
 
     // this for loop takes the values of our initial verticies and puts them together in a new array with our norms

@@ -50,7 +50,7 @@ void Cube::SetCube(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat ed
 
 	const int NUMBER_OF_INDICIES = 36;
 
-	int indicies[36] =
+	int indicies[NUMBER_OF_INDICIES] =
 	{
 		3,2,1,
 		1,0,3,
