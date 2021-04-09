@@ -30,6 +30,7 @@
 #include "../Stage.h"
 #include "../Screen.h"
 #include "../Texture.h"
+#include "../Cylinder.h"
 #include "../SModel.h"
 #include "../SkyBox.h"
 
@@ -821,7 +822,7 @@ int main()
 	model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
 
 	model_S2_matrix = glm::translate(glm::mat4(1.f), model_S2_move);
-	 model_Sky_matrix = glm::translate(glm::mat4(1.f), model_Sky_move);
+	model_Sky_matrix = glm::translate(glm::mat4(1.f), model_Sky_move);
 
 	
 
@@ -921,6 +922,7 @@ int main()
 	SModel sModel1 = SModel();
 	SModel sModel2 = SModel();
 	SkyBox skyBox = SkyBox();
+	Cylinder cylinder = Cylinder(2.5f, 1.f, 0.125);
 
 	Cube cube = Cube(1, 1, 1, 2, 2, 2);
 
@@ -1054,14 +1056,17 @@ int main()
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
 		cube.drawModel();
+		
+
 		// Draws line
-		lines3dShader.Bind();
+		
 		glLineWidth(1.0f);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
-		lines3dObject.drawLines();
+		cylinder.draw(&shader);
 
 		// Draws grid
+		lines3dShader.Bind();
 		glLineWidth(0.5f);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(grid_matrix));

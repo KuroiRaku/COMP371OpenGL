@@ -66,7 +66,7 @@ void main()
 	
 	vec3 specular = specular_strength * pow(max(dot(reflect_light_direction, view_direction), 0.0), 32) * light_color;
 
-	vec3 color = (specular + diffuse + ambient) * object_color;
+	vec3 color = (specular + diffuse + ambient); //* object_color;
 
 	vec3 spotlight = calculate_spotlight();
 
@@ -199,7 +199,8 @@ void main()
 	}
 
 	if (spotlight_on) {
-		result_color = vec4(color, 1.0f) + vec4(spotlight, 1.0f)* texColor;
+		
+		result_color = vec4(color * texColor.rgb, 1.0f) + vec4(spotlight * texColor.rgb , 1.0f);
 	}
 	else {
 		result_color = vec4(color, 1.0f) + texColor;

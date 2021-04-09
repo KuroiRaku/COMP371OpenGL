@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="AlessandroModel.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="DannModel.cpp" />
     <ClCompile Include="dependencies\windows\glad\src\glad.c" />
     <ClCompile Include="engine\main.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\GLDebugMessageCallback.h" />
     <ClInclude Include="AlessandroModel.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Cylinder.h" />
     <ClInclude Include="DannModel.h" />
     <ClInclude Include="engine\GLDebugMessageCallback.h" />
     <ClInclude Include="engine\ObjLoaderIndex.h" />
