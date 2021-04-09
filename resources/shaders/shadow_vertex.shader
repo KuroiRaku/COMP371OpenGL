@@ -2,10 +2,9 @@
 
 layout(location = 0) in vec3 position;
 
+uniform mat4 light_view_proj_matrix;
 uniform mat4 mm;
-uniform mat4 pvm;
-
 
 void main() {
-	gl_Position = pvm * mm * vec4(position, 1.0);
+	gl_Position = light_view_proj_matrix * mm * vec4(position, 1.0);
 }

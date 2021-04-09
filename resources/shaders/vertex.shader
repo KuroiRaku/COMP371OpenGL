@@ -22,10 +22,12 @@ uniform bool blue;
 
 out vec3 fragment_position;
 out vec3 normal;
+out vec4 fragment_position_light_space;
 
 flat out vec3 col;
 
 uniform mat4 projection;
+uniform mat4 light_view_proj_matrix;
 
 //Texture
 out vec2 v_TexCoord;
@@ -34,6 +36,7 @@ void main()
 {
 	normal = mat3(transpose(inverse(mm))) * normals;
 	fragment_position = vec3(mm * vec4(position, 1.0f));
+	fragment_position_light_space = light_view_proj_matrix * vec4(fragment_position, 1.0);
 	gl_Position = pm * vm * mm * vec4(position, 1.0);
 
 	//ambient
