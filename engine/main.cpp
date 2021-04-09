@@ -115,10 +115,13 @@ glm::mat4 model_world = glm::mat4(1.0f);
 glm::vec3 model_world_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 glm::mat4 model_Stage = glm::mat4(1.0f);
-glm::vec3 model_Stage_move = glm::vec3(-10, 0, 25); //to apply translational transformations
+glm::vec3 model_Stage_move = glm::vec3(-10, 0, -25); //to apply translational transformations
 
 glm::mat4 model_Screen = glm::mat4(1.0f);
 glm::vec3 model_Screen_move = glm::vec3(-10, 0, 25); //to apply translational transformations
+
+glm::mat4 model_spot_light = glm::mat4(1.0f);
+glm::vec3 model_spot_light_move = glm::vec3(0, 24, -25); //to apply translational transformations
 
 glm::mat4 model_S1 = glm::mat4(1.0f);////Model of first letter S
 glm::vec3 model_S1_move = glm::vec3(0, 0.5, -25); //to apply translational transformations
@@ -137,6 +140,7 @@ glm::mat4 model_D_matrix ;
 //LaginHo
 glm::mat4 model_La_matrix ;
 glm::mat4 model_Stage_matrix ;
+glm::mat4 model_spot_light_matrix;
 glm::mat4 model_Screen_matrix;
 glm::mat4 grid_matrix ;
 glm::mat4 ground_matrix ;
@@ -186,9 +190,9 @@ glm::vec3 lightPosition = glm::vec3(1.2f, 5.0f, 2.0f);
 
 // Spotlight
 glm::vec3 spotlightColor = glm::vec3(1.0, 1.0, 1.0);
-glm::vec3 spotlightPosition = glm::vec3(0, 3, -23);
-glm::vec3 spotlightFocus = glm::vec3(0.0, 0.0, 1.0);
-glm::vec3 spotlightDirection = glm::normalize(spotlightFocus - lightPosition);
+glm::vec3 spotlightPosition = glm::vec3(0, 20, -25);
+glm::vec3 spotlightFocus = glm::vec3(0, 0, -23);
+glm::vec3 spotlightDirection = glm::normalize(spotlightFocus - spotlightPosition);
 
 float spotlightCutoff = glm::cos(glm::radians(12.5f));
 float spotlightOuterCutoff = glm::cos(glm::radians(15.0f));
@@ -818,6 +822,8 @@ int main()
 
 	model_Stage_matrix = glm::translate(glm::mat4(1.f), model_Stage_move);
 
+	model_spot_light_matrix = glm::translate(glm::mat4(1.f), model_spot_light_move);
+
 	model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
 
 	model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
@@ -960,11 +966,15 @@ int main()
 		glm::mat4 translator_L = glm::translate(glm::mat4(1.0f), model_L_move);
 		glm::mat4 translator_grid = glm::translate(glm::mat4(1.0f), model_grid_move);
 		glm::mat4 translator = glm::translate(glm::mat4(1.0f), model_active_move);
-		glm::mat4 translator_Stage = glm::translate(glm::mat4(1.0f), model_Stage_move);
+		glm::mat4 translator_Stage = glm::translate(glm::mat4(1.0f), model_Stage_move); 
+		glm::mat4 translator_Spot_Light = glm::translate(glm::mat4(1.0f), model_spot_light_move);
 		glm::mat4 translator_Screen = glm::translate(glm::mat4(1.0f), model_Screen_move);
 
 		glm::mat4 ground_rotatation = glm::rotate(model_grid, 4.71239f, glm::vec3(1, 0, 0));
 		ground_matrix = model_world * model_grid * ground_rotatation;
+
+		glm::mat4 light_rotatation = glm::rotate(model_grid, -4.71239f, glm::vec3(1, 0, 0));
+		model_spot_light_matrix = model_world * translator_Spot_Light * model_spot_light * light_rotatation;
 
 		switch (activeModel) {
 		case 0:
@@ -1057,9 +1067,9 @@ int main()
 		renderScene(ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, sModel1, sModel2, skyBox, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture, &shader);
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
-		//cube.drawModel();
-		
+
+		// spot light model
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_spot_light_matrix));
 		spotLight.drawModel(0,0,0);
 
 		// Draws line
@@ -1146,7 +1156,6 @@ void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngM
 
 	//model_Stage_shader Bind()
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Stage_matrix));
-	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	stage.drawModel(renderingMode, stage_texture);
 
 	// Ground
