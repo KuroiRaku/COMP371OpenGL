@@ -1,3 +1,4 @@
+
 #include "Cone.h"
 
 #include <iostream>
@@ -13,7 +14,7 @@
 static const int N = 5;
 static const int M = 3;
 
-float toRadians(float degrees) { return (degrees * 2.0f * 3.14159f) / 360.0f; }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // ctor
@@ -181,3 +182,5 @@ void Cone::draw(Shader* shader)
     //glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
 
 }
+
+

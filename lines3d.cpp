@@ -30,5 +30,6 @@ void Lines3d::drawLines(Shader* shader, glm::mat4 objectMatrix)
 	glUniform3fv(shader->GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 0, 1)));
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(matrix_Z));
 	cylinderZ.draw(shader);
+	glUniform3fv(shader->GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 }
 

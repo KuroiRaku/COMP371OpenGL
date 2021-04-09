@@ -42,7 +42,7 @@ using namespace std;
 // Window dimensions
 const GLuint WIDTH = 1024, HEIGHT = 768;
 
-void renderScene(GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, SModel sModel1, SModel sModel2, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader);
+void renderScene(GroundPlain ground, AlessandroModel alessandroModel, Cylinder cylinder, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, SModel sModel1, SModel sModel2, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader);
 
 glm::mat4 model_matrix;
 glm::mat4 view_matrix;
@@ -83,12 +83,15 @@ GLuint mm_loc;
 GLuint flag_id ;
 GLuint lights_id ;
 GLuint spotlight_id;
+GLuint spotlight2_id;
 GLuint normalcol_id ;
 GLuint greyscale_id ;
 GLuint red_id ;
 GLuint green_id ;
 GLuint blue_id ;
 GLuint colour_id ;
+
+
 
 double camRotation = 0;
 
@@ -117,10 +120,10 @@ glm::mat4 model_world = glm::mat4(1.0f);
 glm::vec3 model_world_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 glm::mat4 model_Stage = glm::mat4(1.0f);
-glm::vec3 model_Stage_move = glm::vec3(-10, 0, 0); //to apply translational transformations
+glm::vec3 model_Stage_move = glm::vec3(-10, 0, 25); //to apply translational transformations
 
 glm::mat4 model_Screen = glm::mat4(1.0f);
-glm::vec3 model_Screen_move = glm::vec3(-10, 0, 0); //to apply translational transformations
+glm::vec3 model_Screen_move = glm::vec3(-10, 0, 25); //to apply translational transformations
 
 glm::mat4 model_S1 = glm::mat4(1.0f);////Model of first letter S
 glm::vec3 model_S1_move = glm::vec3(0, 0.5, -25); //to apply translational transformations
@@ -169,6 +172,7 @@ GLuint mm_loc_lines_3d;
 bool flag = true;//false;
 bool lights = true;// true;
 bool spotlight = false;
+bool spotlight2 = false;
 bool normalcol = false;
 bool greyscale = false;
 bool red = false;
@@ -193,9 +197,14 @@ glm::vec3 lightPosition = glm::vec3(1.2f, 5.0f, 2.0f);
 
 // Spotlight
 glm::vec3 spotlightColor = glm::vec3(1.0, 1.0, 1.0);
-glm::vec3 spotlightPosition = glm::vec3(0, 3, -23);
-glm::vec3 spotlightFocus = glm::vec3(0.0, 0.0, 1.0);
-glm::vec3 spotlightDirection = glm::normalize(spotlightFocus - lightPosition);
+glm::vec3 spotlightPosition = glm::vec3(10, 3, 23);
+glm::vec3 spotlightFocus = glm::vec3(8, 2, 12);
+glm::vec3 spotlightDirection = glm::vec3(0, 1, 0);
+
+glm::vec3 spotlightColor2;
+glm::vec3 spotlightPosition2;
+glm::vec3 spotlightFocus2;
+glm::vec3 spotlightDirection2 = glm::normalize(spotlightFocus2 - spotlightPosition2);
 
 float spotlightCutoff = glm::cos(glm::radians(12.5f));
 float spotlightOuterCutoff = glm::cos(glm::radians(15.0f));
@@ -631,8 +640,15 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 
 
-	if (key == GLFW_KEY_S && action == GLFW_PRESS) {
-		//Camera at light source and toggle on and of the light
+	if (key == GLFW_KEY_K && action == GLFW_PRESS) {
+		if (!spotlight2) {
+			spotlight2 = true;
+
+		}
+		else {
+			spotlight2 = false;
+		}
+		
 	}
 
 	if (key == GLFW_KEY_N && action == GLFW_PRESS) {
@@ -853,6 +869,7 @@ int main()
      flag_id = shader.GetUniformLocation("flag");
      lights_id = shader.GetUniformLocation("lights");
 	 spotlight_id = shader.GetUniformLocation("spotlight_on");
+	 spotlight2_id = shader.GetUniformLocation("spotlight_on2");
 	 normalcol_id = shader.GetUniformLocation("normalcol");
 	 greyscale_id = shader.GetUniformLocation("greyscale");
 	 red_id = shader.GetUniformLocation("red");
@@ -878,6 +895,16 @@ int main()
 	glUniform1f(shader.GetUniformLocation("spotlight_constant"), spotlightConstant);
 	glUniform1f(shader.GetUniformLocation("spotlight_linear"), spotlightLinear);
 	glUniform1f(shader.GetUniformLocation("spotlight_quadratic"), spotlightQuadratic);
+
+	glUniform3fv(shader.GetUniformLocation("spotlight_color2"), 1, glm::value_ptr(spotlightColor2));
+	glUniform3fv(shader.GetUniformLocation("spotlight_position2"), 1, glm::value_ptr(spotlightPosition2));
+	glUniform3fv(shader.GetUniformLocation("spotlight_direction2"), 1, glm::value_ptr(spotlightDirection2));
+	glUniform1f(shader.GetUniformLocation("spotlight_cutoff2"), spotlightCutoff);
+	glUniform1f(shader.GetUniformLocation("spotlight_outer_cutoff2"), spotlightOuterCutoff);
+	glUniform1f(shader.GetUniformLocation("spotlight_constant2"), spotlightConstant);
+	glUniform1f(shader.GetUniformLocation("spotlight_linear2"), spotlightLinear);
+	glUniform1f(shader.GetUniformLocation("spotlight_quadratic2"), spotlightQuadratic);
+
 
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
 	glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(glm::vec3(cam_pos)));
@@ -948,25 +975,7 @@ int main()
 	{
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwPollEvents();
-		const float radius = 30.0f;
-		float camX = sin(camRotation) * radius;
-		float camZ = cos(camRotation) * radius;
-		shader.Bind();
-		switch (currentCam) {
-		case 0:
-			view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
-			break;
-		case 1:
-			view_matrix = glm::lookAt(cam_pos_front, cam_pos_front + cam_dir_front, cam_up_front);
-			break;
-		case 2:
-			view_matrix = glm::lookAt(cam_pos_back, cam_pos_back + cam_dir_back, cam_up_back);
-			break;
-		case 4:
-			view_matrix = glm::lookAt(glm::vec3(camX, 20, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
-			break;
 		
-		}
 	
 
 
@@ -1048,16 +1057,45 @@ int main()
 		}
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
 
+		
+
+
+		const float radius = 30.0f;
+		float camX = sin(camRotation) * radius;
+		float camZ = cos(camRotation) * radius;
+		shader.Bind();
+		switch (currentCam) {
+		case 0:
+			view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
+			break;
+		case 1:
+			view_matrix = glm::lookAt(cam_pos_front, cam_pos_front + cam_dir_front, cam_up_front);
+			break;
+		case 2:
+			view_matrix = glm::lookAt(cam_pos_back, cam_pos_back + cam_dir_back, cam_up_back);
+			break;
+		case 4:
+			spotlightColor2 = glm::vec3(1.0, 0.4, 0.4);
+			spotlightPosition2 = glm::vec3(camX, 30, camZ);
+			spotlightFocus2 = glm::vec3(1.0, 0.0, 0.0);
+			spotlightDirection2 = glm::normalize(spotlightFocus2 - spotlightPosition2);
+			glUniform3fv(shader.GetUniformLocation("spotlight_color2"), 1, glm::value_ptr(spotlightColor2));
+			glUniform3fv(shader.GetUniformLocation("spotlight_position2"), 1, glm::value_ptr(spotlightPosition2));
+			glUniform3fv(shader.GetUniformLocation("spotlight_direction2"), 1, glm::value_ptr(spotlightDirection2));
+			view_matrix = glm::lookAt(glm::vec3(camX, 30, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+			break;
+
+		}
 		glUniform1i(flag_id, flag);
 		glUniform1i(lights_id, lights);
 		glUniform1i(spotlight_id, spotlight);
+		glUniform1i(spotlight2_id, spotlight2);
 		glUniform1i(normalcol_id, normalcol);
 		glUniform1i(greyscale_id, greyscale);
 		glUniform1i(red_id, red);
 		glUniform1i(green_id, green);
 		glUniform1i(blue_id, blue);
 		glUniform1i(colour_id, colour);
-
 		// --- Render ---
 		// Clear the colorbuffer
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -1070,10 +1108,10 @@ int main()
 		shader.SetUniform1i("u_Texture", 0);
 		//shader.SetUniform4f("light_position", 0.0, 30.0, 5.0, 1);
 		//shader.SetVec3("light_position", glm::vec3(0.0, 30.0, 5.0));
-		renderScene(ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, sModel1, sModel2, skyBox, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture, &shader);
+		renderScene(ground, alessandroModel, cylinder, leCherngModel, danModel, laginModel, stage, screen, sModel1, sModel2, skyBox, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture, &shader);
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Light_matrix));
 		//cube.drawModel();
 		
 		spotLight.drawModel(0,0,0);
@@ -1082,7 +1120,7 @@ int main()
 		glLineWidth(1.0f);
 		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
-		//cylinder.draw(&shader);
+		lines3dObject.drawLines(&shader, line_matrix);
 
 		// Draws grid
 		lines3dShader.Bind();
@@ -1115,7 +1153,7 @@ int main()
 	return 0;
 }
 
-void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, SModel sModel1, SModel sModel2, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader){
+void renderScene( GroundPlain ground, AlessandroModel alessandroModel, Cylinder cylinder, LeCherngModel leCherngModel, DannModel danModel, LaginhoModel laginModel, Stage stage, Screen screen, SModel sModel1, SModel sModel2, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Shader* shader){
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
@@ -1142,6 +1180,8 @@ void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngM
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Sky_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
      skyBox.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, shader, model_Sky_matrix);
+	 
+
 
 	//model_D_shader.Bind();
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
