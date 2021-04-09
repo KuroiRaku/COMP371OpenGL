@@ -12,7 +12,7 @@ SkyBox::SkyBox() {
 
 	distance = 2.5f;
 
-	GLfloat cubeSizing = (lineSize * 75); // div by 2 because each side
+	GLfloat cubeSizing = (lineSize * 75*2); // div by 2 because each side
 	GLfloat cP = cubeSizing / 2.0f;
 
 	//(GLfloat centerX, GLfloat centerY, GLfloat centerZ, GLfloat tallNess, GLfloat width, GLfloat length)

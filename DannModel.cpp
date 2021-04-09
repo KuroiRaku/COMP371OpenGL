@@ -38,7 +38,7 @@ void DannModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTextu
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
-	boxTexture->Bind();
+	metalTexture->Bind();
 	Cube cube = Cube(0, 0, 0, 4, 0, 0);
 	cube.drawModel();
 	Sphere s = Sphere(2, 2, 0, 2, 0.5);

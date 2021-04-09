@@ -60,8 +60,8 @@ glm::vec3 temp_cam_dir = glm::vec3(0, 0, 1); //use this for the cross product or
 glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera is directing towards
 
 //model settings
-glm::mat4 model_active = glm::rotate(glm::mat4(1.0f), glm::radians(60.f), glm::vec3(0, 1, 0)); //active model
-glm::vec3 model_active_move = glm::vec3(-10, 2, -6); //to apply translational transformations
+glm::mat4 model_active = glm::rotate(glm::mat4(1.0f), glm::radians(0.f), glm::vec3(0, 1, 0)); //active model
+glm::vec3 model_active_move = glm::vec3(0.5, 23 - 0.5, -25); //to apply translational transformations
 
 glm::mat4 model_general = glm::mat4(1.0f); //active model
 glm::vec3 model_general_move = glm::vec3(0, 2, -10); //to apply translational transformations
@@ -90,6 +90,8 @@ GLuint green_id ;
 GLuint blue_id ;
 GLuint colour_id ;
 
+double camRotation = 0;
+
 //Alessandro
 glm::mat4 model_A = glm::mat4(1.0f);//Model of letter A
 glm::vec3 model_A_move = glm::vec3(0.5, 23 - 0.5, -25); //to apply translational transformations
@@ -115,16 +117,19 @@ glm::mat4 model_world = glm::mat4(1.0f);
 glm::vec3 model_world_move = glm::vec3(0, 0, 0); //to apply translational transformations
 
 glm::mat4 model_Stage = glm::mat4(1.0f);
-glm::vec3 model_Stage_move = glm::vec3(-10, 0, 25); //to apply translational transformations
+glm::vec3 model_Stage_move = glm::vec3(-10, 0, 0); //to apply translational transformations
 
 glm::mat4 model_Screen = glm::mat4(1.0f);
-glm::vec3 model_Screen_move = glm::vec3(-10, 0, 25); //to apply translational transformations
+glm::vec3 model_Screen_move = glm::vec3(-10, 0, 0); //to apply translational transformations
 
 glm::mat4 model_S1 = glm::mat4(1.0f);////Model of first letter S
 glm::vec3 model_S1_move = glm::vec3(0, 0.5, -25); //to apply translational transformations
 
 glm::mat4 model_S2 = glm::mat4(1.0f);///Model of second letter S
 glm::vec3 model_S2_move = glm::vec3(0, 7 - 0.5, -25); //to apply translational transformations
+
+glm::mat4 model_Light = glm::mat4(1.0f);///Model of second letter S
+glm::vec3 model_Light_move = glm::vec3(0, 10, 20); //to apply translational transformations
 
 
 glm::mat4 model_A_matrix ;
@@ -145,6 +150,8 @@ glm::mat4 line_matrix;
 glm::mat4 model_S1_matrix;
 
 glm::mat4 model_S2_matrix;
+
+glm::mat4 model_Light_matrix;
 
 Texture arrayOfTexture[14];
 
@@ -298,7 +305,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			//Left and Right key rotate camera
 			if (key == GLFW_KEY_RIGHT) { //left arrow rotates the camera left about the right vector
-				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(0, 1, 0));
+				camRotation = camRotation + 0.05;
 			}
 			if (key == GLFW_KEY_DOWN) { //left arrow rotates the camera left about the down vector
 				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(-1, 0, 0));
@@ -307,7 +314,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(1, 0, 0));
 			}
 			if (key == GLFW_KEY_LEFT) { //left arrow rotates the camera left about the left vector
-				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(0, -1, 0));
+				camRotation = camRotation - 0.05;
 			}
 		}
 	}
@@ -608,7 +615,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
 		//fps
 		currentCam = 1;
-		spotlight = true;
+		spotlight = false;
 
 	}
 	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
@@ -626,6 +633,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	if (key == GLFW_KEY_S && action == GLFW_PRESS) {
 		//Camera at light source and toggle on and of the light
+	}
+
+	if (key == GLFW_KEY_N && action == GLFW_PRESS) {
+		//Rotation cam
+		currentCam = 4;
 	}
 }
 
@@ -823,7 +835,9 @@ int main()
 	model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
 
 	model_S2_matrix = glm::translate(glm::mat4(1.f), model_S2_move);
+
 	model_Sky_matrix = glm::translate(glm::mat4(1.f), model_Sky_move);
+	model_Light_matrix = glm::translate(glm::mat4(1.f), model_Light_move);
 
 	
 
@@ -934,7 +948,9 @@ int main()
 	{
 		// Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
 		glfwPollEvents();
-
+		const float radius = 30.0f;
+		float camX = sin(camRotation) * radius;
+		float camZ = cos(camRotation) * radius;
 		shader.Bind();
 		switch (currentCam) {
 		case 0:
@@ -947,7 +963,7 @@ int main()
 			view_matrix = glm::lookAt(cam_pos_back, cam_pos_back + cam_dir_back, cam_up_back);
 			break;
 		case 4:
-			view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
+			view_matrix = glm::lookAt(glm::vec3(camX, 20, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
 			break;
 		
 		}
@@ -1105,22 +1121,22 @@ void renderScene( GroundPlain ground, AlessandroModel alessandroModel, LeCherngM
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_A_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	//alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	alessandroModel.drawModel(renderingMode, metalTexture, metalTexture, shearX, shearY);
 
 	//model_L_shader.Bind();
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_L_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	//leCherngModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	leCherngModel.drawModel(renderingMode, metalTexture, metalTexture, shearX, shearY);
 
 	//model_La_shader.Bind();
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_La_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	//laginModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	laginModel.drawModel(renderingMode, metalTexture, metalTexture, shearX, shearY);
 
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S1_matrix));
-	sModel1.drawModel(renderingMode, boxTexture);
+	sModel1.drawModel(renderingMode, metalTexture);
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S2_matrix));
-	sModel2.drawModel(renderingMode, boxTexture);
+	sModel2.drawModel(renderingMode, metalTexture);
 
 
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Sky_matrix));
