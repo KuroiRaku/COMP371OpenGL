@@ -1,8 +1,8 @@
 #include "Cylinder.h"
 
-///////////////////////////////////////////////////////////////////////////////
-// https://github.com/arunkumarsadhana/opengl_cylinder_shaders/blob/master/Project2_opengl_cylinder/Source.cpp
-///////////////////////////////////////////////////////////////////////////////
+
+//Source: https://github.com/arunkumarsadhana/opengl_cylinder_shaders/blob/master/Project2_opengl_cylinder/Source.cpp
+
 
 
 #include <iostream>
@@ -20,9 +20,7 @@ static const int M = 3;
 
 float toRadians(float degrees) { return (degrees * 2.0f * 3.14159f) / 360.0f; }
 
-///////////////////////////////////////////////////////////////////////////////
-// ctor
-///////////////////////////////////////////////////////////////////////////////
+
 Cylinder::Cylinder(float Length, float size, float radius)
 {
     const int NUMBER_OF_VERTICIES = 54;
@@ -172,17 +170,11 @@ Cylinder::Cylinder(float Length, float size, float radius)
 }
 
 
-
-///////////////////////////////////////////////////////////////////////////////
-// draw a cylinder in VertexArray mode
-// OpenGL RC must be set before calling it
-///////////////////////////////////////////////////////////////////////////////
 void Cylinder::draw(Shader* shader)
 {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glBindVertexArray(this->vao_Cylinder);
     glDrawElements(GL_TRIANGLES, indicesCylinder, GL_UNSIGNED_INT, NULL);
 
-    //glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
 
 }

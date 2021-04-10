@@ -162,7 +162,7 @@
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="SModel.cpp" />
     <ClCompile Include="sphere.cpp" />
-    <ClCompile Include="SpotLightModel.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -187,7 +187,7 @@
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="SModel.h" />
     <ClInclude Include="sphere.h" />
-    <ClInclude Include="SpotLightModel.h" />
+    <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Texture.h" />

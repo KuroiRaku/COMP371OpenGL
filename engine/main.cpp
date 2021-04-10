@@ -33,7 +33,7 @@
 #include "../Cylinder.h"
 #include "../SModel.h"
 #include "../SkyBox.h"
-#include "../SpotLightModel.h"
+#include "../SpotLight.h"
 
 using namespace std;
 
@@ -994,7 +994,7 @@ int main()
 	SModel sModel1 = SModel();
 	SModel sModel2 = SModel();
 	SkyBox skyBox = SkyBox();
-	SpotLightModel spotLight = SpotLightModel();
+	SpotLight spotLight = SpotLight();
 	Cylinder cylinder = Cylinder(2.5f, 1.f, 0.125);
 
 

@@ -4,13 +4,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "Cube.h"
 #include "Cylinder.h"
+#include "Cube.h"
 
-class SpotLightModel
+class SpotLight
 {
 public:
 	void drawModel(GLfloat centerX, GLfloat centerY, GLfloat centerZ);
-	SpotLightModel();
+	SpotLight();
 };
 
