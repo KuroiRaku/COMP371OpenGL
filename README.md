@@ -52,7 +52,7 @@ You can select each of the model through the keys 1,2,3,4. From there here are t
 'R': Switch to fps main camera.\
 'M': Switch to camera infront of model.\
 'B': Switch to camera back of models.\
-'Q': Turn off shadows?.\
+'Q': Turn off shadows? (Alternatively, go to main and set bool shadow to false.\
 
 ## Code Reference
 I have refer to code in [learnopengl.com](learnopengl.com)

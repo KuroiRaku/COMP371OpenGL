@@ -203,6 +203,8 @@ glm::vec3 cam_pos_light = glm::vec3(0, 40, -10);
 glm::vec3 cam_dir_light = glm::vec3(0, 0, 0);
 glm::vec3 cam_up_light = glm::vec3(0, 1, 0);
 
+glm::vec3 cam_general = cam_pos;
+
 float camX;
 float camZ;
 // lighting settings
@@ -217,7 +219,7 @@ glm::vec3 lightDirection = glm::normalize(lightFocus - lightPosition);
 // key 7 
 glm::vec3 spotlightColor = glm::vec3(1.0, 1.0, 1.0);
 glm::vec3 spotlightPosition = glm::vec3(0, 20, -5);
-glm::vec3 spotlightFocus = glm::vec3(0, 0, 23);
+glm::vec3 spotlightFocus = glm::vec3(0, 0, 25);
 glm::vec3 spotlightDirection = glm::normalize(spotlightFocus - spotlightPosition);
 
 // Rotating
@@ -681,22 +683,27 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
 		if (currentCam == 1) {
 			currentCam = 0;
+			cam_general = cam_pos;
 		}
 		else {
 			currentCam = 1;
+			cam_general = cam_pos_front;
 		}
 	}
 	// Back
 	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
 		if (currentCam == 2) {
 			currentCam = 0;
+			cam_general = cam_pos;
 		}
 		else {
 			currentCam = 2;
+			cam_general = cam_pos_back;
 		}
 	}
 	if (key == GLFW_KEY_R && action == GLFW_PRESS) {
 		currentCam = 0;
+		cam_general = cam_pos;
 	}
 
 	// Rotating cam
@@ -704,6 +711,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		//Rotation cam
 		if (currentCam == 4) {
 			currentCam = 0;
+			cam_general = cam_pos;
 		}
 		else {
 			currentCam = 4;
@@ -713,7 +721,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_Q && action == GLFW_PRESS) {
 		//Rotation cam
 		if (shadow) {
-			std::cout << "test" << std::endl;
+			std::cout << "disable shadow" << std::endl;
 			shadow = false;
 		}
 		else {
@@ -1116,28 +1124,28 @@ int main()
 			glUniform3fv(shader.GetUniformLocation("spotlight_position2"), 1, glm::value_ptr(spotlightPosition2));
 			glUniform3fv(shader.GetUniformLocation("spotlight_direction2"), 1, glm::value_ptr(spotlightDirection2));
 			view_matrix = glm::lookAt(glm::vec3(camX, 30, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+			cam_general = glm::vec3(camX, 30, camZ);
 			break;
 		}
 
 		// lighting
 		//glm::mat4 lightProjectionMatrix = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, lightNearPlane, lightFarPlane);
 		
-
 		if (shadow) {
 			shaderShadow.Bind();
-			std::cout << "Doing shadowssss" << std::endl;
+			glViewport(0, 0, SHADOW_WIDTH, SHADOW_WIDTH);
 			lightViewMatrix = glm::lookAt(generalLightPosition, generalLightFocus, glm::vec3(0.0f, 1.0f, 0.0f));
 			lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
 
 			glUniformMatrix4fv(shaderShadow.GetUniformLocation("light_view_proj_matrix"), 1, 0, glm::value_ptr(lightSpaceMatrix));
 
-			glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 			glBindFramebuffer(GL_FRAMEBUFFER, depth_map_fbo);
 			glClear(GL_DEPTH_BUFFER_BIT);
 
 			renderScene(shaderShadow, ground, lModel, eModel, eModel2, lModel2, eModel3, cModel, stage, screen, skyBox, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture, &skyboxTexture);
 			// Unbind the framebuffer
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glBindVertexArray(0);
+
 		}
 
 		glm::mat4 translator_A = glm::translate(glm::mat4(1.0f), model_L_move);
@@ -1216,15 +1224,17 @@ int main()
 			break;
 		}
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
-
-
-		glViewport(0, 0, WIDTH, HEIGHT);
-		glClearColor(1.f, 0.1f, 0.1f, 1.0f);
 		
 		shader.Bind();
 
-		if (!shadow) {
+		glViewport(0, 0, WIDTH, HEIGHT);
+		glClearColor(1.f, 0.1f, 0.1f, 1.0f);
+
+		
+
+		if (shadow) {
 			glUniform1i(shader.GetUniformLocation("shadow_on"), shadow);
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

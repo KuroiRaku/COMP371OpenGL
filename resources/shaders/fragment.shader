@@ -1,7 +1,7 @@
 #version 330 core
 
 out vec4 result_color;
-
+const float PI = 3.1415926535897932384626433832795;
 
 //For Shadows
 uniform vec3 light_direction;
@@ -98,36 +98,80 @@ float shadow_scalar() {
 	// calculate bias (based on depth map resolution and slope)
 	vec3 normal_s = normalize(normal);
 	vec3 lightDir = normalize(light_position - fragment_position);
-	float bias = max(0.05 * (1.0 - dot(normal_s, light_direction)), 0.005);
+	float bias = 0.003;
 	// check whether current frag pos is in shadow
 	// float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
 	// PCF
 	float shadow = 0.0;
-	return ((current_depth - bias) > closest_depth) ? 1.0 : 0.0;
+	/*return ((current_depth - bias) > closest_depth) ? 1.0 : 0.0;*/
 	
-	//vec2 texelSize = 1.0 / textureSize(shadow_map, 0);
-	//for (int x = -1; x <= 1; ++x)
-	//{
-	//	for (int y = -1; y <= 1; ++y)
-	//	{
-	//		float pcfDepth = texture(shadow_map, normalized_device_coordinates.xy + vec2(x, y) * texelSize).r;
-	//		shadow += ((current_depth - bias) > pcfDepth) ? 1.0 : 0.0;
-	//	}
-	//}
+
+	vec2 texelSize = 1.0 / textureSize(shadow_map, 0);
+	for (int x = -1; x <= 1; ++x)
+	{
+		for (int y = -1; y <= 1; ++y)
+		{
+			float pcfDepth = texture(shadow_map, normalized_device_coordinates.xy + vec2(x, y) * texelSize).r;
+			shadow += ((current_depth - bias) > pcfDepth) ? 1.0 : 0.0;
+		}
+	}
 
 
-	//// keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
-	//if (normalized_device_coordinates.z > 1.0)
-	//	shadow = 0;
+	// keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+	if (normalized_device_coordinates.z > 1.0)
+		shadow = 0;
 
-	//return shadow;
+	return shadow;
 }
+
+float spotlight_scalar() {
+	float theta = dot(normalize(fragment_position - spotlight_position), spotlight_direction);
+
+	if (theta > spotlight_cutoff) {
+		return 1.0;
+	}
+	else if (theta > spotlight_outer_cutoff) {
+		return (1.0 - cos(PI * (theta - spotlight_outer_cutoff) / (spotlight_cutoff - spotlight_outer_cutoff))) / 2.0;
+	}
+	else {
+		return 0.0;
+	}
+}
+
+float spotlight_scalar2() {
+	float theta = dot(normalize(fragment_position - spotlight_position2), spotlight_direction2);
+
+	if (theta > spotlight_cutoff) {
+		return 1.0;
+	}
+	else if (theta > spotlight_outer_cutoff) {
+		return (1.0 - cos(PI * (theta - spotlight_outer_cutoff) / (spotlight_cutoff - spotlight_outer_cutoff))) / 2.0;
+	}
+	else {
+		return 0.0;
+	}
+}
+
+float spotlight_scalar3() {
+	float theta = dot(normalize(fragment_position - spotlight_position3), spotlight_direction3);
+
+	if (theta > spotlight_cutoff) {
+		return 1.0;
+	}
+	else if (theta > spotlight_outer_cutoff) {
+		return (1.0 - cos(PI * (theta - spotlight_outer_cutoff) / (spotlight_cutoff - spotlight_outer_cutoff))) / 2.0;
+	}
+	else {
+		return 0.0;
+	}
+}
+
 
 void main()
 {
 
 	//ambient
-	float scalar = shadow_scalar();
+	float scalar = 1;
 
 	if (shadow_on == true)
 	{
@@ -135,10 +179,10 @@ void main()
 	}
 	else
 	{
-		scalar = 0.2;
+		scalar = 1;
 	}
 
-	vec3 ambient = ambient_strength * light_color;
+	vec3 ambient = scalar * ambient_strength * light_color;
 
 	//diffuse
 	vec3 light_direction = normalize(light_position - fragment_position);
@@ -152,7 +196,7 @@ void main()
 
 	vec3 specular = scalar * specular_strength * pow(max(dot(reflect_light_direction, halfway_direction), 0.0), 32) * light_color;
 
-	vec3 color = (ambient + (1.0 - scalar) * (diffuse + specular)) * object_color;
+	vec3 color = (ambient * diffuse + specular) * object_color;
 
 	vec3 spotlight = calculate_spotlight(scalar);
 
@@ -289,17 +333,17 @@ void main()
 
 
 	if (spotlight_on3) {
-		result_color = vec4(spotlight3 * texColor.rgb, 1.0f);
+		result_color = vec4(spotlight3 * texColor.rgb, 1.0f) + texColor;
 	}
 	else if (spotlight_on) {
-		result_color = vec4(spotlight * texColor.rgb, 1.0f);
+		result_color = vec4(spotlight * texColor.rgb, 1.0f) + texColor;
 
 	}
 	else if (spotlight_on2) {
-		result_color = vec4(spotlight2 * texColor.rgb, 1.0f);
+		result_color = vec4(spotlight2 * texColor.rgb, 1.0f) + texColor;
 
 	} else if (!spotlight_on3&& !spotlight_on2&& !spotlight_on){
-		result_color = vec4(color * texColor.rgb, 1.0f) + texColor;
+		result_color = vec4(color * texColor.rgb, 1.0f) +texColor;
 	}
 
 
@@ -322,14 +366,14 @@ vec3 calculate_spotlight(float shadow_arg)
 
 	// combine results
 	vec3 ambient = ambient_strength * spotlight_color;
-	vec3 diffuse = shadow_arg * diffuse_strength * max(dot(normal, light_direction), 0.0) * spotlight_color;
-	vec3 specular = specular_strength * pow(max(dot(view_direction, reflect_direction), 0.0), 32) * spotlight_color;
+	vec3 diffuse = shadow_scalar() * spotlight_scalar()* diffuse_strength * max(dot(normal, light_direction), 0.0) * spotlight_color;
+	vec3 specular = spotlight_scalar() * specular_strength * pow(max(dot(view_direction, reflect_direction), 0.0), 32) * spotlight_color;
 
-	ambient *= ambient_strength * attenuation * intensity;
-	diffuse *= diffuse_strength * attenuation * intensity;
-	specular *= specular_strength * attenuation * intensity;
+	/*ambient *=  attenuation * intensity;
+	diffuse *=  attenuation * intensity;
+	specular *=  attenuation * intensity;*/
 
-	return (ambient + (1.0 - shadow_arg) * (diffuse + specular)) * object_color;
+	return (ambient * (diffuse + specular)) * object_color;
 }
 
 vec3 calculate_spotlight2(float shadow_arg)
@@ -348,14 +392,14 @@ vec3 calculate_spotlight2(float shadow_arg)
 
 	// combine results
 	vec3 ambient = ambient_strength * spotlight_color2;
-	vec3 diffuse = shadow_arg * diffuse_strength * max(dot(normal, light_direction), 0.0) * spotlight_color2;
-	vec3 specular = specular_strength * pow(max(dot(view_direction, reflect_direction), 0.0), 32) * spotlight_color2;
+	vec3 diffuse = shadow_scalar() * spotlight_scalar2() * diffuse_strength * max(dot(normal, light_direction), 0.0) * spotlight_color2;
+	vec3 specular = spotlight_scalar2() * specular_strength * pow(max(dot(view_direction, reflect_direction), 0.0), 32) * spotlight_color2;
 
-	ambient *= ambient_strength * attenuation * intensity;
-	diffuse *= diffuse_strength * attenuation * intensity;
-	specular *= specular_strength * attenuation * intensity;
+	//ambient *=  attenuation * intensity;
+	//diffuse *=  attenuation * intensity;
+	//specular *=  attenuation * intensity;
 
-	return (ambient + (1.0 - shadow_arg) * (diffuse + specular)) * object_color;
+	return (ambient  * (diffuse + specular)) * object_color;
 }
 
 vec3 calculate_spotlight3(float shadow_arg)
@@ -375,12 +419,12 @@ vec3 calculate_spotlight3(float shadow_arg)
 
 	// combine results
 	vec3 ambient = ambient_strength * spotlight_color3;
-	vec3 diffuse = shadow_arg * diffuse_strength * max(dot(normal, halfway_direction), 0.0) * spotlight_color3;
-	vec3 specular = specular_strength * pow(max(dot(view_direction, reflect_direction), 0.0), 32) * spotlight_color3;
+	vec3 diffuse = shadow_scalar() * spotlight_scalar3()* diffuse_strength * max(dot(normal, halfway_direction), 0.0) * spotlight_color3;
+	vec3 specular = spotlight_scalar3() * specular_strength * pow(max(dot(view_direction, reflect_direction), 0.0), 32) * spotlight_color3;
 
-	ambient *= ambient_strength * attenuation * intensity;
-	diffuse *= diffuse_strength * attenuation * intensity;
-	specular *= specular_strength * attenuation * intensity;
+	/*ambient *=  attenuation * intensity;
+	diffuse *=  attenuation * intensity;
+	specular *= attenuation * intensity;*/
 
-	return (ambient + (1.0 - shadow_arg) * (diffuse + specular)) * object_color;
+	return (ambient * (diffuse + specular)) * object_color;
 }
