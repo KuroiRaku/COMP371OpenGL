@@ -1,13 +1,9 @@
-Team Members:\
-Alessandro Kreslin (40025121)<br />
-Dann Kaoussarani (40133457)<br />
+## Quiz 2
 Le Cherng Lee (40122814)<br />
-Arshia Hamidi (40068250)<br />
 <br />
-Our project started with 5 members, but one of the members dropped the class, that’s why there are only 4 models
 
 ## Project Overview
-This project shows each member character model that consist of their first letter and last letter of their name as well as first number and last number of their student ID.<br /> This project allow user to rotate the models, moving the camera like in fps as well as rotating the world.<br /> There are some basic shaders code that changes models' colour as well as a little bit of lighting code and is just an extra work that we done.<br /> There's also an objectLoader and we loaded a cube with it as well as a font code which we did not use in the project as of right now. <br />
+This project shows 6 characters that made up from my last name and my first name.<br /> This project allow user to switch between cameras, moving the camera like in fps as well as rotating the world and switching lights on and off.<br /> There are some extra gimmicks that I had done for colors.<br />
 
 ## Project Dependencies
 This project uses GLAD and GLFW libraries to run the OpenGL version 4.6 application.<br />
@@ -21,13 +17,15 @@ The grid is made up of a series of lines 128 x 128 with equal length spreading a
 The lines are made in the length of 7 grid units apart going in the x,y,z axis\ We binded a separate shader to achieve the different colors of each line.
 
 ## The Models
-We only have 4 team members now so we made 4 models. We used the Vertex Array method of creating the models and modelled them using triangle primitives. Each team members model was placed in a separate class for ease of separation.
+I have hard coded a custom cylinder, sphere as well as a "rectangular cube" using VAO, VBO. Then this quiz will only requires me to create three different letter models. Which is L, E and C. We form these characters through drawing cubes and spheres. Each model also has different colours. <br/>
+  
 
 ## The Camera
-We used the Model View Projection approach to modelling the 3d world with the camera position changing the values\ These are the camera controls:\
+I used the Model View Projection approach to modelling the 3d world with the camera position changing the values\ These are the camera controls:\
 While right mouse button click and move the mouse in x direction: pan camera in X direction\
 While middle button is pressed and move the mouse in y direction: tilt camera in Y direction\
-While left mouse button click: zoom in or out
+While left mouse button click: zoom in or out\
+TGFH to move around\
 
 ## Model Control
 You can select each of the model through the keys 1,2,3,4. From there here are the controls\
@@ -38,12 +36,24 @@ You can select each of the model through the keys 1,2,3,4. From there here are t
 ‘P’: to render model with points\
 ‘L’: to render model with lines\
 ’T’: to render model with triangles\
-'right arrow button': To rotate the world model to +y axis\
-'left arrow button': To rotate the world model to -y axis\
 'up arrow button': To rotate the world to +x axis\
 'down arrow button': To rotate the world to -x axis\
 'home button': Reset all the world matrix to its original position
 '0': Reset every model to its original position
 
+## Lighting Control And Cameras
+'6': to always reset to ambient light\
+'5': turn off ambient light (It won't be completely dark)\
+'7': turn on spotlight number 1 that shines on model\
+'K': turn on spotlight 3 that is on the ceiling shining on the stage\
+'S': turn on spotlight 2 that follows another camera when you press N\
+'N': Switch to camera that is facing on the middle of the plane on top.\
+'left arrow' + 'right arrow': While on N, press it to circle around the middle left or right.\
+'R': Switch to fps main camera.\
+'M': Switch to camera infront of model.\
+'B': Switch to camera back of models.\
+'Q': Turn off shadows?.\
+
 ## Code Reference
-We have refer to code in [learnopengl.com](learnopengl.com)
+I have refer to code in [learnopengl.com](learnopengl.com)
+For Sphere, I have refer to https://stackoverflow.com/questions/43087620/draw-sphere-in-opengl-4-0
