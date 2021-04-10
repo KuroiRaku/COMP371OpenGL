@@ -12,7 +12,8 @@ public:
 	void drawGround(Texture * tileTexture);
 
 private:
+	Cube plane = Cube(-25, -2, -25, 1, 50, 50);
 	GLuint vao_ground;
-	Cube plane = Cube(-25, -2, -25, 1, 75, 75);
+	
 };
 

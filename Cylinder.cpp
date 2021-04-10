@@ -1,7 +1,7 @@
 #include "Cylinder.h"
 
 
-//Source: https://github.com/arunkumarsadhana/opengl_cylinder_shaders/blob/master/Project2_opengl_cylinder/Source.cpp
+//Source: https://github.com/arunkumarsadhana/opengl_cylinder_shaders/blob/master/Project2_opengl_cylinder/Source.cpp  I lost my old Cylindre.h from Quiz 1 so this is another similar one that I found on the internet, main difference is the additon of normals and a different vertices and indicies
 
 
 
@@ -24,12 +24,9 @@ float toRadians(float degrees) { return (degrees * 2.0f * 3.14159f) / 360.0f; }
 Cylinder::Cylinder(float Length, float size, float radius)
 {
     const int NUMBER_OF_VERTICIES = 54;
-    const int ORIGINAL_STRIDE = 3;
-
     GLfloat vertices[54] =
     {
-        // bottom circle
-        0, 0, 0 , //origin
+        0, 0, 0 ,
         0,-radius * size,0,
         -(radius * glm::cos(45)) * size,-(radius * glm::cos(45)) * size,0,
         -radius * size,0,0,
@@ -38,9 +35,7 @@ Cylinder::Cylinder(float Length, float size, float radius)
         (radius * glm::cos(45)) * size,(radius * glm::cos(45)) * size,0,
         radius * size,0,0,
         (radius * glm::cos(45)) * size,-(radius * glm::cos(45)) * size,0,
-
-        //upper part
-        0, 0, Length * size, //origin
+        0, 0, Length * size,
         0,-radius * size,Length * size,
         -(radius * glm::cos(45)) * size,-(radius * glm::cos(45)) * size,Length * size,
         -radius * size,0,Length * size,
@@ -50,12 +45,14 @@ Cylinder::Cylinder(float Length, float size, float radius)
         radius * size,0,Length * size,
         (radius * glm::cos(45)) * size,-(radius * glm::cos(45)) * size,Length * size
     };
+    const int ORIGINAL_STRIDE = 3;
+
+   
 
     const int NUMBER_OF_INDICIES = 96;
 
     int indices[] =
-    {
-        // Bottom
+    { 
         0,1,2,
         0,2,3,
         0,3,4,
@@ -64,8 +61,6 @@ Cylinder::Cylinder(float Length, float size, float radius)
         0,6,7,
         0,7,8,
         0,8,1,
-
-        //Upper Circle
         9,11,10,
         9,12,11,
         9,13,12,
@@ -74,37 +69,24 @@ Cylinder::Cylinder(float Length, float size, float radius)
         9,16,15,
         9,17,16,
         9,10,17,
-
-        //Side
         1,10,2,
         2,10,11,
         2,11,3,
         3,11,12,
-
-        //Quarter Arc
         3,12,4,
         4,12,13,
         4,13,5,
         5,13,14,
-
-        //Another Quarter Arc
         5,14,6,
         6,14,15,
         6,15,7,
         7,15,16,
-
-        //Final Quarter Arc
         7,16,8,
         8,16,17,
         8,16,1,
         1,16,10
-
     };
-
-    // initializes size of norms aray
     glm::vec3 norms[NUMBER_OF_VERTICIES / ORIGINAL_STRIDE];
-
-    // calculates norms for a model based of their existing vertexes and indicies and puts it in a separate norms array
     for (int i = 0; i < NUMBER_OF_INDICIES; i += ORIGINAL_STRIDE) {
         int p1 = indices[i];
         int p2 = indices[i + 1];
@@ -127,11 +109,8 @@ Cylinder::Cylinder(float Length, float size, float radius)
         norms[p2] = normal;
         norms[p3] = normal;
     }
-    // This is the new array we use that includes the norms
-    const int SIZE_OF_NEW_ARRAY = NUMBER_OF_VERTICIES * 2;//144;
+    const int SIZE_OF_NEW_ARRAY = NUMBER_OF_VERTICIES * 2;
     GLfloat vertices_norms[SIZE_OF_NEW_ARRAY];
-
-    // this for loop takes the values of our initial verticies and puts them together in a new array with our norms
     for (int i = 0; i < NUMBER_OF_VERTICIES; i += ORIGINAL_STRIDE) {
         int norms_row = i / ORIGINAL_STRIDE;
         vertices_norms[i * 2] = vertices[i];
@@ -141,22 +120,16 @@ Cylinder::Cylinder(float Length, float size, float radius)
         vertices_norms[(i * 2) + 4] = norms[norms_row].y;
         vertices_norms[(i * 2) + 5] = norms[norms_row].z;
     }
-
-
     glGenVertexArrays(1, &this->vao_Cylinder);
     glBindVertexArray(this->vao_Cylinder);
-
     GLuint vertices_VBO;
     glGenBuffers(1, &vertices_VBO);
     glBindBuffer(GL_ARRAY_BUFFER, vertices_VBO);
     glBufferData(GL_ARRAY_BUFFER, (sizeof(vertices) / sizeof(vertices[0])) * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
-
-    //normals attribute
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-
     indicesCylinder = (sizeof(indices) / sizeof(indices[0]));
     GLuint EBO;
     glGenBuffers(1, &EBO);
@@ -175,6 +148,5 @@ void Cylinder::draw(Shader* shader)
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glBindVertexArray(this->vao_Cylinder);
     glDrawElements(GL_TRIANGLES, indicesCylinder, GL_UNSIGNED_INT, NULL);
-
 
 }

@@ -7,7 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include "Cone.h"
-
+#include "Texture.h"
 #pragma once
 class Lines3d
 {
@@ -15,21 +15,19 @@ class Lines3d
 public:
 	Lines3d();
 
-	void drawLines(Shader* shader, glm::mat4 objectMatrix);
+	void drawLines(Shader* shader, glm::mat4 objectMatrix, Texture* texture);
 
-	Cylinder cylinderX;
+	Cylinder cX;
+	Cylinder cZ;
+	Cylinder cY;
 	Cone coneX;
-	Cylinder cylinderY;
 	Cone coneY;
-	Cylinder cylinderZ;
 	Cone coneZ;
-
-	glm::mat4 matrix_X;
-	glm::mat4 matrix_Y;
-	glm::mat4 matrix_Z;
-
-	glm::mat4 matrix_X_Cone;
-	glm::mat4 matrix_Y_Cone;
-	glm::mat4 matrix_Z_Cone;
+	glm::mat4 m_X;
+	glm::mat4 m_Y;
+	glm::mat4 m_Z;
+	glm::mat4 m_X_cone;
+	glm::mat4 m_Y_cone;
+	glm::mat4 m_Z_cone;
 
 };

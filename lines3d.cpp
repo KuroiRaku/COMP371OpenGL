@@ -2,57 +2,62 @@
 
 Lines3d::Lines3d() {
 
-	cylinderX = Cylinder(2.5f, 1.f, 0.125);
-	cylinderY = Cylinder(2.5f, 1.f, 0.125);
-	cylinderZ = Cylinder(2.5f, 1.f, 0.125);
+	cX = Cylinder(2.5f, 1.f, 0.125);
+	cY = Cylinder(2.5f, 1.f, 0.125);
+	cZ = Cylinder(2.5f, 1.f, 0.125);
 
-	coneX = Cone(1.5f, 1.f, 0.5);
-	coneY = Cone(1.5f, 1.f, 0.5);
-	coneZ = Cone(1.5f, 1.f, 0.5);
+	coneX = Cone(1.0f, 1.f, 0.5);
+	coneY = Cone(1.0f, 1.f, 0.5);
+	coneZ = Cone(1.0f, 1.f, 0.5);
 
-	matrix_X = glm::mat4(1.f);
-	matrix_Y = glm::mat4(1.f);
-	matrix_Z = glm::mat4(1.f);
+	m_X = glm::mat4(1.f);
+	m_Y = glm::mat4(1.f);
+	m_Z = glm::mat4(1.f);
 
-	matrix_X_Cone = glm::mat4(1.f);
-	matrix_Y_Cone = glm::mat4(1.f);
-	matrix_Z_Cone = glm::mat4(1.f);
+	m_X_cone = glm::mat4(1.f);
+	m_Y_cone = glm::mat4(1.f);
+	m_Z_cone = glm::mat4(1.f);
 
-	matrix_X = glm::rotate(matrix_X, glm::radians(90.f), glm::vec3(0, 1, 0));
-	matrix_Y = glm::rotate(matrix_Y, glm::radians(90.f), glm::vec3(-1, 0, 0));
-	matrix_Z = glm::rotate(matrix_Z, glm::radians(0.f), glm::vec3(-1, 0, 0));
 
-	matrix_X_Cone = glm::translate(matrix_X_Cone, glm::vec3(2.5, 0, 0));
-	matrix_Y_Cone = glm::translate(matrix_Y_Cone, glm::vec3(0, 2.5, 0));
-	matrix_Z_Cone = glm::translate(matrix_Z_Cone, glm::vec3(0, 0, 2.5));
 
-	matrix_X_Cone = glm::rotate(matrix_X_Cone, glm::radians(90.f), glm::vec3(0, 1, 0));
-	matrix_Y_Cone = glm::rotate(matrix_Y_Cone, glm::radians(90.f), glm::vec3(-1, 0, 0));
-	matrix_Z_Cone = glm::rotate(matrix_Z_Cone, glm::radians(0.f), glm::vec3(-1, 0, 0));
+	m_X_cone = glm::translate(m_X_cone, glm::vec3(2.0, 0, 0));
+	m_Y_cone = glm::translate(m_Y_cone, glm::vec3(0, 2.0, 0));
+	m_Z_cone = glm::translate(m_Z_cone, glm::vec3(0, 0, 2.0));
+
+	m_X = glm::rotate(m_X, glm::radians(90.f), glm::vec3(0, 1, 0));
+	m_Y = glm::rotate(m_Y, glm::radians(90.f), glm::vec3(-1, 0, 0));
+	m_Z = glm::rotate(m_Z, glm::radians(0.f), glm::vec3(-1, 0, 0));
+
+
+	m_X_cone = glm::rotate(m_X_cone, glm::radians(90.f), glm::vec3(0, 1, 0));
+	m_Y_cone = glm::rotate(m_Y_cone, glm::radians(90.f), glm::vec3(-1, 0, 0));
+	m_Z_cone = glm::rotate(m_Z_cone, glm::radians(0.f), glm::vec3(-1, 0, 0));
 
 }
 
-void Lines3d::drawLines(Shader* shader, glm::mat4 objectMatrix)
+void Lines3d::drawLines(Shader* shader, glm::mat4 objectMatrix, Texture* texture)
 {
+	texture->Bind();
 	glUniform3fv(shader->GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(1, 0, 0)));
-	glUniformMatrix4fv(shader->GetUniformLocation("mm"), 1, 0, glm::value_ptr(objectMatrix * matrix_X));
-	cylinderX.draw(shader);
+	glUniformMatrix4fv(shader->GetUniformLocation("mm"), 1, 0, glm::value_ptr(objectMatrix * m_X));
+	cX.draw(shader);
 
-	glUniformMatrix4fv(shader->GetUniformLocation("mm"), 1, 0, glm::value_ptr(objectMatrix * matrix_X_Cone));
+	glUniformMatrix4fv(shader->GetUniformLocation("mm"), 1, 0, glm::value_ptr(objectMatrix * m_X_cone));
 	coneX.draw(shader);
+	texture->Unbind();
 
 	glUniform3fv(shader->GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 1, 0)));
-	glUniformMatrix4fv(shader->GetUniformLocation("mm"), 1, 0, glm::value_ptr(objectMatrix * matrix_Y));
-	cylinderY.draw(shader);
+	glUniformMatrix4fv(shader->GetUniformLocation("mm"), 1, 0, glm::value_ptr(objectMatrix * m_Y));
+	cY.draw(shader);
 
-	glUniformMatrix4fv(shader->GetUniformLocation("mm"), 1, 0, glm::value_ptr(objectMatrix * matrix_Y_Cone));
+	glUniformMatrix4fv(shader->GetUniformLocation("mm"), 1, 0, glm::value_ptr(objectMatrix * m_Y_cone));
 	coneY.draw(shader);
 
 	glUniform3fv(shader->GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0, 0, 1)));
-	glUniformMatrix4fv(shader->GetUniformLocation("mm"), 1, 0, glm::value_ptr(objectMatrix * matrix_Z));
-	cylinderZ.draw(shader);
+	glUniformMatrix4fv(shader->GetUniformLocation("mm"), 1, 0, glm::value_ptr(objectMatrix * m_Z));
+	cZ.draw(shader);
 
-	glUniformMatrix4fv(shader->GetUniformLocation("mm"), 1, 0, glm::value_ptr(objectMatrix * matrix_Z_Cone));
+	glUniformMatrix4fv(shader->GetUniformLocation("mm"), 1, 0, glm::value_ptr(objectMatrix * m_Z_cone));
 	coneZ.draw(shader);
 
 	glUniform3fv(shader->GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));

@@ -10,7 +10,7 @@
 class SpotLight
 {
 public:
-	void drawModel(GLfloat centerX, GLfloat centerY, GLfloat centerZ);
+	void drawModel(GLfloat x, GLfloat y, GLfloat z);
 	SpotLight();
 };
 
