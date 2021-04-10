@@ -10,7 +10,12 @@
 class SpotLightModel
 {
 public:
-	void drawModel(GLfloat centerX, GLfloat centerY, GLfloat centerZ);
-	SpotLightModel();
+	void drawModel(Shader& shader, glm::mat4 objectMatrix);
+	SpotLightModel(GLfloat centerX, GLfloat centerY, GLfloat centerZ);
+
+	Cube cube = Cube(0.5f, 0.5f, 0, 1.0f, 1.0f, 1.0f);
+	Cylinder cylinder = Cylinder(3.0f, 1.0f, 0.1f);
+
+	
 };
 

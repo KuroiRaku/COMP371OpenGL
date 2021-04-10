@@ -43,12 +43,6 @@
     <ClCompile Include="grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AlessandroModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LeCherngModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Laginho.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -64,9 +58,6 @@
     <ClCompile Include="stb_image.cpp">
       <Filter>Source Files\vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -76,9 +67,6 @@
     <ClCompile Include="sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SkyBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -86,6 +74,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Cone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLightModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="EModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -102,13 +105,7 @@
     <ClInclude Include="engine\Shaderloader.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="LeCherngModel.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="lines3d.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AlessandroModel.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Laginho.h">
@@ -126,22 +123,39 @@
     <ClInclude Include="stb_image.h">
       <Filter>Source Files\vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Cube.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="GroundPlain.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\GLDebugMessageCallback.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="SModel.h" />
     <ClInclude Include="SkyBox.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Cylinder.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Cone.h" />
+    <ClInclude Include="SpotLightModel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cone.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LModel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CModel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="EModel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Basic.shader">

@@ -23,15 +23,15 @@
 #include "../lines3d.h"
 #include "../grid.h"
 #include "../GroundPlain.h"
-#include "../AlessandroModel.h"
-#include "../LeCherngModel.h"
+#include "../CModel.h"
+#include "../LModel.h"
 #include "../Laginho.h"
 #include "../DannModel.h"
 #include "../Stage.h"
 #include "../Screen.h"
 #include "../Texture.h"
 #include "../Cylinder.h"
-#include "../SModel.h"
+#include "../EModel.h"
 #include "../SkyBox.h"
 #include "../SpotLightModel.h"
 
@@ -42,7 +42,7 @@ using namespace std;
 // Window dimensions
 const GLuint WIDTH = 1024, HEIGHT = 768;
 
-void renderScene(Shader& shader, GroundPlain& ground, AlessandroModel& alessandroModel, LeCherngModel& leCherngModel, DannModel& danModel, LaginhoModel& laginModel, Stage& stage, Screen& screen, SModel sModel1, SModel sModel2, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture);
+void renderScene(Shader& shader, GroundPlain& ground, LModel& lModel, EModel& eModel, EModel& eModel2, LModel lModel2, EModel eModel3, CModel& cModel, Stage& stage, Screen& screen, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Texture* skyboxTexture);
 
 glm::mat4 model_matrix;
 glm::mat4 view_matrix;
@@ -53,29 +53,7 @@ std::vector<glm::vec3> vertices;
 std::vector<glm::vec3> normals;
 std::vector<glm::vec2> UVs;
 
-//camera settings
-glm::vec3 cam_pos = glm::vec3(0, 2, 30);
-glm::vec3 cam_dir = glm::vec3(0, 0, -1); //direction means what the camera is looking at
-glm::vec3 temp_cam_dir = glm::vec3(0, 0, 1); //use this for the cross product or else when cam_dir and cam_up overlap, the cross product will be 0 (bad!)
-glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera is directing towards
 
-//model settings
-glm::mat4 model_active = glm::rotate(glm::mat4(1.0f), glm::radians(0.f), glm::vec3(0, 1, 0)); //active model
-glm::vec3 model_active_move = glm::vec3(0.5, 23 - 0.5, 25); //to apply translational transformations
-
-glm::mat4 model_general = glm::mat4(1.0f); //active model
-glm::vec3 model_general_move = glm::vec3(0, 2, -10); //to apply translational transformations
-
-float shearX = 0.f;
-float shearY = 0.f;
-
-glm::vec3 cam_pos_back = glm::vec3(0, 3, -28);
-glm::vec3 cam_dir_back = glm::vec3(0, 0, -1);
-glm::vec3 cam_up_back = glm::vec3(0, 1, 0);
-
-glm::vec3 cam_pos_front = glm::vec3(0, 3, -23);
-glm::vec3 cam_dir_front = glm::vec3(0, 0, 1);
-glm::vec3 cam_up_front = glm::vec3(0, 1, 0);
 
 GLuint vm_loc ;
 GLuint pm_loc ;
@@ -92,22 +70,38 @@ GLuint green_id ;
 GLuint blue_id ;
 GLuint colour_id ;
 
-
-
 double camRotation = 0;
+const float radius = 30.0f;
+
+float shearX = 0.f;
+float shearY = 0.f;
+
+//model settings
+glm::mat4 model_active = glm::rotate(glm::mat4(1.0f), glm::radians(0.f), glm::vec3(0, 1, 0)); //active model
+glm::vec3 model_active_move = glm::vec3(0, 15, 25); //to apply translational transformations
+
+glm::mat4 model_general = glm::mat4(1.0f); //active model
+glm::vec3 model_general_move = glm::vec3(0, 2, -10); //to apply translational transformations
 
 //Alessandro
-glm::mat4 model_A = glm::mat4(1.0f);//Model of letter A
-glm::vec3 model_A_move = glm::vec3(0.5, 23 - 0.5, 25); //to apply translational transformations
+glm::mat4 model_L = glm::mat4(1.0f);//Model of letter A
+glm::vec3 model_L_move = glm::vec3(0, 15, 25); //to apply translational transformations
 //Le Cherng
-glm::mat4 model_L = glm::mat4(1.0f);//Model of letter U
-glm::vec3 model_L_move = glm::vec3(0.5, 13 - 0.5, 25); //to apply translational transformations
+glm::mat4 model_E = glm::mat4(1.0f);//Model of letter U
+glm::vec3 model_E_move = glm::vec3(0, 12, 25); //to apply translational transformations
 //Dan
-glm::mat4 model_D = glm::mat4(1.0f);//Model of letter K
-glm::vec3 model_D_move = glm::vec3(-0.5, 28 - 0.5, 25); //to apply translational transformations
+glm::mat4 model_E2 = glm::mat4(1.0f);//Model of letter K
+glm::vec3 model_E2_move = glm::vec3(0, 9, 25); //to apply translational transformations
 //LaginHo
-glm::mat4 model_La = glm::mat4(1.0f);//Model of letter O
-glm::vec3 model_La_move = glm::vec3(0.5, 18 - 0.5, 25); //to apply translational transformations
+glm::mat4 model_L2 = glm::mat4(1.0f);//Model of letter O
+glm::vec3 model_L2_move = glm::vec3(0, 6, 25); //to apply translational transformations
+
+glm::mat4 model_E3 = glm::mat4(1.0f);////Model of first letter S
+glm::vec3 model_E3_move = glm::vec3(0, 3, 25); //to apply translational transformations
+
+glm::mat4 model_C = glm::mat4(1.0f);///Model of second letter S
+glm::vec3 model_C_move = glm::vec3(0, 0, 25); //to apply translational transformations
+
 //LaginHo
 glm::mat4 model_grid = glm::mat4(1.0f);
 glm::vec3 model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
@@ -123,38 +117,32 @@ glm::vec3 model_world_move = glm::vec3(0, 0, 0); //to apply translational transf
 glm::mat4 model_Stage = glm::rotate(glm::mat4(1.0f), glm::radians(0.f), glm::vec3(0, 1, 0)); //active model
 glm::vec3 model_Stage_move = glm::vec3(-10, 0, -25); //to apply translational transformations
 
-
 glm::mat4 model_Screen = glm::rotate(glm::mat4(1.0f), glm::radians(0.f), glm::vec3(0, 1, 0)); //active model
 glm::vec3 model_Screen_move = glm::vec3(-10, 0, -25); //to apply translational transformations
 
-glm::mat4 model_S1 = glm::mat4(1.0f);////Model of first letter S
-glm::vec3 model_S1_move = glm::vec3(0, 0.5, 25); //to apply translational transformations
+glm::mat4 model_Light = glm::rotate(glm::mat4(1.0f), glm::radians(180.f), glm::vec3(0, 1, 0));///Model of projector
 
-glm::mat4 model_S2 = glm::mat4(1.0f);///Model of second letter S
-glm::vec3 model_S2_move = glm::vec3(0, 7 - 0.5, 25); //to apply translational transformations
-
-glm::mat4 model_Light = glm::mat4(1.0f);///Model of projector
-glm::vec3 model_Light_move = glm::vec3(0, 20, -25); //to apply translational transformations
+glm::vec3 model_Light_move = glm::vec3(0, 40, 30); //to apply translational transformations
 
 
-glm::mat4 model_A_matrix ;
+glm::mat4 model_L_matrix ;
 
 glm::mat4 model_Sky_matrix;
 //Le Cherng
-glm::mat4 model_L_matrix ;
+glm::mat4 model_E_matrix ;
 //Dan
-glm::mat4 model_D_matrix ;
+glm::mat4 model_E2_matrix ;
 //LaginHo
-glm::mat4 model_La_matrix ;
+glm::mat4 model_L2_matrix ;
 glm::mat4 model_Stage_matrix ;
 glm::mat4 model_Screen_matrix;
 glm::mat4 grid_matrix ;
 glm::mat4 ground_matrix ;
 glm::mat4 line_matrix;
 
-glm::mat4 model_S1_matrix;
+glm::mat4 model_E3_matrix;
 
-glm::mat4 model_S2_matrix;
+glm::mat4 model_C_matrix;
 
 glm::mat4 model_Light_matrix;
 
@@ -183,6 +171,7 @@ bool green = false;
 bool blue = false;
 bool colour = false;
 bool activeModelTexture = true;
+bool shadow = true;
 
 //0 for points, 1 for lines, 2 for triangle
 int renderingMode = 2;
@@ -192,40 +181,75 @@ int previousActiveModel = 0;
 int initModel = activeModel;
 int currentCam=0;
 
+//camera settings
+// fps
+glm::vec3 cam_pos = glm::vec3(0, 2, 30);
+glm::vec3 cam_dir = glm::vec3(0, 0, -1); //direction means what the camera is looking at
+glm::vec3 temp_cam_dir = glm::vec3(0, 0, 1); //use this for the cross product or else when cam_dir and cam_up overlap, the cross product will be 0 (bad!)
+glm::vec3 cam_up = glm::vec3(0, 1, 0); //up defines where the top of the camera is directing towards
+
+// model back
+glm::vec3 cam_pos_back = glm::vec3(0.5, 3, 45);
+glm::vec3 cam_dir_back = glm::vec3(0, 0, -1);
+glm::vec3 cam_up_back = glm::vec3(0, 1, 0);
+
+// model front 
+glm::vec3 cam_pos_front = glm::vec3(0.5, 3, 23);
+glm::vec3 cam_dir_front = glm::vec3(0, 0, -1);
+glm::vec3 cam_up_front = glm::vec3(0, 1, 0);
+
+// Extra camera??? 
+glm::vec3 cam_pos_light = glm::vec3(0, 40, -10);
+glm::vec3 cam_dir_light = glm::vec3(0, 0, 0);
+glm::vec3 cam_up_light = glm::vec3(0, 1, 0);
+
+float camX;
+float camZ;
 // lighting settings
 
-// Point Light
+// Point Light //ambient light
 glm::vec3 lightColor = glm::vec3(1.0, 0.5, 1.0);
 glm::vec3 lightPosition = glm::vec3(1.2f, 5.0f, 2.0f);
+glm::vec3 lightFocus = glm::vec3(0.0, 0.0, 0.0);
+glm::vec3 lightDirection = glm::normalize(lightFocus - lightPosition);
 
 // Spotlight
+// key 7 
 glm::vec3 spotlightColor = glm::vec3(1.0, 1.0, 1.0);
-glm::vec3 spotlightPosition = glm::vec3(0, 20, -25);
-glm::vec3 spotlightFocus = glm::vec3(0, 0, -23);
+glm::vec3 spotlightPosition = glm::vec3(0, 20, -5);
+glm::vec3 spotlightFocus = glm::vec3(0, 0, 23);
 glm::vec3 spotlightDirection = glm::normalize(spotlightFocus - spotlightPosition);
 
-
-
-
+// Rotating
 glm::vec3 spotlightColor2 = glm::vec3(0.0, 1.0, 0.0);
-glm::vec3 spotlightPosition2 = glm::vec3(0, 30, 0);
-glm::vec3 spotlightFocus2 = glm::vec3(1.0, 0.0, 0.0);
+glm::vec3 spotlightPosition2 = model_Light_move;
+glm::vec3 spotlightFocus2 = glm::vec3(0.0, 0.0, 0.0);
 glm::vec3 spotlightDirection2 = glm::normalize(spotlightFocus2 - spotlightPosition2);
 
-
-glm::vec3 spotlightColor3 = glm::vec3(1.0, 1.0, 1.0);
-glm::vec3 spotlightPosition3 = glm::vec3(0, 20, 35);
+// Ceiling key S
+glm::vec3 spotlightColor3 = glm::vec3(1.0, 0.2, 0.6);
+glm::vec3 spotlightPosition3 = glm::vec3(0, 40, 10);
 glm::vec3 spotlightFocus3 = glm::vec3(0, 0, -15);
 glm::vec3 spotlightDirection3 = glm::normalize(spotlightFocus3 - spotlightPosition3);
 
-float spotlightCutoff = glm::cos(glm::radians(12.5f));
-float spotlightOuterCutoff = glm::cos(glm::radians(15.0f));
+// Ceiling
+glm::vec3 spotlightColor4 = glm::vec3(1.0, 0.2, 0.6);
+glm::vec3 spotlightPosition4 = glm::vec3(0, 40, 0);
+glm::vec3 spotlightFocus4 = glm::vec3(0, 0, -15);
+glm::vec3 spotlightDirection4 = glm::normalize(spotlightFocus3 - spotlightPosition3);
+
+glm::vec3 generalLightDirection = lightDirection;
+glm::vec3 generalLightPosition = lightPosition;
+glm::vec3 generalLightFocus = lightFocus;
+
+float spotlightCutoff = glm::cos(glm::radians(2.5f));
+float spotlightOuterCutoff = glm::cos(glm::radians(12.0f));
 float spotlightConstant = 1.0f;
 float spotlightLinear = 0.09;
 float spotlightQuadratic = 0.032;
 
-float lightNearPlane = 1.0f;
-float lightFarPlane = 7.0f;
+float lightNearPlane = 2.0f;
+float lightFarPlane = 20.0f;
 
 //glm::vec3 object_color = glm::vec3(0.5, 0.5, 0.5);
 
@@ -235,29 +259,29 @@ void resetToPreviousModel(int previousActiveModel) {
 	switch (previousActiveModel)
 	{
 	case 0:
-		model_active = model_A;
-		model_active_move = model_A_move;
-		break;
-	case 1:
-		model_active = model_La;
-		model_active_move = model_La_move;
-		break;
-	case 2:
-		model_active = model_D;
-		model_active_move = model_D_move;
-		break;
-	case 3:
 		model_active = model_L;
 		model_active_move = model_L_move;
 		break;
+	case 1:
+		model_active = model_L2;
+		model_active_move = model_L2_move;
+		break;
+	case 2:
+		model_active = model_E2;
+		model_active_move = model_E2_move;
+		break;
+	case 3:
+		model_active = model_E;
+		model_active_move = model_E_move;
+		break;
 	case 4:
-		model_active = model_S1;
-		model_active_move = model_S1_move;
+		model_active = model_E3;
+		model_active_move = model_E3_move;
 		break;
 
 	case 5:
-		model_active = model_S2;
-		model_active_move = model_S2_move;
+		model_active = model_C;
+		model_active_move = model_C_move;
 		break;
 	}
 	activeModel = previousActiveModel;
@@ -329,7 +353,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		{
 			//Left and Right key rotate camera
 			if (key == GLFW_KEY_RIGHT) { //left arrow rotates the camera left about the right vector
-				camRotation = camRotation + 0.05;
+				camRotation += 0.05;
+				camX = sin(camRotation) * radius;
+				camZ = cos(camRotation) * radius;
 			}
 			if (key == GLFW_KEY_DOWN) { //left arrow rotates the camera left about the down vector
 				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(-1, 0, 0));
@@ -338,7 +364,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 				model_world = glm::rotate(model_world, glm::radians(5.f), glm::vec3(1, 0, 0));
 			}
 			if (key == GLFW_KEY_LEFT) { //left arrow rotates the camera left about the left vector
-				camRotation = camRotation - 0.05;
+				camRotation -= 0.05;
+				camX = sin(camRotation) * radius;
+				camZ = cos(camRotation) * radius;
 			}
 		}
 	}
@@ -358,17 +386,17 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		model_active_move = glm::vec3(0, 2, -10); //to apply translational transformations
 
 		//Alessandro
-		model_A = glm::mat4(1.0f);
-		model_A_move = glm::vec3(0, 2, -10); //to apply translational transformations
-		//Le Cherng
 		model_L = glm::mat4(1.0f);
-		model_L_move = glm::vec3(0, 2, 10); //to apply translational transformations
+		model_L_move = glm::vec3(0, 2, -10); //to apply translational transformations
+		//Le Cherng
+		model_E = glm::mat4(1.0f);
+		model_E_move = glm::vec3(0, 2, 10); //to apply translational transformations
 		   //Dan
-		model_D = glm::mat4(1.0f);
-		model_D_move = glm::vec3(10, 2, 0); //to apply translational transformations
+		model_E2 = glm::mat4(1.0f);
+		model_E2_move = glm::vec3(10, 2, 0); //to apply translational transformations
 	   //LaginHo
-		model_La = glm::mat4(1.0f);
-		model_La_move = glm::vec3(-10, 2, 0); //to apply translational transformations
+		model_L2 = glm::mat4(1.0f);
+		model_L2_move = glm::vec3(-10, 2, 0); //to apply translational transformations
 		  //LaginHo
 		model_grid = glm::mat4(1.0f);
 		model_grid_move = glm::vec3(0, 0, 0); //to apply translational transformations
@@ -389,56 +417,30 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		//Alessandro
 		randomXPosition = -15 + (std::rand() % (15 + 15 + 1));
 		randomZPosition = -15 + (std::rand() % (15 + 15 + 1));
-		model_A = glm::mat4(1.0f);
-		model_A_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
+		model_L = glm::mat4(1.0f);
+		model_L_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
 
 		//Le Cherng
 		randomXPosition = -15 + (std::rand() % (15 + 15 + 1));
 		randomZPosition = -15 + (std::rand() % (15 + 15 + 1));
-		model_L = glm::mat4(1.0f);
-		model_L_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
+		model_E = glm::mat4(1.0f);
+		model_E_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
 
 		//Dan
 		randomXPosition = -15 + (std::rand() % (15 + 15 + 1));
 		randomZPosition = -15 + (std::rand() % (15 + 15 + 1));
-		model_D = glm::mat4(1.0f);
-		model_D_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
+		model_E2 = glm::mat4(1.0f);
+		model_E2_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
 
 	   //LaginHo
 		randomXPosition = -15 + (std::rand() % (15 + 15 + 1));
 		randomZPosition = -15 + (std::rand() % (15 + 15 + 1));
-		model_La = glm::mat4(1.0f);
-		model_La_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
+		model_L2 = glm::mat4(1.0f);
+		model_L2_move = glm::vec3(randomXPosition, 2, randomZPosition); //to apply translational transformations
 
 	}
 
 	if (!worldOrientationKeyPressed) {
-		//WASD buttons to move the model
-		if (!leftShiftPressed) {
-			if (key == GLFW_KEY_W) { //I moves the object along the +Y axis
-				model_active_move.y += 1;
-			}
-
-			if (key == GLFW_KEY_S) { //K moves the object along the -Y
-				model_active_move.y -= 1;
-			}
-
-			if (key == GLFW_KEY_A) { //J moves the object along the +X axis
-				model_active_move.x -= 1;
-			}
-
-			if (key == GLFW_KEY_D) { //L moves the object along the -X axis
-				model_active_move.x += 1;
-			}
-
-			if (key == GLFW_KEY_PAGE_UP) { //PgUp moves the object along the +Z axis
-				model_active_move.z += 1;
-			}
-
-			if (key == GLFW_KEY_PAGE_DOWN) { //PgDown moves the object along the -Z axis
-				model_active_move.z -= 1;
-			}
-		}
 
 		//BNE buttons to rotate the model
 		if (leftShiftPressed) {
@@ -481,31 +483,31 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			// For rotating the models
 			if (key == GLFW_KEY_UP) { //W rotates the object about the +X axis
 				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(1, 0, 0));
-				model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(1, 0, 0));
-				model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(1, 0, 0));
-				model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(1, 0, 0));
 				model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(1, 0, 0));
+				model_E2 = glm::rotate(model_E2, glm::radians(5.f), glm::vec3(1, 0, 0));
+				model_L2 = glm::rotate(model_L2, glm::radians(5.f), glm::vec3(1, 0, 0));
+				model_E = glm::rotate(model_E, glm::radians(5.f), glm::vec3(1, 0, 0));
 			}
 			if (key == GLFW_KEY_DOWN) { //S rotates the object about the -X axis
 				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(-1, 0, 0));
-				model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(-1, 0, 0));
-				model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(-1, 0, 0));
-				model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(-1, 0, 0));
 				model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(-1, 0, 0));
+				model_E2 = glm::rotate(model_E2, glm::radians(5.f), glm::vec3(-1, 0, 0));
+				model_L2 = glm::rotate(model_L2, glm::radians(5.f), glm::vec3(-1, 0, 0));
+				model_E = glm::rotate(model_E, glm::radians(5.f), glm::vec3(-1, 0, 0));
 			}
 			if (key == GLFW_KEY_LEFT) { //N rotates the object about the Y axis,
 				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(0, 1, 0));
-				model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(0, 1, 0));
-				model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(0, 1, 0));
-				model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(0, 1, 0));
 				model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(0, 1, 0));
+				model_E2 = glm::rotate(model_E2, glm::radians(5.f), glm::vec3(0, 1, 0));
+				model_L2 = glm::rotate(model_L2, glm::radians(5.f), glm::vec3(0, 1, 0));
+				model_E = glm::rotate(model_E, glm::radians(5.f), glm::vec3(0, 1, 0));
 			}
 			if (key == GLFW_KEY_RIGHT) { //N rotates the object about the -Y axis,
 				model_active = glm::rotate(model_active, glm::radians(5.f), glm::vec3(0, -1, 0));
-				model_A = glm::rotate(model_A, glm::radians(5.f), glm::vec3(0, -1, 0));
-				model_D = glm::rotate(model_D, glm::radians(5.f), glm::vec3(0, -1, 0));
-				model_La = glm::rotate(model_La, glm::radians(5.f), glm::vec3(0, -1, 0));
 				model_L = glm::rotate(model_L, glm::radians(5.f), glm::vec3(0, -1, 0));
+				model_E2 = glm::rotate(model_E2, glm::radians(5.f), glm::vec3(0, -1, 0));
+				model_L2 = glm::rotate(model_L2, glm::radians(5.f), glm::vec3(0, -1, 0));
+				model_E = glm::rotate(model_E, glm::radians(5.f), glm::vec3(0, -1, 0));
 			}
 		}
 
@@ -528,8 +530,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			}
 			activeModel = 0;
 			previousActiveModel = 1;
-			model_active = model_A;
-			model_active_move = model_A_move;
+			model_active = model_L;
+			model_active_move = model_L_move;
 		}
 
 		//toggle the green channel on/off
@@ -544,8 +546,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			}
 			activeModel = 1;
 			previousActiveModel = 1;
-			model_active = model_La;
-			model_active_move = model_La_move;
+			model_active = model_L2;
+			model_active_move = model_L2_move;
 		}
 
 		//toggle the blue channel on/off
@@ -558,8 +560,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			}
 			activeModel = 2;
 			previousActiveModel = 2;
-			model_active = model_D;
-			model_active_move = model_D_move;
+			model_active = model_E2;
+			model_active_move = model_E2_move;
 		}
 
 		//turn on all channels
@@ -577,43 +579,83 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 			activeModel = 3;
 			previousActiveModel = 3;
-			model_active = model_L;
-			model_active_move = model_L_move;
+			model_active = model_E;
+			model_active_move = model_E_move;
 		}
 
 		//toggle between Gouraud and Phong shading
 		if (key == GLFW_KEY_5 && action == GLFW_PRESS) {
-			if (flag == false)
+			if (flag == false) {
 				flag = true;
-			else
+			}
+			else {
 				flag = false;
+			}
 		}
 
 		if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
-			if (lights == false)
 				lights = true;
-			else
-				lights = false;
+				flag = true;
+				spotlight = false;
+				spotlight2 = false;
+				spotlight3 = false;
+				generalLightDirection = lightDirection;
+				generalLightPosition = lightPosition;
+				generalLightFocus = lightFocus;
 		}
 
 		if (key == GLFW_KEY_7 && action == GLFW_PRESS) {
 			spotlight = true;
 			spotlight2 = false;
 			spotlight3 = false;
+			lights = false; 
+			generalLightDirection = spotlightDirection;
+			generalLightPosition = spotlightPosition;
+			generalLightFocus = spotlightFocus;
 		}
 
-		if (key == GLFW_KEY_X && action == GLFW_PRESS) {
-			activeModelTexture = !activeModelTexture;
+		if (key == GLFW_KEY_K && action == GLFW_PRESS) {
+			spotlight2 = false;
+			lights = false;
+			spotlight = false;
+			spotlight3 = true;
+			generalLightDirection = spotlightDirection3;
+			generalLightPosition = spotlightPosition3;
+			generalLightFocus = spotlightFocus3;
 		}
+		if (key == GLFW_KEY_S && action == GLFW_PRESS) {
+			lights = false; 
+			spotlight3 = false;
+			spotlight = false;
+			if (spotlight2 == true) {
+				spotlight2 = false;
+				generalLightDirection = lightDirection;
+				generalLightPosition = lightPosition;
+				generalLightFocus = lightFocus;
+			}
+			else
+			{
+				spotlight2 = true;
+				generalLightDirection = spotlightDirection2;
+				generalLightPosition = spotlightPosition2;
+				generalLightFocus = spotlightFocus2;
+			}
+		}
+			
+			
 
-		/*if (key == GLFW_KEY_M && action == GLFW_PRESS) {
+		if (key == GLFW_KEY_8 && action == GLFW_PRESS) {
 			if (normalcol == false)
 				normalcol = true;
 			else
 				normalcol = false;
 		}
 
-		if (key == GLFW_KEY_G && action == GLFW_PRESS) {
+		if (key == GLFW_KEY_X && action == GLFW_PRESS) {
+			activeModelTexture = !activeModelTexture;
+		}
+
+		/*if (key == GLFW_KEY_G && action == GLFW_PRESS) {
 			if (greyscale == false)
 				greyscale = true;
 			else
@@ -636,40 +678,48 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	// Camera
 	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
-
-		currentCam = 1;
-
-
+		if (currentCam == 1) {
+			currentCam = 0;
+		}
+		else {
+			currentCam = 1;
+		}
 	}
 	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
-
-		currentCam = 2;
-
-
+		if (currentCam == 2) {
+			currentCam = 0;
+		}
+		else {
+			currentCam = 2;
+		}
 	}
 	if (key == GLFW_KEY_R && action == GLFW_PRESS) {
 		currentCam = 0;
-
 	}
 
+	// Rotating cam
 	if (key == GLFW_KEY_N && action == GLFW_PRESS) {
 		//Rotation cam
-		currentCam = 4;
+		if (currentCam == 4) {
+			currentCam = 0;
+		}
+		else {
+			currentCam = 4;
+		}
 	}
 
-
-	if (key == GLFW_KEY_K && action == GLFW_PRESS) {
-		spotlight2 = true;
-		spotlight = false;
-		spotlight3 = false;
+	if (key == GLFW_KEY_Q && action == GLFW_PRESS) {
+		//Rotation cam
+		if (shadow) {
+			std::cout << "test" << std::endl;
+			shadow = false;
+		}
+		else {
+			shadow = true;
+		}
 	}
-	if (key == GLFW_KEY_V && action == GLFW_PRESS) {
-		spotlight3 = true;
-		spotlight = false;
-		spotlight2 = false;
-	}
 
-
+	
 }
 
 double last_y_pos = 0;
@@ -850,34 +900,32 @@ int main()
 	proj_matrix = glm::perspective(glm::radians(45.f), 1.f, 0.1f, 200.f); //perspective view. Third parameter should be > 0, or else errors
 
 	//other model matrix
+	model_Light = glm::rotate(glm::mat4(1.0f), glm::radians(30.f), glm::vec3(-1, 0, 0));
 
 	//Alessandro
-	model_A_matrix = glm::translate(glm::mat4(1.f), model_A_move);
-	//Le Cherng
 	model_L_matrix = glm::translate(glm::mat4(1.f), model_L_move);
+	//Le Cherng
+	model_E_matrix = glm::translate(glm::mat4(1.f), model_E_move);
 	//Dan
-	model_D_matrix = glm::translate(glm::mat4(1.f), model_D_move);
+	model_E2_matrix = glm::translate(glm::mat4(1.f), model_E2_move);
 	//LaginHo
-	model_La_matrix = glm::translate(glm::mat4(1.f), model_La_move);
+	model_L2_matrix = glm::translate(glm::mat4(1.f), model_L2_move);
+
+	model_E3_matrix = glm::translate(glm::mat4(1.f), model_E3_move);
+
+	model_C_matrix = glm::translate(glm::mat4(1.f), model_C_move);
 
 	model_Stage_matrix = glm::translate(glm::mat4(1.f), model_Stage_move);
 
 	model_Screen_matrix = glm::translate(glm::mat4(1.f), model_Screen_move);
 
-	model_S1_matrix = glm::translate(glm::mat4(1.f), model_S1_move);
-
-	model_S2_matrix = glm::translate(glm::mat4(1.f), model_S2_move);
-
 	model_Sky_matrix = glm::translate(glm::mat4(1.f), model_Sky_move);
-	model_Light_matrix = glm::translate(glm::mat4(1.f), model_Light_move);
 
-
-
-
+	model_Light_matrix = glm::translate(model_Light, model_Light_move);
 
 	grid_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
     ground_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
-	line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0));
+	line_matrix = glm::translate(glm::mat4(1.f), glm::vec3(0, 1, 0));
 
 	 vm_loc = shader.GetUniformLocation("vm");
 	 pm_loc = shader.GetUniformLocation("pm");
@@ -925,11 +973,6 @@ int main()
 	glUniform3fv(shader.GetUniformLocation("spotlight_color3"), 1, glm::value_ptr(spotlightColor3));
 	glUniform3fv(shader.GetUniformLocation("spotlight_position3"), 1, glm::value_ptr(spotlightPosition3));
 	glUniform3fv(shader.GetUniformLocation("spotlight_direction3"), 1, glm::value_ptr(spotlightDirection3));
-	glUniform1f(shader.GetUniformLocation("spotlight_cutoff3"), spotlightCutoff);
-	glUniform1f(shader.GetUniformLocation("spotlight_outer_cutoff3"), spotlightOuterCutoff);
-	glUniform1f(shader.GetUniformLocation("spotlight_constant3"), spotlightConstant);
-	glUniform1f(shader.GetUniformLocation("spotlight_linear3"), spotlightLinear);
-	glUniform1f(shader.GetUniformLocation("spotlight_quadratic3"), spotlightQuadratic);
 
 
 	glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
@@ -943,22 +986,23 @@ int main()
 	glUniformMatrix4fv(pm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	glUniformMatrix4fv(mm_loc_lines_3d, 1, GL_FALSE, glm::value_ptr(line_matrix));
 
-	Texture boxTexture("resources/textures/boxtexture.jpg");
-	Texture metalTexture("resources/textures/metaltexture.jpg");
-	Texture evilDann("resources/textures/evilDann.png");
-	Texture dio("resources/textures/dio.jpg");
-	Texture texture_AL_1("resources/textures/allesandro1.jpg");
-	Texture texture_AL_2("resources/textures/allesandro2.jpg");
-	Texture texture_LA_1("resources/textures/laginho1.jpg");
-	Texture texture_LA_2("resources/textures/laginho2.jpg");
-	Texture bonus1("resources/textures/bonusTexture1.jpg");
-	Texture bonus2("resources/textures/bonusTexture2.jpg");
-	Texture tileTexture("resources/textures/tiletexture.jpg");
-	Texture modelAllesandroTexture("resources/textures/ModelAllesandro.png");
-	Texture modelDanielTexture("resources/textures/ModelDaniel.png");
-	Texture modelLaginhoTexture("resources/textures/ModelLaginho.png");
-	Texture modelLeCherngTexture("resources/textures/ModelLeCherng.png");
-	Texture stage_texture("resources/textures/stage_texture.jpg");
+	Texture boxTexture("resources/textures/boxtexture.jpg", false);
+	Texture metalTexture("resources/textures/metaltexture.jpg", false);
+	Texture evilDann("resources/textures/evilDann.png", false);
+	Texture dio("resources/textures/dio.jpg", false);
+	Texture texture_AL_1("resources/textures/allesandro1.jpg", false);
+	Texture texture_AL_2("resources/textures/allesandro2.jpg", false);
+	Texture texture_LA_1("resources/textures/laginho1.jpg", false);
+	Texture texture_LA_2("resources/textures/laginho2.jpg", false);
+	Texture bonus1("resources/textures/bonusTexture1.jpg", false);
+	Texture bonus2("resources/textures/bonusTexture2.jpg", false);
+	Texture tileTexture("resources/textures/tiletexture.jpg", false);
+	Texture modelAllesandroTexture("resources/textures/ModelAllesandro.png", true);
+	Texture modelDanielTexture("resources/textures/ModelDaniel.png", true);
+	Texture modelLaginhoTexture("resources/textures/ModelLaginho.png", true);
+	Texture modelLeCherngTexture("resources/textures/ModelLeCherng.png", true);
+	Texture stage_texture("resources/textures/stage_texture.jpg", true);
+	Texture skyboxTexture("resources/textures/boxtexture.jpg", false);
 
 	arrayOfTexture[0] = modelAllesandroTexture;
 	arrayOfTexture[1] = modelDanielTexture;
@@ -1007,25 +1051,31 @@ int main()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	start = time(0);
+	camX = sin(camRotation) * radius;
+	camZ = cos(camRotation) * radius;
 
 	Lines3d lines3dObject = Lines3d();
 	Grid grid = Grid();
 	GroundPlain ground = GroundPlain();
-	AlessandroModel alessandroModel = AlessandroModel();
-	LeCherngModel leCherngModel = LeCherngModel();
-	DannModel danModel = DannModel();
-	LaginhoModel laginModel = LaginhoModel();
+	
+	LModel lModel = LModel();
+	EModel eModel = EModel();
+	EModel eModel2 = EModel();
+
+	LModel lModel2 = LModel();
+	EModel eModel3 = EModel();
+	CModel cModel = CModel();
+
 	Stage stage = Stage();
 	Screen screen = Screen();
-	SModel sModel1 = SModel();
-	SModel sModel2 = SModel();
 	SkyBox skyBox = SkyBox();
-	SpotLightModel spotLight = SpotLightModel();
+	SpotLightModel spotLight = SpotLightModel(0, 0, 0);
 	Cylinder cylinder = Cylinder(2.5f, 1.f, 0.125);
-
-
 	Cube cube = Cube(1, 1, 1, 2, 2, 2);
 
+	glm::mat4 lightProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, lightNearPlane, lightFarPlane);
+	glm::mat4 lightViewMatrix = glm::lookAt(generalLightPosition, generalLightFocus, glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -1038,28 +1088,60 @@ int main()
 		glClearColor(1.f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		switch (currentCam) {
+		case 0:
+			// FPS
+			view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
+			break;
+		case 1:
+			// In front of model
+			view_matrix = glm::lookAt(cam_pos_front, cam_pos_front + cam_dir_front, cam_up_front);
+			break;
+		case 2:
+			// Back of Model
+			view_matrix = glm::lookAt(cam_pos_back, cam_pos_back + cam_dir_back, cam_up_back);
+			break;
+		case 3:
+			// Some extra I guess
+			view_matrix = glm::lookAt(cam_pos_light, cam_pos_light + cam_dir_light, cam_up_light);
+			break;
+		case 4:
+			// Rotating
+			spotlightColor2 = glm::vec3(1.0, 0.4, 0.4);
+			spotlightPosition2 = glm::vec3(camX, 30, camZ);
+			spotlightFocus2 = glm::vec3(1.0, 0.0, 0.0);
+			spotlightDirection2 = glm::normalize(spotlightFocus2 - spotlightPosition2);
+			glUniform3fv(shader.GetUniformLocation("spotlight_position2"), 1, glm::value_ptr(spotlightPosition2));
+			glUniform3fv(shader.GetUniformLocation("spotlight_direction2"), 1, glm::value_ptr(spotlightDirection2));
+			view_matrix = glm::lookAt(glm::vec3(camX, 30, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+			break;
+		}
+
 		// lighting
 		//glm::mat4 lightProjectionMatrix = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, lightNearPlane, lightFarPlane);
-		glm::mat4 lightProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, lightNearPlane, lightFarPlane);
-		glm::mat4 lightViewMatrix = glm::lookAt(spotlightPosition, spotlightFocus, glm::vec3(0.0f, 1.0f, 0.0f));
-		glm::mat4 lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
+		
 
-		shaderShadow.Bind();
-		glUniformMatrix4fv(shaderShadow.GetUniformLocation("light_view_proj_matrix"), 1, 0, glm::value_ptr(lightSpaceMatrix));
+		if (shadow) {
+			shaderShadow.Bind();
+			std::cout << "Doing shadowssss" << std::endl;
+			lightViewMatrix = glm::lookAt(generalLightPosition, generalLightFocus, glm::vec3(0.0f, 1.0f, 0.0f));
+			lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
 
-		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-		glBindFramebuffer(GL_FRAMEBUFFER, depth_map_fbo);
-		glClear(GL_DEPTH_BUFFER_BIT);
+			glUniformMatrix4fv(shaderShadow.GetUniformLocation("light_view_proj_matrix"), 1, 0, glm::value_ptr(lightSpaceMatrix));
 
-		renderScene(shader, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, sModel1, sModel2, skyBox, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
-		// Unbind the framebuffer
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+			glBindFramebuffer(GL_FRAMEBUFFER, depth_map_fbo);
+			glClear(GL_DEPTH_BUFFER_BIT);
 
+			renderScene(shaderShadow, ground, lModel, eModel, eModel2, lModel2, eModel3, cModel, stage, screen, skyBox, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture, &skyboxTexture);
+			// Unbind the framebuffer
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		}
 
-		glm::mat4 translator_A = glm::translate(glm::mat4(1.0f), model_A_move);
-		glm::mat4 translator_La = glm::translate(glm::mat4(1.0f), model_La_move);
-		glm::mat4 translator_D = glm::translate(glm::mat4(1.0f), model_D_move);
-		glm::mat4 translator_L = glm::translate(glm::mat4(1.0f), model_L_move);
+		glm::mat4 translator_A = glm::translate(glm::mat4(1.0f), model_L_move);
+		glm::mat4 translator_La = glm::translate(glm::mat4(1.0f), model_L2_move);
+		glm::mat4 translator_D = glm::translate(glm::mat4(1.0f), model_E2_move);
+		glm::mat4 translator_L = glm::translate(glm::mat4(1.0f), model_E_move);
 		glm::mat4 translator_grid = glm::translate(glm::mat4(1.0f), model_grid_move);
 		glm::mat4 translator = glm::translate(glm::mat4(1.0f), model_active_move);
 		glm::mat4 translator_Stage = glm::translate(glm::mat4(1.0f), model_Stage_move);
@@ -1070,63 +1152,63 @@ int main()
 		switch (activeModel) {
 		case 0:
 			model_matrix = model_world * translator * model_active;
-			model_A_matrix = model_world * translator * model_active;
-			model_A = model_active;
-			model_A_move = model_active_move;
+			model_L_matrix = model_world * translator * model_active;
+			model_L = model_active;
+			model_L_move = model_active_move;
 
 			grid_matrix = model_world  * translator_grid * model_grid;
-			model_La_matrix = model_world * translator_La * model_La;
-			model_D_matrix = model_world * translator_D * model_D;
-			model_L_matrix = model_world * translator_L * model_L;
+			model_L2_matrix = model_world * translator_La * model_L2;
+			model_E2_matrix = model_world * translator_D * model_E2;
+			model_E_matrix = model_world * translator_L * model_E;
 			model_Stage_matrix = model_world  * translator_Stage * model_Stage;
 			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
 			break;
 		case 1:
-			model_La_matrix = model_world * translator * model_active;
-			model_La = model_active;
-			model_La_move = model_active_move;
+			model_L2_matrix = model_world * translator * model_active;
+			model_L2 = model_active;
+			model_L2_move = model_active_move;
 
-			model_matrix = model_world * translator_A * model_A;
+			model_matrix = model_world * translator_A * model_L;
 			grid_matrix = model_world  * translator_grid * model_grid;
-			model_A_matrix = model_world * translator_A * model_A;
-			model_D_matrix = model_world * translator_D * model_D;
-			model_L_matrix = model_world * translator_L * model_L;
+			model_L_matrix = model_world * translator_A * model_L;
+			model_E2_matrix = model_world * translator_D * model_E2;
+			model_E_matrix = model_world * translator_L * model_E;
 			model_Stage_matrix = model_world * translator_Stage * model_Stage;
 			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 2:
-			model_D_matrix = model_world * translator * model_active;
-			model_D = model_active;
-			model_D_move = model_active_move;
+			model_E2_matrix = model_world * translator * model_active;
+			model_E2 = model_active;
+			model_E2_move = model_active_move;
 
-			model_matrix = model_world * translator_A * model_A;
+			model_matrix = model_world * translator_A * model_L;
 			grid_matrix = model_world * translator_grid * model_grid;
-			model_A_matrix = model_world * translator_A * model_A;
-			model_La_matrix = model_world * translator_La * model_La;
-			model_L_matrix = model_world * translator_L * model_L;
+			model_L_matrix = model_world * translator_A * model_L;
+			model_L2_matrix = model_world * translator_La * model_L2;
+			model_E_matrix = model_world * translator_L * model_E;
 			model_Stage_matrix = model_world * translator_Stage * model_Stage;
 			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
 			break;
 		case 3:
-			model_L_matrix = model_world  * translator * model_active;
-			model_L = model_active;
-			model_L_move = model_active_move;
+			model_E_matrix = model_world  * translator * model_active;
+			model_E = model_active;
+			model_E_move = model_active_move;
 
-			model_matrix = model_world * translator_A * model_A;
+			model_matrix = model_world * translator_A * model_L;
 			grid_matrix = model_world  * translator_grid * model_grid;
-			model_A_matrix = model_world * translator_A * model_A;
-			model_La_matrix = model_world  * translator_La * model_La;
-			model_D_matrix = model_world * translator_D * model_D;
+			model_L_matrix = model_world * translator_A * model_L;
+			model_L2_matrix = model_world  * translator_La * model_L2;
+			model_E2_matrix = model_world * translator_D * model_E2;
 			model_Stage_matrix = model_world * translator_Stage * model_Stage;
 			model_Screen_matrix = model_world * translator_Screen * model_Screen;
 			break;
 		case 4:
-			model_matrix = model_world * translator_A * model_A;
+			model_matrix = model_world * translator_A * model_L;
 			grid_matrix = model_world  * translator_grid * model_grid;
-			model_A_matrix = model_world * translator_A * model_A;
-			model_La_matrix = model_world * translator_La * model_La;
-			model_D_matrix = model_world * translator_D * model_D;
-			model_L_matrix = model_world * translator_L * model_L;
+			model_L_matrix = model_world * translator_A * model_L;
+			model_L2_matrix = model_world * translator_La * model_L2;
+			model_E2_matrix = model_world * translator_D * model_E2;
+			model_E_matrix = model_world * translator_L * model_E;
 			model_Stage_matrix = model_world  * translator_Stage * model_Stage;
 			model_Screen_matrix = model_world  * translator_Screen * model_Screen;
 			break;
@@ -1134,43 +1216,24 @@ int main()
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_matrix));
 
 
-
-
-		const float radius = 30.0f;
-		float camX = sin(camRotation) * radius;
-		float camZ = cos(camRotation) * radius;
-		shader.Bind();
 		glViewport(0, 0, WIDTH, HEIGHT);
 		glClearColor(1.f, 0.1f, 0.1f, 1.0f);
+		
+		shader.Bind();
+
+		if (!shadow) {
+			glUniform1i(shader.GetUniformLocation("shadow_on"), shadow);
+		}
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glUniformMatrix4fv(pm_loc, 1, 0, glm::value_ptr(proj_matrix));
 		glUniform3fv(shader.GetUniformLocation("view_position"), 1, glm::value_ptr(cam_pos));
 		glUniformMatrix4fv(shader.GetUniformLocation("light_view_proj_matrix"), 1, 0, glm::value_ptr(lightSpaceMatrix));
-		glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(spotlightPosition));
-		glUniform3fv(shader.GetUniformLocation("light_direction"), 1, glm::value_ptr(spotlightDirection));
+		// glUniform3fv(shader.GetUniformLocation("light_position"), 1, glm::value_ptr(generalLightPosition));
+		glUniform3fv(shader.GetUniformLocation("light_direction"), 1, glm::value_ptr(generalLightDirection));
 
-		switch (currentCam) {
-		case 0:
-			view_matrix = glm::lookAt(cam_pos, cam_pos + cam_dir, cam_up);
-			break;
-		case 1:
-			view_matrix = glm::lookAt(cam_pos_front, cam_pos_front + cam_dir_front, cam_up_front);
-			break;
-		case 2:
-			view_matrix = glm::lookAt(cam_pos_back, cam_pos_back + cam_dir_back, cam_up_back);
-			break;
-		case 4:
-			spotlightColor2 = glm::vec3(1.0, 0.4, 0.4);
-			spotlightPosition2 = glm::vec3(camX, 30, camZ);
-			spotlightFocus2 = glm::vec3(1.0, 0.0, 0.0);
-			spotlightDirection2 = glm::normalize(spotlightFocus2 - spotlightPosition2);
-			glUniform3fv(shader.GetUniformLocation("spotlight_position2"), 1, glm::value_ptr(spotlightPosition2));
-			glUniform3fv(shader.GetUniformLocation("spotlight_direction2"), 1, glm::value_ptr(spotlightDirection2));
-			view_matrix = glm::lookAt(glm::vec3(camX, 30, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
-			break;
-
-		}
+		
 		glUniform1i(flag_id, flag);
 		glUniform1i(lights_id, lights);
 		glUniform1i(spotlight_id, spotlight);
@@ -1194,19 +1257,18 @@ int main()
 		shader.SetUniform1i("u_Texture", 0);
 		//shader.SetUniform4f("light_position", 0.0, 30.0, 5.0, 1);
 		//shader.SetVec3("light_position", glm::vec3(0.0, 30.0, 5.0));
-		renderScene(shader, ground, alessandroModel, leCherngModel, danModel, laginModel, stage, screen, sModel1, sModel2, skyBox, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture);
+		renderScene(shader, ground, lModel, eModel, eModel2, lModel2, eModel3, cModel, stage, screen, skyBox, arrayOfTexture, &boxTexture, &metalTexture, &stage_texture, &tileTexture, &skyboxTexture);
 		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
 		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Light_matrix));
-		//cube.drawModel();
-
-		spotLight.drawModel(0,0,0);
+		spotLight.drawModel(shader, model_Light_matrix);
 
 		// Draws line
 		glLineWidth(1.0f);
-		glUniformMatrix4fv(vm_loc_lines_3d, 1, 0, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(mm_loc_lines_3d, 1, 0, glm::value_ptr(line_matrix));
+		glUniformMatrix4fv(vm_loc, 1, 0, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(line_matrix));
+		arrayOfTexture[4].Bind();
 		lines3dObject.drawLines(&shader, line_matrix);
+		arrayOfTexture[4].Unbind();
 
 		// Draws grid
 		lines3dShader.Bind();
@@ -1239,42 +1301,32 @@ int main()
 	return 0;
 }
 
-void renderScene(Shader& shader, GroundPlain& ground, AlessandroModel& alessandroModel, LeCherngModel& leCherngModel, DannModel& danModel, LaginhoModel& laginModel, Stage& stage, Screen& screen, SModel sModel1, SModel sModel2, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture){
-
-	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_A_matrix));
-	alessandroModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
-
-	//model_L_shader.Bind();
+void renderScene(Shader& shader, GroundPlain& ground, LModel& lModel, EModel& eModel, EModel& eModel2, LModel lModel2, EModel eModel3, CModel& cModel, Stage& stage, Screen& screen, SkyBox skyBox, Texture* arrayOfTexture, Texture* boxTexture, Texture* metalTexture, Texture* stage_texture, Texture* tileTexture, Texture* skyboxTexture){
+	
 	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_L_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	leCherngModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	lModel.drawLetter(boxTexture, &shader, model_L_matrix);
 
-	//model_La_shader.Bind();
-	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_La_matrix));
+	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_E_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	laginModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY);
+	eModel.drawLetter(boxTexture, &shader, model_E_matrix);
 
-	//model_D_shader.Bind();
-	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_D_matrix));
+	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_E2_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	danModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, &shader, model_D_matrix);
+	eModel2.drawLetter(metalTexture, &shader, model_E2_matrix);
 
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S1_matrix));
-	sModel1.drawModel(renderingMode, metalTexture);
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_S2_matrix));
-	sModel2.drawModel(renderingMode, metalTexture);
+	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_L2_matrix));
+	lModel2.drawLetter(metalTexture, &shader, model_L2_matrix);
 
+	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_E3_matrix));
+	eModel3.drawLetter(metalTexture, &shader, model_E3_matrix);
 
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_Sky_matrix));
+	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_C_matrix));
+	cModel.drawModel(boxTexture, &shader, model_C_matrix);
+
+	glUniformMatrix4fv(shader.GetUniformLocation("mm"), 1, 0, glm::value_ptr(model_Sky_matrix));
 	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-     skyBox.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, &shader, model_Sky_matrix);
-
-
-
-	//model_D_shader.Bind();
-	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(model_D_matrix));
-	//glUniform3fv(shader.GetUniformLocation("object_color"), 1, glm::value_ptr(glm::vec3(0.5, 0.5, 0.5)));
-	danModel.drawModel(renderingMode, boxTexture, metalTexture, shearX, shearY, &shader, model_D_matrix);
+    skyBox.drawModel(skyboxTexture, metalTexture, &shader, model_Sky_matrix);
 
 	if (time(0) - start == n) {
 		if (currentIndex == (sizeof(arrayOfTexture) / sizeof(arrayOfTexture[0]) - 1)) {

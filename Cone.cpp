@@ -39,14 +39,14 @@ Cone::Cone(float Length, float size, float radius)
 
         //upper part
         0, 0, Length * size, //origin
-        0,-radius * size,Length * size,
-        -(radius * glm::cos(45)) * size,-(radius * glm::cos(45)) * size,Length * size,
-        -radius * size,0,Length * size,
-        -(radius * glm::cos(45)) * size,(radius * glm::cos(45)) * size,Length * size,
-        0,radius * size,Length * size,
-        (radius * glm::cos(45)) * size,(radius * glm::cos(45)) * size,Length * size,
-        radius * size,0,Length * size,
-        (radius * glm::cos(45)) * size,-(radius * glm::cos(45)) * size,Length * size
+        0, 0, Length* size,
+        0, 0, Length * size,
+        0, 0, Length * size,
+        0, 0, Length * size,
+        0, 0, Length * size,
+        0, 0, Length * size,
+        0, 0, Length * size,
+        0, 0, Length * size
     };
 
     const int NUMBER_OF_INDICIES = 96;

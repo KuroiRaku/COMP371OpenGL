@@ -11,7 +11,7 @@ public:
     Sphere(float x, float y, float z, float xLength, float yLength);
     ~Sphere();
     void init(float x, float y, float z, float xLength, float yLength);
-    void draw();
+    void drawModel();
     glm::mat4 sphereMatrix = glm::mat4(1.0f);
 private:
     

@@ -1,14 +1,13 @@
 #include "SpotLightModel.h"
 
 
-SpotLightModel::SpotLightModel() {
-
+SpotLightModel::SpotLightModel(GLfloat centerX, GLfloat centerY, GLfloat centerZ) {
+	cube = Cube(centerX - 0.5f, centerY - 0.5f, centerZ, 1.0f, 1.0f, 1.0f);
+	cylinder = Cylinder(5.0f, 1.0f, 1.0f);
 }
 //(float Length, float size, float radius)
-void SpotLightModel::drawModel(GLfloat centerX, GLfloat centerY, GLfloat centerZ) {
-	Cube cube = Cube(centerX -0.5f , centerY -0.5f, centerZ, 1.0f, 1.0f, 1.0f);
+void SpotLightModel::drawModel(Shader& shader, glm::mat4 objectMatrix) {
 	cube.drawModel();
-	Cylinder cylinder = Cylinder(3.0f, 1.0f,1.0f);
 	cylinder.draw(NULL);
 }
 

@@ -12,7 +12,7 @@ class SkyBox
 
 public:
 	SkyBox();
-	void drawModel(int drawMode, Texture* boxTexture, Texture* metalTexture, float shearX, float shearY, Shader* shader, glm::mat4 objectMatrix);
+	void drawModel(Texture* boxTexture, Texture* metalTexture, Shader* shader, glm::mat4 objectMatrix);
 
 private:
 

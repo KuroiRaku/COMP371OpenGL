@@ -127,7 +127,7 @@ void Sphere::init(float xOrigin, float yOrigin, float zOrigin, float xLength, fl
 
     
 
-void Sphere::draw()
+void Sphere::drawModel()
 {
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);

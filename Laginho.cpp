@@ -44,9 +44,9 @@ void LaginhoModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTe
 
 
 	Sphere s = Sphere(0, 0, 0, 1, 0.25);
-	s.draw();
+	s.drawModel();
 	s = Sphere(0, 17, 0, 1, 0.25);
-	s.draw();
+	s.drawModel();
 
 	metalTexture->Unbind();
 }

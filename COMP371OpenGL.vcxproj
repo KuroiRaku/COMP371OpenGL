@@ -145,7 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AlessandroModel.cpp" />
+    <ClCompile Include="CModel.cpp" />
     <ClCompile Include="Cone.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Cylinder.cpp" />
@@ -156,11 +156,11 @@
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="GroundPlain.cpp" />
     <ClCompile Include="Laginho.cpp" />
-    <ClCompile Include="LeCherngModel.cpp" />
+    <ClCompile Include="LModel.cpp" />
     <ClCompile Include="lines3d.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="SkyBox.cpp" />
-    <ClCompile Include="SModel.cpp" />
+    <ClCompile Include="EModel.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="SpotLightModel.cpp" />
     <ClCompile Include="Stage.cpp" />
@@ -169,7 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Quiz1_40133457_DannKaoussarani\COMP371OpenGL\engine\GLDebugMessageCallback.h" />
-    <ClInclude Include="AlessandroModel.h" />
+    <ClInclude Include="CModel.h" />
     <ClInclude Include="Cone.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Cylinder.h" />
@@ -180,12 +180,12 @@
     <ClInclude Include="engine\Shaderloader.h" />
     <ClInclude Include="GroundPlain.h" />
     <ClInclude Include="Laginho.h" />
-    <ClInclude Include="LeCherngModel.h" />
+    <ClInclude Include="LModel.h" />
     <ClInclude Include="lines3d.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="SkyBox.h" />
-    <ClInclude Include="SModel.h" />
+    <ClInclude Include="EModel.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="SpotLightModel.h" />
     <ClInclude Include="Stage.h" />

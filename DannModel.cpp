@@ -46,14 +46,14 @@ void DannModel::drawModel(int drawMode, Texture* boxTexture, Texture* metalTextu
 	s.sphereMatrix = objectMatrix * s.sphereMatrix;
 	GLuint mm_loc = shader->GetUniformLocation("mm");
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(s.sphereMatrix));
-	s.draw();
+	s.drawModel();
 	s = Sphere(0.2, 4, 0, 2, 0.5);
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(objectMatrix));
 	s.sphereMatrix = glm::rotate(s.sphereMatrix, glm::radians(50.f), glm::vec3(0, 0, -1));
 	s.sphereMatrix = objectMatrix * s.sphereMatrix;
 	mm_loc = shader->GetUniformLocation("mm");
 	glUniformMatrix4fv(mm_loc, 1, 0, glm::value_ptr(s.sphereMatrix));
-	s.draw();
+	s.drawModel();
 	
 
 	metalTexture->Unbind();

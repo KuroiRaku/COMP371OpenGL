@@ -14,7 +14,7 @@ private:
 	unsigned char* m_LocalBuffer;
 	int m_Width, m_Height, m_BPP;
 public:
-	Texture(const string& path);
+	Texture(const string& path, bool noRepeat);
 	~Texture();
 	Texture();
 	bool activeTexture;
