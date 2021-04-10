@@ -677,6 +677,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 
 	// Camera
+	// Infront
 	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
 		if (currentCam == 1) {
 			currentCam = 0;
@@ -685,6 +686,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 			currentCam = 1;
 		}
 	}
+	// Back
 	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
 		if (currentCam == 2) {
 			currentCam = 0;
