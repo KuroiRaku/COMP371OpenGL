@@ -1,10 +1,8 @@
-Team Members:\
-Alessandro Kreslin (40025121)<br />
-Dann Kaoussarani (40133457)<br />
-Le Cherng Lee (40122814)<br />
-Arshia Hamidi (40068250)<br />
-<br />
 Our project started with 5 members, but one of the members dropped the class, that’s why there are only 4 models
+
+## Beginners
+There codes are filled with comments to explain different section of the code hopefully that you will understand it. 
+When we decide to work on this project, we all decided to save time, we won't be doing much structure and instead of figuring out how to do this and that so you may not want to refer to this code for reference on how to structure your code. 
 
 ## Project Overview
 This project shows each member character model that consist of their first letter and last letter of their name as well as first number and last number of their student ID.<br /> This project allow user to rotate the models, moving the camera like in fps as well as rotating the world.<br /> There are some basic shaders code that changes models' colour as well as a little bit of lighting code and is just an extra work that we done.<br /> There's also an objectLoader and we loaded a cube with it as well as a font code which we did not use in the project as of right now. <br />
